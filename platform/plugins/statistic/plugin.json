@@ -1,0 +1,9 @@
+{
+    "name": "Statistic",
+    "namespace": "Botble\\Statistic\\",
+    "provider": "Botble\\Statistic\\Providers\\StatisticServiceProvider",
+    "author": "N/A",
+    "url": "N/A",
+    "version": "1.0",
+    "description": "The description for module statistic"
+}
