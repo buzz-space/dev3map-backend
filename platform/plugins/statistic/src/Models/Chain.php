@@ -1,0 +1,37 @@
+<?php
+
+namespace Botble\Statistic\Models;
+
+use Botble\Base\Traits\EnumCastable;
+use Botble\Base\Enums\BaseStatusEnum;
+use Botble\Base\Models\BaseModel;
+
+class Chain extends BaseModel
+{
+
+    /**
+     * The database table used by the model.
+     *
+     * @var string
+     */
+    protected $table = 'chains';
+
+    /**
+     * @var array
+     */
+    protected $fillable = [
+        'name',
+        "total_commit",
+        "total_contributor",
+        "total_issue_solved",
+        "total_star",
+        "total_fork",
+        'last_updated',
+        'github_prefix',
+    ];
+
+    public function repositories()
+    {
+        return $this->hasMany(Repository::class, "chain");
+    }
+}
