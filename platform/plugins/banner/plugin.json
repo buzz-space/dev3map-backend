@@ -1,0 +1,9 @@
+{
+    "name": "Banner",
+    "namespace": "Botble\\Banner\\",
+    "provider": "Botble\\Banner\\Providers\\BannerServiceProvider",
+    "author": "N/A",
+    "url": "N/A",
+    "version": "1.0",
+    "description": "The description for module banner"
+}
