@@ -35,4 +35,4 @@ jobs:
       - name: Deploy docker container webhook
         uses: joelwmale/webhook-action@master
         with:
-          url: ${{ vars.DEPLOY_WEBHOOK_URL  }}/deploy-ibclab
+          url: ${{ vars.DEPLOY_WEBHOOK_URL  }}/deploy-ibclab-dev
