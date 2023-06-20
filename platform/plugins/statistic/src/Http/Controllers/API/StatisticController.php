@@ -6,6 +6,7 @@ use Botble\Base\Http\Controllers\BaseController;
 use Botble\Base\Http\Responses\BaseHttpResponse;
 use Botble\Statistic\Models\Chain;
 use Botble\Statistic\Models\Commit;
+use Botble\Statistic\Models\Developer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 
@@ -22,29 +23,56 @@ class StatisticController extends BaseController
             return $response->setError()->setMessage("Chain not found!");
 
         $data["total_commit"] = $chain->total_commits;
-
-        $firstCommit = Commit::where("chain", $chain->id)->orderBy("exact_date", "ASC")->first();
-        $lastCommit = Commit::where("chain", $chain->id)->orderBy("exact_date", "DESC")->first();
-        $dateFirstCommit = Carbon::createFromTimestamp(strtotime($firstCommit->exact_date));
-        $dateLastCommit = Carbon::createFromTimestamp(strtotime($lastCommit->exact_date));
-        $diff = $dateFirstCommit->diffInMonths($dateLastCommit) + ($dateFirstCommit->day > $dateLastCommit->day ? 2 : 1 );
-        $commitAnalytic = [];
-        for ($i = 0; $i < $diff; $i++) {
-            $exactMonth = (clone $dateFirstCommit)->addMonths($i);
-            $total_commit = Commit::where("chain", $chain->id)
-                ->where("exact_date", ">=", $exactMonth->firstOfMonth()->toDateTimeString())
-                ->where("exact_date", "<", $exactMonth->endOfMonth()->toDateTimeString())
-                ->sum("total_commit");
-            $commitAnalytic[] = [
-                "year" => $exactMonth->year,
-                "month" => $exactMonth->month,
-                "total_commit" => $total_commit
-            ];
-        }
-
-        $data["commit_chart"] = $commitAnalytic;
+        $data["commit_chart"] = Developer::where("chain", $chain->id)->select("month", "year", "total_commit")->get();
         return $response->setData($data);
     }
 
-    // TODO: Developer api
+    public function developerInfo(Request $request, BaseHttpResponse $response)
+    {
+        if (!$chain = Chain::find($request->input("chain", 0)))
+            return $response->setError()->setMessage("Chain not found!");
+
+        $devs = Developer::where("chain", $chain->id)->pluck("author")->toArray();
+        $info = get_developer_type($devs);
+
+        $data["total_developer"] = $info["total_developer"];
+        $data["total_ft_developer"] = $info["full_time"];
+        $data["total_ml_developer"] = $info["full_time"] + $info["part_time"];
+
+        $data["chart_developer_type"] = Developer::where("chain", $chain->id)
+            ->select("month", "year", "total_full_time", "total_part_time", "total_one_time")
+            ->get();
+
+        $data["chart_all"] = Developer::where("chain", $chain->id)
+            ->select("month", "year", "total_developer")
+            ->get();
+
+        $devsThisYear = Developer::where("chain", $chain->id)
+            ->where("year", now()->year)->pluck("author")->toArray();
+        $infoYear = get_developer_type($devsThisYear);
+
+        $devsThisMonth = Developer::where("chain", $chain->id)
+            ->where("year", now()->year)->where("month", now()->month)
+            ->first();
+
+        $data["full_time"] = [
+            "all_time" => $info["full_time"],
+            "this_year" => $infoYear["full_time"],
+            "this_month" => $devsThisMonth["total_full_time"],
+        ];
+
+        $data["part_time"] = [
+            "all_time" => $info["part_time"],
+            "this_year" => $infoYear["part_time"],
+            "this_month" => $devsThisMonth["total_part_time"],
+        ];
+
+        $data["one_time"] = [
+            "all_time" => $info["one_time"],
+            "this_year" => $infoYear["one_time"],
+            "this_month" => $devsThisMonth["total_one_time"],
+        ];
+
+        return $response->setData($data);
+    }
 }

@@ -57,3 +57,38 @@ function get_last_page($header){
     parse_str($parts['query'], $query);
     return $query["page"];
 }
+
+function get_developer_type($devs){
+    $totalDev = [];
+    $fullTime = [];
+    $partTime = [];
+    $oneTime = [];
+    foreach ($devs as $row){
+        $total = [];
+        $z = explode(",", $row);
+        foreach ($z as $x){
+            if (!in_array($x, $totalDev))
+                $totalDev[] = $x;
+            if (!isset($total[$x]))
+                $total[$x] = 1;
+            else
+                $total[$x] += 1;
+        }
+        $fullTime = array_merge($fullTime, array_keys(array_filter($total, function ($row){
+            return $row > 10;
+        })));
+        $partTime = array_merge($partTime, array_keys(array_filter($total, function ($row){
+            return $row < 10 && $row > 1;
+        })));
+        $oneTime = array_merge($oneTime, array_keys(array_filter($total, function ($row){
+            return $row == 1;
+        })));
+    }
+
+    return [
+        'full_time' => count(array_unique($fullTime)),
+        'part_time' => count(array_unique($partTime)),
+        'one_time' => count(array_unique($oneTime)),
+        'total_developer' => count(array_filter($totalDev))
+    ];
+}

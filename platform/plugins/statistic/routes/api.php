@@ -9,4 +9,5 @@ Route::group([
 ], function () {
     Route::get("chain-list", "StatisticController@chainList");
     Route::get("commit-info", "StatisticController@commitInfo");
+    Route::get("developer-info", "StatisticController@developerInfo");
 });

@@ -43,6 +43,7 @@ class SummarizeChainInfoAndDeveloper extends Command
     {
         foreach (Chain::all() as $chain){
             echo "Chain " . $chain->name . PHP_EOL;
+            if ($chain->id < 27) continue;
             // Summarize contributor
             $chainContributor = $chain->repositories()->pluck("total_contributor");
             $contributors = [];
@@ -53,6 +54,8 @@ class SummarizeChainInfoAndDeveloper extends Command
 
             // Summarize Commit
             $chain->total_commit = Commit::where("chain", $chain->id)->sum("total_commit");
+            if ($chain->total_commit == 0)
+                continue;
 
             // Summarize developer
             $firstCommit = Commit::where("chain", $chain->id)->orderBy("exact_date", "ASC")->first();
@@ -63,6 +66,7 @@ class SummarizeChainInfoAndDeveloper extends Command
             $diff = $dateFirstCommit->diffInMonths($dateLastCommit) + ($dateFirstCommit->day > $dateLastCommit->day ? 2 : 1 );
             for ($i = 0; $i < $diff; $i++){
                 $exactMonth = (clone $dateFirstCommit)->addMonths($i);
+                echo "Month " . $exactMonth->month . ", year: " . $exactMonth->year. PHP_EOL;
                 $authors = Commit::where("chain", $chain->id)
                     ->where("exact_date", ">=", $exactMonth->firstOfMonth()->toDateTimeString())
                     ->where("exact_date", "<", $exactMonth->endOfMonth()->toDateTimeString())
@@ -78,6 +82,8 @@ class SummarizeChainInfoAndDeveloper extends Command
                     }
                 }
 
+//                write_to_file("devs.txt", print_r($devs, true)); return;
+
                 if (!$d = Developer::where("chain", $chain->id)
                     ->where("month", $exactMonth->month)
                     ->where("year", $exactMonth->year)->first()
@@ -88,14 +94,17 @@ class SummarizeChainInfoAndDeveloper extends Command
                     $d->year = $exactMonth->year;
                 }
                 $d->author = implode(',', $authors);
-                $d->total = count($devs);
+                $d->total_developer = count($devs);
+                $d->total_commit = 0;
                 foreach ($devs as $dev => $commit_count){
+//                    echo "Dev " . $dev . " with " . $commit_count . " commits" . PHP_EOL;
                     if ($commit_count == 1)
                         $d->total_one_time += 1;
                     if ($commit_count > 1 && $commit_count <= 10)
                         $d->total_part_time += 1;
                     if ($commit_count > 10)
                         $d->total_full_time += 1;
+                    $d->total_commit += $commit_count;
                 }
                 $d->save();
             }
