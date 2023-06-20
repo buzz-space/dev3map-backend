@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::table('repositories', function (Blueprint $table) {
-            $table->text("total_contributor")->nullable()->change();
+            $table->text("total_contributor")->nullable()->default(null)->change();
         });
     }
 
