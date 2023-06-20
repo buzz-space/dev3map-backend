@@ -1,0 +1,62 @@
+{
+    "swagger": "2.0",
+    "info": {
+        "title": "ibclab API Docs",
+        "description": "API Docs",
+        "termsOfService": "",
+        "contact": {
+            "email": "nguyenductai24081996@gmail.com"
+        },
+        "version": "1.0.0"
+    },
+    "host": "localhost:8000",
+    "basePath": "/",
+    "schemes": [
+        "http"
+    ],
+    "paths": {
+        "/api/v1/chain-list": {
+            "get": {
+                "tags": [
+                    "chain"
+                ],
+                "description": "Get chain list",
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/v1/commit-info": {
+            "get": {
+                "tags": [
+                    "chain"
+                ],
+                "description": "Get commit info for chain",
+                "parameters": [
+                    {
+                        "name": "chain",
+                        "in": "query",
+                        "description": "Chain id",
+                        "required": true,
+                        "type": "number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        }
+    },
+    "definitions": {},
+    "securityDefinitions": {
+        "bearerAuth": {
+            "type": "apiKey",
+            "name": "Authorization",
+            "in": "header"
+        }
+    }
+}
