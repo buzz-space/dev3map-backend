@@ -17,13 +17,24 @@ class StatisticController extends BaseController
         return $response->setData(Chain::all());
     }
 
-    public function commitInfo(Request $request, BaseHttpResponse $response)
+    public function chainInfo($id, BaseHttpResponse $response)
     {
-        if (!$chain = Chain::find($request->input("chain", 0)))
+        if (!$chain = Chain::find($id))
             return $response->setError()->setMessage("Chain not found!");
 
-        $data["total_commit"] = $chain->total_commits;
-        $data["commit_chart"] = Developer::where("chain", $chain->id)->select("month", "year", "total_commit")->get();
+        return $response->setData($chain);
+    }
+
+    public function commitInfo(Request $request, BaseHttpResponse $response)
+    {
+        if (!$chain = Chain::find($request->input("chain", 0))) {
+            $data["total_commit"] = $chain->total_commits;
+            $data["commit_chart"] = Developer::where("chain", $chain->id)->select("month", "year", "total_commit")->get();
+        }
+        else{
+            $data["total_commit"] = Chain::sum("total_commits");
+
+        }
         return $response->setData($data);
     }
 

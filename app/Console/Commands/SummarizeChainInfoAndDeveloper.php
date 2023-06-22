@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Botble\Statistic\Models\Chain;
 use Botble\Statistic\Models\Commit;
 use Botble\Statistic\Models\Developer;
+use Botble\Statistic\Models\Repository;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
@@ -41,21 +42,21 @@ class SummarizeChainInfoAndDeveloper extends Command
      */
     public function handle()
     {
-        foreach (Chain::all() as $chain){
+        foreach (Chain::all() as $chain) {
             echo "Chain " . $chain->name . PHP_EOL;
-            if ($chain->id < 27) continue;
+//            if ($chain->id < 27) continue;
             // Summarize contributor
             $chainContributor = $chain->repositories()->pluck("total_contributor");
             $contributors = [];
-            foreach ($chainContributor as $c){
+            foreach ($chainContributor as $c) {
                 $contributors = array_merge($contributors, explode(",", $c));
             }
             $chain->total_contributor = count(array_unique($contributors));
 
             // Summarize Commit
-            $chain->total_commit = Commit::where("chain", $chain->id)->sum("total_commit");
-            if ($chain->total_commit == 0)
-                continue;
+//            $chain->total_commit = Commit::where("chain", $chain->id)->sum("total_commit");
+//            if ($chain->total_commit == 0)
+//                continue;
 
             // Summarize developer
             $firstCommit = Commit::where("chain", $chain->id)->orderBy("exact_date", "ASC")->first();
@@ -63,18 +64,18 @@ class SummarizeChainInfoAndDeveloper extends Command
             $dateFirstCommit = Carbon::createFromTimestamp(strtotime($firstCommit->exact_date));
             $dateLastCommit = Carbon::createFromTimestamp(strtotime($lastCommit->exact_date));
             echo "From " . $dateFirstCommit->toDateTimeString() . " to " . $dateLastCommit->toDateTimeString() . PHP_EOL;
-            $diff = $dateFirstCommit->diffInMonths($dateLastCommit) + ($dateFirstCommit->day > $dateLastCommit->day ? 2 : 1 );
-            for ($i = 0; $i < $diff; $i++){
+            $diff = $dateFirstCommit->diffInMonths($dateLastCommit) + ($dateFirstCommit->day > $dateLastCommit->day ? 2 : 1);
+            for ($i = 0; $i < $diff; $i++) {
                 $exactMonth = (clone $dateFirstCommit)->addMonths($i);
-                echo "Month " . $exactMonth->month . ", year: " . $exactMonth->year. PHP_EOL;
+                echo "Month " . $exactMonth->month . ", year: " . $exactMonth->year . PHP_EOL;
                 $authors = Commit::where("chain", $chain->id)
                     ->where("exact_date", ">=", $exactMonth->firstOfMonth()->toDateTimeString())
                     ->where("exact_date", "<", $exactMonth->endOfMonth()->toDateTimeString())
                     ->pluck("author_list")->toArray();
                 $devs = [];
-                foreach ($authors as $author){
+                foreach ($authors as $author) {
                     $lst = array_count_values(explode(",", $author));
-                    foreach ($lst as $key => $item){
+                    foreach ($lst as $key => $item) {
                         if (isset($devs[$key]))
                             $devs[$key] += $item;
                         else
@@ -87,7 +88,7 @@ class SummarizeChainInfoAndDeveloper extends Command
                 if (!$d = Developer::where("chain", $chain->id)
                     ->where("month", $exactMonth->month)
                     ->where("year", $exactMonth->year)->first()
-                ){
+                ) {
                     $d = new Developer();
                     $d->chain = $chain->id;
                     $d->month = $exactMonth->month;
@@ -96,7 +97,7 @@ class SummarizeChainInfoAndDeveloper extends Command
                 $d->author = implode(',', $authors);
                 $d->total_developer = count($devs);
                 $d->total_commit = 0;
-                foreach ($devs as $dev => $commit_count){
+                foreach ($devs as $dev => $commit_count) {
 //                    echo "Dev " . $dev . " with " . $commit_count . " commits" . PHP_EOL;
                     if ($commit_count == 1)
                         $d->total_one_time += 1;
@@ -107,15 +108,16 @@ class SummarizeChainInfoAndDeveloper extends Command
                     $d->total_commit += $commit_count;
                 }
                 $d->save();
-            }
+//            }
 
-            $chain->save();
+                $chain->save();
 
 //            $choice = $this->choice("Continue?", ["no", "yes"]);
 //            if ($choice == "no")
 //                break;
-        }
+            }
 
-        echo "Done";
+            echo "Done";
+        }
     }
 }

@@ -25,6 +25,7 @@ class Repository extends BaseModel
         "total_commit",
         "total_contributor",
         "total_issue_solved",
+        "pull_request_closed",
         "total_star",
         "total_fork",
         'chain',
