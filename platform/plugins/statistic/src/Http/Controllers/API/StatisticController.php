@@ -10,12 +10,20 @@ use Botble\Statistic\Models\CommitChart;
 use Botble\Statistic\Models\Developer;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class StatisticController extends BaseController
 {
-    public function chainList(BaseHttpResponse $response)
+    public function chainList(Request $request, BaseHttpResponse $response)
     {
-        return $response->setData(Chain::all());
+        $query = Chain::query();
+        $categories = explode(',', $request->input("categories", ""));
+        if (!empty($categories)) {
+            foreach ($categories as $z){
+                $query->where("categories", "like", "%$z%");
+            }
+        }
+        return $response->setData($query->get());
     }
 
     public function chainInfo($id, BaseHttpResponse $response)
@@ -48,13 +56,19 @@ class StatisticController extends BaseController
     public function developerInfo(Request $request, BaseHttpResponse $response)
     {
         $data = [];
-        if ($chain = Chain::find($request->input("chain", 0))){
+        if ($chain = Chain::find($request->input("chain", 0))) {
             $data["total_developer"] = $chain->total_developer;
             $data["total_full_time"] = $chain->total_full_time_developer;
             $data["total_part_time"] = $chain->total_part_time_developer;
             $data["total_one_time"] = $chain->total_one_time_developer;
 
-            foreach (["full_time", "part_time", "one_time"] as $type){
+            $year = Developer::where([
+                ["chain", $chain->id],
+                ["year", now()->year]
+            ])->pluck("author")->toArray();
+            $year = process_developer_string(implode(",", $year));
+            foreach (["full_time", "part_time", "one_time"] as $type) {
+
                 $data[$type] = [
                     "ath" => Developer::where("chain", $chain->id)->max("total_$type"),
                     "atl" => Developer::where("chain", $chain->id)->min("total_$type"),
@@ -63,10 +77,7 @@ class StatisticController extends BaseController
                         ["month", now()->month],
                         ["year", now()->year]
                     ])->first()) ? $devs["total_$type"] : 0,
-                    "this_year" => Developer::where([
-                        ["chain", $chain->id],
-                        ["year", now()->year]
-                    ])->sum("total_$type")
+                    "this_year" => $year[$type]
                 ];
             }
 
@@ -76,13 +87,15 @@ class StatisticController extends BaseController
                 ->get();
 
         }
-        else{
+        else {
             $data["total_developer"] = Chain::sum("total_developer");
             $data["total_full_time"] = Chain::sum("total_full_time_developer");
             $data["total_part_time"] = Chain::sum("total_part_time_developer");
             $data["total_one_time"] = Chain::sum("total_one_time_developer");
 
-            foreach (["full_time", "part_time", "one_time"] as $type){
+            $year = Developer::where("year", now()->year)->pluck("author")->toArray();
+            $year = process_developer_string(implode(",", $year));
+            foreach (["full_time", "part_time", "one_time"] as $type) {
                 $data[$type] = [
                     "ath" => Developer::max("total_$type"),
                     "atl" => Developer::min("total_$type"),
@@ -90,7 +103,7 @@ class StatisticController extends BaseController
                         ["month", now()->month],
                         ["year", now()->year]
                     ])->first()) ? $devs["total_$type"] : 0,
-                    "this_year" => Developer::where("year", now()->year)->sum("total_$type")
+                    "this_year" => $year[$type]
                 ];
             }
 
@@ -100,6 +113,27 @@ class StatisticController extends BaseController
                 ->get();
         }
 
+        return $response->setData($data);
+    }
+
+    public function getCategories(BaseHttpResponse $response)
+    {
+        $data = Chain::pluck("categories")->toArray();
+        $data = array_filter(array_unique(explode(",", implode(",", $data))));
+        return $response->setData($data);
+    }
+
+    public function ranking(Request $request, BaseHttpResponse $response)
+    {
+        $validator = Validator::make($request->all(), [
+            'type' => "required|in:rising_star,ibc_astronaut,seriousness"
+        ]);
+
+        if ($validator->fails())
+            return $response->setError()->setMessage(processValidators($validator->errors()->toArray()));
+
+        $type = $request->input("type");
+        $data = Chain::orderBy($type, "DESC")->take(10)->get();
         return $response->setData($data);
     }
 }

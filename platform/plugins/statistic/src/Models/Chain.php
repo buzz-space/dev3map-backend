@@ -21,6 +21,7 @@ class Chain extends BaseModel
      */
     protected $fillable = [
         'name',
+        'description',
         "total_commit",
         "total_contributor",
         "total_issue_solved",
@@ -36,9 +37,15 @@ class Chain extends BaseModel
         'total_full_time_developer',
         'total_part_time_developer',
         'total_one_time_developer',
+        "description",
+        "rising_star",
+        "ibc_astronaut",
+        "seriousness",
     ];
 
-    public function repositories()
+
+    public
+    function repositories()
     {
         return $this->hasMany(Repository::class, "chain");
     }
