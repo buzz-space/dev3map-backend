@@ -46,7 +46,7 @@ class SummarizeChainInfoAndDeveloper extends Command
             echo "Chain " . $chain->name . PHP_EOL;
 //            if ($chain->id < 27) continue;
             $developers = Developer::where("chain", $chain->id)->pluck("author")->toArray();
-            $data = $this->processDeveloperRepository(implode(",", $developers));
+            $data = process_developer_string(implode(",", $developers));
             $chain->total_full_time_developer += $data["full_time"];
             $chain->total_part_time_developer += $data["part_time"];
             $chain->total_one_time_developer += $data["one_time"];
@@ -58,26 +58,5 @@ class SummarizeChainInfoAndDeveloper extends Command
         echo "Done";
     }
 
-    private function processDeveloperRepository($developerString)
-    {
-        $developers = [];
-        foreach (explode(",", $developerString) as $developer){
-            if (isset($developers[$developer]))
-                $developers[$developer] += 1;
-            else
-                $developers[$developer] = 1;
-        }
 
-        return [
-            'full_time' => count(array_filter($developers, function ($row){
-                return $row > 10;
-            })),
-            'part_time' => count(array_filter($developers, function ($row){
-                return $row > 1 && $row <= 10;
-            })),
-            'one_time' => count(array_filter($developers, function ($row){
-                return $row == 1;
-            })),
-        ];
-    }
 }

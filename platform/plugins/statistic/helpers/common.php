@@ -92,3 +92,26 @@ function get_developer_type($devs){
         'total_developer' => count(array_filter($totalDev))
     ];
 }
+
+function process_developer_string($developerString)
+{
+    $developers = [];
+    foreach (explode(",", $developerString) as $developer){
+        if (isset($developers[$developer]))
+            $developers[$developer] += 1;
+        else
+            $developers[$developer] = 1;
+    }
+
+    return [
+        'full_time' => count(array_filter($developers, function ($row){
+            return $row > 10;
+        })),
+        'part_time' => count(array_filter($developers, function ($row){
+            return $row > 1 && $row <= 10;
+        })),
+        'one_time' => count(array_filter($developers, function ($row){
+            return $row == 1;
+        })),
+    ];
+}
