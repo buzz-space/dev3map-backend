@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Botble\Statistic\Models\Chain;
 use Botble\Statistic\Models\Commit;
 use Botble\Statistic\Models\Developer;
+use Botble\Statistic\Models\Repository;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
@@ -15,7 +16,7 @@ class SummarizeChainInfoAndDeveloper extends Command
      *
      * @var string
      */
-    protected $signature = 'summarize:chain';
+    protected $signature = 'summarize:developer';
 
     /**
      * The console command description.
@@ -41,81 +42,42 @@ class SummarizeChainInfoAndDeveloper extends Command
      */
     public function handle()
     {
-        foreach (Chain::all() as $chain){
+        foreach (Chain::all() as $chain) {
             echo "Chain " . $chain->name . PHP_EOL;
-            if ($chain->id < 27) continue;
-            // Summarize contributor
-            $chainContributor = $chain->repositories()->pluck("total_contributor");
-            $contributors = [];
-            foreach ($chainContributor as $c){
-                $contributors = array_merge($contributors, explode(",", $c));
-            }
-            $chain->total_contributor = count(array_unique($contributors));
-
-            // Summarize Commit
-            $chain->total_commit = Commit::where("chain", $chain->id)->sum("total_commit");
-            if ($chain->total_commit == 0)
-                continue;
-
-            // Summarize developer
-            $firstCommit = Commit::where("chain", $chain->id)->orderBy("exact_date", "ASC")->first();
-            $lastCommit = Commit::where("chain", $chain->id)->orderBy("exact_date", "DESC")->first();
-            $dateFirstCommit = Carbon::createFromTimestamp(strtotime($firstCommit->exact_date));
-            $dateLastCommit = Carbon::createFromTimestamp(strtotime($lastCommit->exact_date));
-            echo "From " . $dateFirstCommit->toDateTimeString() . " to " . $dateLastCommit->toDateTimeString() . PHP_EOL;
-            $diff = $dateFirstCommit->diffInMonths($dateLastCommit) + ($dateFirstCommit->day > $dateLastCommit->day ? 2 : 1 );
-            for ($i = 0; $i < $diff; $i++){
-                $exactMonth = (clone $dateFirstCommit)->addMonths($i);
-                echo "Month " . $exactMonth->month . ", year: " . $exactMonth->year. PHP_EOL;
-                $authors = Commit::where("chain", $chain->id)
-                    ->where("exact_date", ">=", $exactMonth->firstOfMonth()->toDateTimeString())
-                    ->where("exact_date", "<", $exactMonth->endOfMonth()->toDateTimeString())
-                    ->pluck("author_list")->toArray();
-                $devs = [];
-                foreach ($authors as $author){
-                    $lst = array_count_values(explode(",", $author));
-                    foreach ($lst as $key => $item){
-                        if (isset($devs[$key]))
-                            $devs[$key] += $item;
-                        else
-                            $devs[$key] = $item;
-                    }
-                }
-
-//                write_to_file("devs.txt", print_r($devs, true)); return;
-
-                if (!$d = Developer::where("chain", $chain->id)
-                    ->where("month", $exactMonth->month)
-                    ->where("year", $exactMonth->year)->first()
-                ){
-                    $d = new Developer();
-                    $d->chain = $chain->id;
-                    $d->month = $exactMonth->month;
-                    $d->year = $exactMonth->year;
-                }
-                $d->author = implode(',', $authors);
-                $d->total_developer = count($devs);
-                $d->total_commit = 0;
-                foreach ($devs as $dev => $commit_count){
-//                    echo "Dev " . $dev . " with " . $commit_count . " commits" . PHP_EOL;
-                    if ($commit_count == 1)
-                        $d->total_one_time += 1;
-                    if ($commit_count > 1 && $commit_count <= 10)
-                        $d->total_part_time += 1;
-                    if ($commit_count > 10)
-                        $d->total_full_time += 1;
-                    $d->total_commit += $commit_count;
-                }
-                $d->save();
-            }
-
+//            if ($chain->id < 27) continue;
+            $developers = Developer::where("chain", $chain->id)->pluck("author")->toArray();
+            $data = $this->processDeveloperRepository(implode(",", $developers));
+            $chain->total_full_time_developer += $data["full_time"];
+            $chain->total_part_time_developer += $data["part_time"];
+            $chain->total_one_time_developer += $data["one_time"];
+            $chain->total_developer += ($data["full_time"] + $data["part_time"] + $data["one_time"]);
             $chain->save();
 
-//            $choice = $this->choice("Continue?", ["no", "yes"]);
-//            if ($choice == "no")
-//                break;
         }
 
         echo "Done";
+    }
+
+    private function processDeveloperRepository($developerString)
+    {
+        $developers = [];
+        foreach (explode(",", $developerString) as $developer){
+            if (isset($developers[$developer]))
+                $developers[$developer] += 1;
+            else
+                $developers[$developer] = 1;
+        }
+
+        return [
+            'full_time' => count(array_filter($developers, function ($row){
+                return $row > 10;
+            })),
+            'part_time' => count(array_filter($developers, function ($row){
+                return $row > 1 && $row <= 10;
+            })),
+            'one_time' => count(array_filter($developers, function ($row){
+                return $row == 1;
+            })),
+        ];
     }
 }

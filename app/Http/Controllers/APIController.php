@@ -25,7 +25,7 @@ class APIController extends Controller{
      *         in="query",
      *         type="number",
      *         description="Chain id",
-     *         required=true,
+     *         required=false,
      *     ),
      *     @SWG\Response(
      *         response=200,
@@ -43,7 +43,7 @@ class APIController extends Controller{
      *         in="query",
      *         type="number",
      *         description="Chain id",
-     *         required=true,
+     *         required=false,
      *     ),
      *     @SWG\Response(
      *         response=200,

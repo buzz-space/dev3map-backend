@@ -28,6 +28,14 @@ class Chain extends BaseModel
         "total_fork",
         'last_updated',
         'github_prefix',
+        'categories',
+        'avatar',
+        'website',
+        'total_pull_request',
+        'total_developer',
+        'total_full_time_developer',
+        'total_part_time_developer',
+        'total_one_time_developer',
     ];
 
     public function repositories()
