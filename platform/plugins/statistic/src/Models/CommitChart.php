@@ -28,6 +28,8 @@ class CommitChart extends BaseModel
         "total_additions",
         "total_deletions",
         "total_fork_commit",
+        "from",
+        "to"
     ];
 
 }

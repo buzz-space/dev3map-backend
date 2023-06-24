@@ -49,56 +49,58 @@ class GetCommitChart extends Command
             // Get commit chart
             $firstCommit = Commit::where("chain", $chain->id)->orderBy("exact_date", "ASC")->first();
             $lastCommit = Commit::where("chain", $chain->id)->orderBy("exact_date", "DESC")->first();
-            $dateFirstCommit = Carbon::createFromTimestamp(strtotime($firstCommit->exact_date));
-            $dateLastCommit = Carbon::createFromTimestamp(strtotime($lastCommit->exact_date));
-            echo "From " . $dateFirstCommit->toDateTimeString() . " to " . $dateLastCommit->toDateTimeString() . PHP_EOL;
-            $diff = $dateFirstCommit->diffInMonths($dateLastCommit) + ($dateFirstCommit->day > $dateLastCommit->day ? 2 : 1);
-            for ($i = 0; $i < $diff; $i++) {
-                $thisMonth = (clone $dateFirstCommit)->addMonths($i);
-                for ($j = 1; $j <= 4; $j++){
-                    $startWeek = (clone $thisMonth)->addDays(7 * ($j - 1))->startOfDay();
-                    if ($j == 1)
-                        $startWeek = (clone $thisMonth)->startOfMonth();
-                    $endWeek = (clone $thisMonth)->addDays(7 * $j)->endOfDay();
-                    if ($j == 4)
-                        $endWeek = (clone $thisMonth)->endOfMonth();
+            if ($firstCommit && $lastCommit) {
+                $dateFirstCommit = Carbon::createFromTimestamp(strtotime($firstCommit->exact_date));
+                $dateLastCommit = Carbon::createFromTimestamp(strtotime($lastCommit->exact_date));
+                echo "From " . $dateFirstCommit->toDateTimeString() . " to " . $dateLastCommit->toDateTimeString() . PHP_EOL;
+                $diff = $dateFirstCommit->diffInMonths($dateLastCommit) + ($dateFirstCommit->day > $dateLastCommit->day ? 2 : 1);
+                for ($i = 0; $i < $diff; $i++) {
+                    $thisMonth = (clone $dateFirstCommit)->addMonths($i);
+                    for ($j = 1; $j <= 2; $j++) {
+                        $startWeek = (clone $thisMonth)->addDays(14 * ($j - 1))->startOfDay();
+                        if ($j == 1)
+                            $startWeek = (clone $thisMonth)->startOfMonth();
+                        $endWeek = (clone $thisMonth)->addDays(14 * $j)->endOfDay();
+                        if ($j == 2)
+                            $endWeek = (clone $thisMonth)->endOfMonth();
 
-                    echo "Week $j, start: " . $startWeek->toDateTimeString() . ", end: " . $endWeek->toDateTimeString() . PHP_EOL;
+                        echo "Week $j, start: " . $startWeek->toDateTimeString() . ", end: " . $endWeek->toDateTimeString() . PHP_EOL;
 
-                    $total_commit = Commit::where("chain", $chain->id)
-                        ->where("exact_date", ">=", $startWeek->toDateTimeString())
-                        ->where("exact_date", "<", $endWeek->toDateTimeString())
-                        ->sum("total_commit");
+                        $total_commit = Commit::where("chain", $chain->id)
+                            ->where("exact_date", ">=", $startWeek->toDateTimeString())
+                            ->where("exact_date", "<", $endWeek->toDateTimeString())
+                            ->sum("total_commit");
 
-                    $total_additions = Commit::where("chain", $chain->id)
-                        ->where("exact_date", ">=", $startWeek->toDateTimeString())
-                        ->where("exact_date", "<", $endWeek->toDateTimeString())
-                        ->sum("additions");
+                        $total_additions = Commit::where("chain", $chain->id)
+                            ->where("exact_date", ">=", $startWeek->toDateTimeString())
+                            ->where("exact_date", "<", $endWeek->toDateTimeString())
+                            ->sum("additions");
 
-                    $total_deletions = Commit::where("chain", $chain->id)
-                        ->where("exact_date", ">=", $startWeek->toDateTimeString())
-                        ->where("exact_date", "<", $endWeek->toDateTimeString())
-                        ->sum("deletions");
+                        $total_deletions = Commit::where("chain", $chain->id)
+                            ->where("exact_date", ">=", $startWeek->toDateTimeString())
+                            ->where("exact_date", "<", $endWeek->toDateTimeString())
+                            ->sum("deletions");
 
-                    CommitChart::create([
-                        "chain" => $chain->id,
-                        "week" => $j,
-                        "month" => $thisMonth->month,
-                        "year" => $thisMonth->year,
-                        "total_commit" => $total_commit,
-                        "total_additions" => $total_additions,
-                        "total_deletions" => $total_deletions,
-                        "total_fork_commit" => 0,
-                    ]);
+                        CommitChart::create([
+                            "chain" => $chain->id,
+                            "week" => $j,
+                            "month" => $thisMonth->month,
+                            "year" => $thisMonth->year,
+                            "total_commit" => $total_commit,
+                            "total_additions" => $total_additions,
+                            "total_deletions" => $total_deletions,
+                            "total_fork_commit" => 0,
+                            'from' => $startWeek->toDateString(),
+                            "to" => $endWeek->toDateString()
+                        ]);
+                    }
                 }
-//                $chain->save();
-
-            $choice = $this->choice("Continue?", ["no", "yes"]);
-            if ($choice == "no")
-                break;
             }
 
-            echo "Done";
+//            $choice = $this->choice("Continue?", ["no", "yes"]);
+//            if ($choice == "no")
+//                break;
         }
+        echo "Done";
     }
 }
