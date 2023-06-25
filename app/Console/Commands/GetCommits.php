@@ -91,18 +91,19 @@ class GetCommits extends Command
                     $last = now()->toDateString();
                     if ($lastCommit = Commit::where("repo", $repository->id)->orderBy("exact_date", "ASC")->first())
                         $last = $lastCommit->exact_date;
-                    $url = "https://api.github.com/repos/$prefix/commits?per_page=100&since=2023-01-01";
+                    echo "Last: " . $last . PHP_EOL;
+                    $url = "https://api.github.com/repos/$prefix/commits?per_page=100&since=" . $begin;
                     if ($last)
-                        $url .= "&until=" . date("Y-m-d", strtotime($last));
+                        $url .= "&until=" . date(DATE_ISO8601, strtotime($last));
                     $lastPage = get_last_page(get_github_data($url, "header")); $totalRequest += 1;
 //                echo "Commit url: " . $url . PHP_EOL;
-                    echo "Last page: " . $lastPage . PHP_EOL;
+//                    echo "Last page: " . $lastPage . PHP_EOL;
                     for ($i = 1; $i <= $lastPage; $i++) {
                         $commitUrl = $url . "&page=$i";
                         $data = json_decode(get_github_data($commitUrl)); $totalRequest += 1;
                         if (isset($data->message) && $data->message == "Git Repository is empty.")
                             break;
-                        echo "Page " . $i . " with " . count($data) . " commits"  . PHP_EOL;
+                        echo $url  . PHP_EOL;
 //                    echo print_r($data, true) . PHP_EOL;
 //                    $data = get_from_file("commits.json");
                         $date = null;
@@ -118,7 +119,7 @@ class GetCommits extends Command
 //                            echo print_r($save, true) . PHP_EOL;
                                     $save->save();
 
-                                    if (now()->gt($start) && now()->diffInMinutes($start) == 5)
+                                    if (now()->gt($start) && now()->diffInMinutes($start) == 55)
                                         throw new \Exception("Stopped. Start: " . $start->toDateTimeString() . ", end: " . now()->toDateTimeString());
                                 }
 
@@ -143,6 +144,7 @@ class GetCommits extends Command
                 } catch (\Exception $exception) {
                     echo $exception->getMessage() . PHP_EOL;
                     echo "Error at repository " . $repository->id . ", at exact date: " . $lastExactDate . PHP_EOL;
+                    Commit::where("repo", $repository->id)->where("exact_date", $lastExactDate)->delete();
                     break;
                 }
 //            $choice = $this->choice("Continue?", ["yes", "no"]);

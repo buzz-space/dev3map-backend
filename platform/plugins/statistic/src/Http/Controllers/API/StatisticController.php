@@ -39,8 +39,8 @@ class StatisticController extends BaseController
         if ($chain = Chain::find($request->input("chain", 0))) {
             $data["total_commit"] = $chain->total_commit;
             $data["commit_chart"] = CommitChart::where("chain", $chain->id)
-                ->selectRaw("`from`, total_commit, total_additions, total_deletions")
-                ->orderBy("`from`", "ASC")
+                ->selectRaw("week, month, year, total_commit, total_additions, total_deletions")
+                ->orderBy("year", "ASC")->orderBy("month", "ASC")->orderBy("week", "ASC")
                 ->get();
         }
         else {
