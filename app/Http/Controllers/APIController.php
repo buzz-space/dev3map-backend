@@ -82,6 +82,13 @@ class APIController extends Controller
      *     path="/api/v1/categories",
      *     description="Get categories",
      *     tags={"chain"},
+     *     @SWG\Parameter(
+     *         name="with_data",
+     *         in="query",
+     *         type="number",
+     *         description="Optional: Get addtional chain with filter category",
+     *         required=false,
+     *     ),
      *     @SWG\Response(
      *         response=200,
      *         description="OK",

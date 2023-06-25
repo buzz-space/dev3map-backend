@@ -116,17 +116,21 @@ class StatisticController extends BaseController
         return $response->setData($data);
     }
 
-    public function getCategories(BaseHttpResponse $response)
+    public function getCategories(Request $request, BaseHttpResponse $response)
     {
         $data = Chain::whereNotNull("categories")->pluck("categories")->toArray();
         $data = array_values(array_unique(explode(",", implode(",", $data))));
+        $additionalData = $request->has("with_data");
         $z = [];
         foreach ($data as $item){
-            $found = Chain::where("categories", "like", "%$item%")->count();
-            $z[] = [
+            $chains = Chain::where("categories", "like", "%$item%")->select("id", "name", "avatar")->get();
+            $row = [
                 'name' => $item,
-                'total' => $found
+                'total' => count($chains)
             ];
+            if ($additionalData)
+                $row["chain"] = $chains;
+            $z[] = $row;
         }
         return $response->setData($z);
     }
