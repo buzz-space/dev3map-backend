@@ -118,9 +118,17 @@ class StatisticController extends BaseController
 
     public function getCategories(BaseHttpResponse $response)
     {
-        $data = Chain::pluck("categories")->toArray();
-        $data = array_filter(array_unique(explode(",", implode(",", $data))));
-        return $response->setData($data);
+        $data = Chain::whereNotNull("categories")->pluck("categories")->toArray();
+        $data = array_values(array_unique(explode(",", implode(",", $data))));
+        $z = [];
+        foreach ($data as $item){
+            $found = Chain::where("categories", "like", "%$item%")->count();
+            $z[] = [
+                'name' => $item,
+                'total' => $found
+            ];
+        }
+        return $response->setData($z);
     }
 
     public function ranking(Request $request, BaseHttpResponse $response)
