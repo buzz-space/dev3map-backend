@@ -4,8 +4,9 @@ namespace App\Console\Commands;
 
 use Botble\Statistic\Models\Commit;
 use Botble\Statistic\Models\Repository;
-use Carbon\Carbon;
+//use Carbon\Carbon;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 
 class GetCommits extends Command
 {
@@ -44,19 +45,19 @@ class GetCommits extends Command
         $totalRequest = 0;
         $repositories = Repository::all();
         $lastExactDate = "";
-        $begin = $this->ask("Begin from (Y-m-d)?");
+        $begin = "2023-01-01";
+//        $begin = $this->ask("Begin from (Y-m-d)?");
         $start = now();
         if (!strtotime($begin)){
             $this->info("Error begin!");
             return 0;
         }
-        $lastRepo = 0;
-            foreach ($repositories as $repository) {
-                if ($repository->id < $lastRepo) continue;
-                echo "Repository: " . $repository->name . PHP_EOL;
-                $chain = $repository->chain()->first();
-                try {
-                    $prefix = $repository->github_prefix;
+        $lastRepo = setting()->get("last_repo", 0);
+        foreach ($repositories as $repository) {
+            if ($repository->id < $lastRepo) continue;
+//            echo "Repository: " . $repository->name . PHP_EOL;
+            try {
+                $prefix = $repository->github_prefix;
 //                // Get repository info
 //                $repoUrl = "https://api.github.com/repos/$prefix";
 //                $repoInfo = json_decode(get_github_data($repoUrl)); $totalRequest += 1;
@@ -87,72 +88,73 @@ class GetCommits extends Command
 //                }
 //                $repository->total_contributor = implode(",", $contributors);
 //                $repository->save();
-                    // Get commit
-                    $last = now()->toDateString();
-                    if ($lastCommit = Commit::where("repo", $repository->id)->orderBy("exact_date", "ASC")->first())
-                        $last = $lastCommit->exact_date;
-                    echo "Last: " . $last . PHP_EOL;
-                    $url = "https://api.github.com/repos/$prefix/commits?per_page=100&since=" . $begin;
-                    if ($last)
-                        $url .= "&until=" . date(DATE_ISO8601, strtotime($last));
-                    $lastPage = get_last_page(get_github_data($url, "header")); $totalRequest += 1;
+                // Get commit
+                $last = now()->toDateString();
+                if ($lastCommit = Commit::where("repo", $repository->id)->orderBy("exact_date", "ASC")->first())
+                    $last = $lastCommit->exact_date;
+//                echo "Last: " . $last . PHP_EOL;
+                $url = "https://api.github.com/repos/$prefix/commits?per_page=100&since=" . $begin;
+                if ($last)
+                    $url .= "&until=" . date(DATE_ISO8601, strtotime($last));
+                $lastPage = get_last_page(get_github_data($url, "header")); $totalRequest += 1;
 //                echo "Commit url: " . $url . PHP_EOL;
 //                    echo "Last page: " . $lastPage . PHP_EOL;
-                    for ($i = 1; $i <= $lastPage; $i++) {
-                        $commitUrl = $url . "&page=$i";
-                        $data = json_decode(get_github_data($commitUrl)); $totalRequest += 1;
-                        if (isset($data->message) && $data->message == "Git Repository is empty.")
-                            break;
-                        echo $url  . PHP_EOL;
+                for ($i = 1; $i <= $lastPage; $i++) {
+                    $commitUrl = $url . "&page=$i";
+                    $data = json_decode(get_github_data($commitUrl)); $totalRequest += 1;
+                    if (isset($data->message) && $data->message == "Git Repository is empty.")
+                        break;
+//                    echo $commitUrl . PHP_EOL;
 //                    echo print_r($data, true) . PHP_EOL;
 //                    $data = get_from_file("commits.json");
-                        $date = null;
-                        $save = null;
-                        foreach ($data as $commit) {
-                            $detailUrl = "https://api.github.com/repos/$prefix/commits/" . $commit->sha;
-                            $detail = json_decode(get_github_data($detailUrl)); $totalRequest += 1;
+                    $date = null;
+                    $save = null;
+                    foreach ($data as $commit) {
+                        $detailUrl = "https://api.github.com/repos/$prefix/commits/" . $commit->sha;
+                        $detail = json_decode(get_github_data($detailUrl)); $totalRequest += 1;
 
-                            $commitDate = date("Y-m-d", strtotime($commit->commit->author->date));
-                            if ($date != $commitDate) {
-                                if ($save) {
-                                    $save->author_list = implode(",", $save->author_list);
+                        $commitDate = date("Y-m-d", strtotime($commit->commit->author->date));
+                        if ($date != $commitDate) {
+                            if ($save) {
+                                $save->author_list = implode(",", $save->author_list);
 //                            echo print_r($save, true) . PHP_EOL;
-                                    $save->save();
+                                $save->save();
 
-                                    if (now()->gt($start) && now()->diffInMinutes($start) == 55)
-                                        throw new \Exception("Stopped. Start: " . $start->toDateTimeString() . ", end: " . now()->toDateTimeString());
+                                if (now()->gt($start) && now()->diffInMinutes($start) == 55) {
+                                    $lastExactDate = null;
+                                    throw new \Exception("Stopped. Start: " . $start->toDateTimeString() . ", end: " . now()->toDateTimeString());
                                 }
-
-                                $save = new Commit();
-                                $save->author_list = [];
-                                $save->total_commit = 0;
-                                $save->additions = 0;
-                                $save->deletions = 0;
-                                $save->chain = $repository->chain;
-                                $save->repo = $repository->id;
-                                $save->exact_date = $commitDate;
-
-                                $date = $commitDate;
-                                $lastExactDate = $commitDate;
                             }
-                            $save->additions += $detail->stats->additions;
-                            $save->deletions += $detail->stats->deletions;
-                            $save->author_list = array_merge($save->author_list, [$commit->commit->author->name]);
-                            $save->total_commit += 1;
+
+                            $save = new Commit();
+                            $save->author_list = [];
+                            $save->total_commit = 0;
+                            $save->additions = 0;
+                            $save->deletions = 0;
+                            $save->chain = $repository->chain;
+                            $save->repo = $repository->id;
+                            $save->exact_date = $commitDate;
+
+                            $date = $commitDate;
+                            $lastExactDate = $commitDate;
                         }
+                        $save->additions += $detail->stats->additions;
+                        $save->deletions += $detail->stats->deletions;
+                        $save->author_list = array_merge($save->author_list, [$commit->commit->author->name]);
+                        $save->total_commit += 1;
                     }
-                } catch (\Exception $exception) {
-                    echo $exception->getMessage() . PHP_EOL;
-                    echo "Error at repository " . $repository->id . ", at exact date: " . $lastExactDate . PHP_EOL;
-                    Commit::where("repo", $repository->id)->where("exact_date", $lastExactDate)->delete();
-                    break;
                 }
+            } catch (\Exception $exception) {
+                Log::error($exception->getMessage());
+//                echo "Error at repository " . $repository->id . ", at exact date: " . $lastExactDate . PHP_EOL;
+                setting()->set("last_repo", $repository->id);
+                setting()->save();
+                Commit::where("repo", $repository->id)->where("exact_date", $lastExactDate)->delete();
+                break;
+            }
 //            $choice = $this->choice("Continue?", ["yes", "no"]);
 //            if ($choice == "no")
 //                break;
-            }
-
-
-        echo "Done";
+        }
     }
 }
