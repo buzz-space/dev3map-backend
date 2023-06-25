@@ -44,14 +44,19 @@ class GetCommits extends Command
         $totalRequest = 0;
         $repositories = Repository::all();
         $lastExactDate = "";
-        $lastRepo = 2545;
+        $begin = $this->ask("Begin from (Y-m-d)?");
+        $start = now();
+        if (!strtotime($begin)){
+            $this->info("Error begin!");
+            return 0;
+        }
+        $lastRepo = 0;
             foreach ($repositories as $repository) {
                 if ($repository->id < $lastRepo) continue;
                 echo "Repository: " . $repository->name . PHP_EOL;
                 $chain = $repository->chain()->first();
                 try {
                     $prefix = $repository->github_prefix;
-
 //                // Get repository info
 //                $repoUrl = "https://api.github.com/repos/$prefix";
 //                $repoInfo = json_decode(get_github_data($repoUrl)); $totalRequest += 1;
@@ -82,14 +87,13 @@ class GetCommits extends Command
 //                }
 //                $repository->total_contributor = implode(",", $contributors);
 //                $repository->save();
-
                     // Get commit
-                    $begin = "2023-01-01";
+                    $last = now()->toDateString();
                     if ($lastCommit = Commit::where("repo", $repository->id)->orderBy("exact_date", "ASC")->first())
-                        $begin = $lastCommit->exact_date;
+                        $last = $lastCommit->exact_date;
                     $url = "https://api.github.com/repos/$prefix/commits?per_page=100&since=2023-01-01";
-                    if ($begin)
-                        $url .= "&until=" . date("Y-m-d", strtotime($begin));
+                    if ($last)
+                        $url .= "&until=" . date("Y-m-d", strtotime($last));
                     $lastPage = get_last_page(get_github_data($url, "header")); $totalRequest += 1;
 //                echo "Commit url: " . $url . PHP_EOL;
                     echo "Last page: " . $lastPage . PHP_EOL;
@@ -113,6 +117,9 @@ class GetCommits extends Command
                                     $save->author_list = implode(",", $save->author_list);
 //                            echo print_r($save, true) . PHP_EOL;
                                     $save->save();
+
+                                    if (now()->gt($start) && now()->diffInMinutes($start) == 5)
+                                        throw new \Exception("Stopped. Start: " . $start->toDateTimeString() . ", end: " . now()->toDateTimeString());
                                 }
 
                                 $save = new Commit();
@@ -128,7 +135,7 @@ class GetCommits extends Command
                                 $lastExactDate = $commitDate;
                             }
                             $save->additions += $detail->stats->additions;
-                            $save->deletions = $detail->stats->deletions;
+                            $save->deletions += $detail->stats->deletions;
                             $save->author_list = array_merge($save->author_list, [$commit->commit->author->name]);
                             $save->total_commit += 1;
                         }
@@ -136,9 +143,6 @@ class GetCommits extends Command
                 } catch (\Exception $exception) {
                     echo $exception->getMessage() . PHP_EOL;
                     echo "Error at repository " . $repository->id . ", at exact date: " . $lastExactDate . PHP_EOL;
-                    $lastRepo = $repository->id;
-
-                    sleep(600);
                     break;
                 }
 //            $choice = $this->choice("Continue?", ["yes", "no"]);
