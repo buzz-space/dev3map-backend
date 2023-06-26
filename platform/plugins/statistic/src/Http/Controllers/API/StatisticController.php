@@ -26,9 +26,9 @@ class StatisticController extends BaseController
         return $response->setData($query->get());
     }
 
-    public function chainInfo($prefix, BaseHttpResponse $response)
+    public function chainInfo($id, BaseHttpResponse $response)
     {
-        if (!$chain = Chain::where("github_prefix",$prefix)->first())
+        if (!$chain = Chain::where("id", $id)->first())
             return $response->setError()->setMessage("Chain not found!");
 
         return $response->setData($chain);
