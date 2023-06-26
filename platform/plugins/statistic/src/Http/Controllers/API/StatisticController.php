@@ -26,9 +26,9 @@ class StatisticController extends BaseController
         return $response->setData($query->get());
     }
 
-    public function chainInfo($id, BaseHttpResponse $response)
+    public function chainInfo($prefix, BaseHttpResponse $response)
     {
-        if (!$chain = Chain::where("id", $id)->first())
+        if (!$chain = Chain::where("github_prefix", $prefix)->first())
             return $response->setError()->setMessage("Chain not found!");
 
         return $response->setData($chain);
@@ -120,6 +120,7 @@ class StatisticController extends BaseController
     {
         $data = Chain::whereNotNull("categories")->pluck("categories")->toArray();
         $data = array_values(array_unique(explode(",", implode(",", $data))));
+        ksort($data);
         $additionalData = $request->has("with_data");
         $z = [];
         foreach ($data as $item){

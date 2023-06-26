@@ -45,7 +45,7 @@ class GetCommits extends Command
         $totalRequest = 0;
         $repositories = Repository::all();
         $lastExactDate = "";
-        $begin = "2023-01-01";
+        $begin = "2022-01-01";
 //        $begin = $this->ask("Begin from (Y-m-d)?");
         $start = now();
         if (!strtotime($begin)){
