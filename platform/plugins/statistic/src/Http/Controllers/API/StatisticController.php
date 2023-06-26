@@ -82,6 +82,7 @@ class StatisticController extends BaseController
             }
 
             $data["developer_chart"] = Developer::where("chain", $chain->id)
+                ->where("year", ">=", now()->year - 5)
                 ->select("month", "year", "total_developer", 'total_one_time', 'total_part_time', 'total_full_time')
                 ->orderBy("year", "ASC")->orderBy("month", "ASC")
                 ->get();
@@ -108,6 +109,7 @@ class StatisticController extends BaseController
             }
 
             $data["developer_chart"] = Developer::groupByRaw("month, year")
+                ->where("year", ">=", now()->year - 5)
                 ->selectRaw("month, year, SUM(total_developer) as total_developer, SUM(total_one_time) as total_one_time, SUM(total_part_time) as total_part_time, SUM(total_full_time) as total_full_time")
                 ->orderBy("year", "ASC")->orderBy("month", "ASC")
                 ->get();
