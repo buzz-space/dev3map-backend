@@ -120,7 +120,7 @@ class StatisticController extends BaseController
     {
         $data = Chain::whereNotNull("categories")->pluck("categories")->toArray();
         $data = array_values(array_unique(explode(",", implode(",", $data))));
-        ksort($data);
+        sort($data);
         $additionalData = $request->has("with_data");
         $z = [];
         foreach ($data as $item){
