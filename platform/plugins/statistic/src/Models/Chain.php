@@ -31,6 +31,7 @@ class Chain extends BaseModel
         'github_prefix',
         'categories',
         'avatar',
+        "subscribers",
         'website',
         'total_pull_request',
         'total_developer',
