@@ -26,9 +26,9 @@ class StatisticController extends BaseController
         return $response->setData($query->get());
     }
 
-    public function chainInfo($id, BaseHttpResponse $response)
+    public function chainInfo($prefix, BaseHttpResponse $response)
     {
-        if (!$chain = Chain::find($id))
+        if (!$chain = Chain::where("github_prefix",$prefix)->first())
             return $response->setError()->setMessage("Chain not found!");
 
         return $response->setData($chain);
@@ -123,7 +123,7 @@ class StatisticController extends BaseController
         $additionalData = $request->has("with_data");
         $z = [];
         foreach ($data as $item){
-            $chains = Chain::where("categories", "like", "%$item%")->select("id", "name", "avatar")->get();
+            $chains = Chain::where("categories", "like", "%$item%")->select("id", "name", "github_prefix", "avatar")->get();
             $row = [
                 'name' => $item,
                 'total' => count($chains)

@@ -25,14 +25,14 @@ class APIController extends Controller
      */
     /**
      * @SWG\Get (
-     *     path="/api/v1/chain/{id}",
+     *     path="/api/v1/chain/{prefix}",
      *     description="Get chain info",
      *     tags={"chain"},
      *     @SWG\Parameter(
-     *         name="id",
+     *         name="prefix",
      *         in="path",
-     *         type="number",
-     *         description="Chain ID",
+     *         type="string",
+     *         description="Chain prefix",
      *         required=true,
      *     ),
      *     @SWG\Response(
