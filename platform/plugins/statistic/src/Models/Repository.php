@@ -28,6 +28,7 @@ class Repository extends BaseModel
         "pull_request_closed",
         "total_star",
         "total_fork",
+        "subscribers",
         'chain',
         'github_prefix'
     ];
