@@ -47,19 +47,18 @@ class GetCommits extends Command
         $lastExactDate = null;
         $begin = "2020-01-01";
         $lastRepo = setting("last_repo", 0);
-        foreach (Chain::all() as $chain){
-            $throwError = false;
-            $repositories = Repository::where("chain", $chain->id)->get();
-            foreach ($repositories as $repository) {
-                if ($repository->id < $lastRepo) continue;
+        $start = now();
+        $repositories = Repository::orderBy("id", "ASC")->get();
+        foreach ($repositories as $repository) {
+            if ($repository->id < $lastRepo) continue;
 //                echo "Repository: " . $repository->name . PHP_EOL;
-                try {
-                    $prefix = $repository->github_prefix;
-                    // Get commit
-                    $last = now()->toDateString();
-                    if ($lastCommit = Commit::where("repo", $repository->id)->orderBy("exact_date", "ASC")->first())
-                        $last = $lastCommit->exact_date;
-                    $url = "https://api.github.com/repos/$prefix/commits?per_page=100&since=" . date(DATE_ISO8601, strtotime($begin));
+            try {
+                $prefix = $repository->github_prefix;
+                // Get commit
+                $last = now()->toDateString();
+                if ($lastCommit = Commit::where("repo", $repository->id)->orderBy("exact_date", "ASC")->first())
+                    $last = $lastCommit->exact_date;
+                $url = "https://api.github.com/repos/$prefix/commits?per_page=100&since=" . date(DATE_ISO8601, strtotime($begin));
                     if ($last)
                         $url .= "&until=" . date(DATE_ISO8601, strtotime($last));
                     $lastPage = get_last_page(get_github_data($url, "header")); $totalRequest += 1;
@@ -80,10 +79,10 @@ class GetCommits extends Command
                                 if ($save) {
                                     $save->author_list = implode(",", $save->author_list);
                                     $save->save();
-//                                if (now()->gt($start) && now()->diffInMinutes($start) == 55) {
-//                                    $lastExactDate = null;
-//                                    throw new \Exception("Stopped. Start: " . $start->toDateTimeString() . ", end: " . now()->toDateTimeString());
-//                                }
+                                    if (now()->gt($start) && now()->diffInMinutes($start) == 55) {
+                                        $lastExactDate = null;
+                                        throw new \Exception("Stopped. Start: " . $start->toDateTimeString() . ", end: " . now()->toDateTimeString());
+                                    }
                                 }
                                 $save = new Commit();
                                 $save->author_list = [];
@@ -103,21 +102,15 @@ class GetCommits extends Command
                             $save->total_commit += 1;
                         }
                     }
-                } catch (\Exception $exception) {
-                    Log::error($exception->getMessage());
-                    setting()->set("last_repo", $repository->id);
-                    setting()->save();
-                    Commit::where("repo", $repository->id)->where("exact_date", $lastExactDate)->delete();
-                    $throwError = true;
-                    break;
-                }
-//            $choice = $this->choice("Continue?", ["yes", "no"]);
-//            if ($choice == "no")
-//                break;
-            }
-            if ($throwError)
+            } catch (\Exception $exception) {
+                Log::error($exception->getMessage());
+                setting()->set("last_repo", $repository->id);
+                setting()->save();
+                Commit::where("repo", $repository->id)->where("exact_date", $lastExactDate)->delete();
                 break;
+            }
+            setting()->set("last_repo", $repository->id);
+            setting()->save();
         }
-
     }
 }
