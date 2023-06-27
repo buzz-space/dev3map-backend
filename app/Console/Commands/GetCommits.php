@@ -2,6 +2,7 @@
 
 namespace App\Console\Commands;
 
+use Botble\Statistic\Models\Chain;
 use Botble\Statistic\Models\Commit;
 use Botble\Statistic\Models\Repository;
 //use Carbon\Carbon;
@@ -43,7 +44,12 @@ class GetCommits extends Command
     {
         ini_set("memory_limit", -1);
         $totalRequest = 0;
-        $repositories = Repository::all();
+        $chainId = $this->ask("What the chain want to get commit?");
+        if (!$chain = Chain::find($chainId)){
+            $this->info("Error chain!");
+            return;
+        }
+        $repositories = Repository::where("chain", $chainId)->get();
         $lastExactDate = "";
         $begin = "2023-01-01";
 //        $begin = $this->ask("Begin from (Y-m-d)?");
@@ -54,8 +60,8 @@ class GetCommits extends Command
         }
         $lastRepo = setting()->get("last_repo", 0);
         foreach ($repositories as $repository) {
-            if ($repository->id < $lastRepo) continue;
-//            echo "Repository: " . $repository->name . PHP_EOL;
+//            if ($repository->id < $lastRepo) continue;
+            echo "Repository: " . $repository->name . PHP_EOL;
             try {
                 $prefix = $repository->github_prefix;
 //                // Get repository info
@@ -104,7 +110,7 @@ class GetCommits extends Command
                     $data = json_decode(get_github_data($commitUrl)); $totalRequest += 1;
                     if (isset($data->message) && $data->message == "Git Repository is empty.")
                         break;
-//                    echo $commitUrl . PHP_EOL;
+                    echo $commitUrl . PHP_EOL;
 //                    echo print_r($data, true) . PHP_EOL;
 //                    $data = get_from_file("commits.json");
                     $date = null;
@@ -120,10 +126,10 @@ class GetCommits extends Command
 //                            echo print_r($save, true) . PHP_EOL;
                                 $save->save();
 
-                                if (now()->gt($start) && now()->diffInMinutes($start) == 55) {
-                                    $lastExactDate = null;
-                                    throw new \Exception("Stopped. Start: " . $start->toDateTimeString() . ", end: " . now()->toDateTimeString());
-                                }
+//                                if (now()->gt($start) && now()->diffInMinutes($start) == 55) {
+//                                    $lastExactDate = null;
+//                                    throw new \Exception("Stopped. Start: " . $start->toDateTimeString() . ", end: " . now()->toDateTimeString());
+//                                }
                             }
 
                             $save = new Commit();
