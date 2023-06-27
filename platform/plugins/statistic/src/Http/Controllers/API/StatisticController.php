@@ -40,14 +40,16 @@ class StatisticController extends BaseController
             $data["total_commit"] = $chain->total_commit;
             $data["commit_chart"] = CommitChart::where("chain", $chain->id)
                 ->selectRaw("week, month, year, total_commit, total_additions, total_deletions")
-                ->orderBy("year", "ASC")->orderBy("month", "ASC")->orderBy("week", "ASC")
+                ->orderBy("year", "DESC")->orderBy("month", "DESC")->orderBy("week", "DESC")
+                ->take(62)
                 ->get();
         }
         else {
             $data["total_commit"] = Chain::sum("total_commit");
             $data["commit_chart"] = CommitChart::groupByRaw("week, month, year")
                 ->selectRaw("week, month, year, SUM(total_commit) as total_commit, SUM(total_additions) as total_additions, SUM(total_deletions) as total_deletions")
-                ->orderBy("year", "ASC")->orderBy("month", "ASC")->orderBy("week", "ASC")
+                ->orderBy("year", "DESC")->orderBy("month", "DESC")->orderBy("week", "DESC")
+                ->take(62)
                 ->get();
         }
         return $response->setData($data);

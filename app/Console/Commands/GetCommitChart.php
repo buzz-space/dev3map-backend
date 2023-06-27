@@ -55,14 +55,16 @@ class GetCommitChart extends Command
                 echo "From " . $dateFirstCommit->toDateTimeString() . " to " . $dateLastCommit->toDateTimeString() . PHP_EOL;
                 $diff = $dateFirstCommit->diffInMonths($dateLastCommit) + ($dateFirstCommit->day > $dateLastCommit->day ? 2 : 1);
                 for ($i = 0; $i < $diff; $i++) {
-                    $thisMonth = (clone $dateFirstCommit)->addMonths($i);
+                    $thisMonth = (clone $dateFirstCommit)->addMonths($i)->startOfMonth();
                     for ($j = 1; $j <= 2; $j++) {
-                        $startWeek = (clone $thisMonth)->addDays(14 * ($j - 1))->startOfDay();
-                        if ($j == 1)
+                        if ($j == 1){
                             $startWeek = (clone $thisMonth)->startOfMonth();
-                        $endWeek = (clone $thisMonth)->addDays(14 * $j)->endOfDay();
-                        if ($j == 2)
+                            $endWeek = (clone $thisMonth)->addDays(14)->endOfDay();
+                        }
+                        else{
+                            $startWeek = (clone $thisMonth)->addDays(15)->startOfDay();
                             $endWeek = (clone $thisMonth)->endOfMonth();
+                        }
 
                         echo "Week $j, start: " . $startWeek->toDateTimeString() . ", end: " . $endWeek->toDateTimeString() . PHP_EOL;
 
