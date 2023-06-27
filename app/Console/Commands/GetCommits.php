@@ -79,7 +79,7 @@ class GetCommits extends Command
                                 if ($save) {
                                     $save->author_list = implode(",", $save->author_list);
                                     $save->save();
-                                    if (now()->gt($start) && now()->diffInMinutes($start) == 55) {
+                                    if (now()->gt($start) && now()->diffInMinutes($start) > 55) {
                                         $lastExactDate = null;
                                         throw new \Exception("Stopped. Start: " . $start->toDateTimeString() . ", end: " . now()->toDateTimeString());
                                     }
