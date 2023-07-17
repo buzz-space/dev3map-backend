@@ -40,7 +40,7 @@ class StatisticController extends BaseController
             $data["total_commit"] = $chain->total_commit;
             $data["commit_chart"] = CommitChart::where("chain", $chain->id)
                 ->selectRaw("week, month, year, total_commit, total_additions, total_deletions")
-                ->orderBy("year", "DESC")->orderBy("month", "DESC")->orderBy("week", "DESC")
+                ->orderBy("year", "DESC")->orderBy("month", "DESC")->orderBy("week", "ASC")
                 ->take(62)
                 ->get();
         }
@@ -48,7 +48,7 @@ class StatisticController extends BaseController
             $data["total_commit"] = Chain::sum("total_commit");
             $data["commit_chart"] = CommitChart::groupByRaw("week, month, year")
                 ->selectRaw("week, month, year, SUM(total_commit) as total_commit, SUM(total_additions) as total_additions, SUM(total_deletions) as total_deletions")
-                ->orderBy("year", "DESC")->orderBy("month", "DESC")->orderBy("week", "DESC")
+                ->orderBy("year", "DESC")->orderBy("month", "DESC")->orderBy("week", "ASC")
                 ->take(62)
                 ->get();
         }
@@ -58,64 +58,64 @@ class StatisticController extends BaseController
     public function developerInfo(Request $request, BaseHttpResponse $response)
     {
         $data = [];
-        if ($chain = Chain::find($request->input("chain", 0))) {
-            $data["total_developer"] = $chain->total_developer;
-            $data["total_full_time"] = $chain->total_full_time_developer;
-            $data["total_part_time"] = $chain->total_part_time_developer;
-            $data["total_one_time"] = $chain->total_one_time_developer;
+        $chain = Chain::find(18);
+//        if ($chain = Chain::find($request->input("chain", 0))) {
+//            $data["total_developer"] = $chain->total_developer;
+//            $data["total_full_time"] = $chain->total_full_time_developer;
+//            $data["total_part_time"] = $chain->total_part_time_developer;
+//            $data["total_one_time"] = $chain->total_one_time_developer;
 
-            $year = Developer::where([
-                ["chain", $chain->id],
-                ["year", now()->year]
-            ])->pluck("author")->toArray();
-            $year = process_developer_string(implode(",", $year));
-            foreach (["full_time", "part_time", "one_time"] as $type) {
-
-                $data[$type] = [
-                    "ath" => Developer::where("chain", $chain->id)->max("total_$type"),
-                    "atl" => Developer::where("chain", $chain->id)->min("total_$type"),
-                    "this_month" => ($devs = Developer::where([
-                        ["chain", $chain->id],
-                        ["month", now()->month],
-                        ["year", now()->year]
-                    ])->first()) ? $devs["total_$type"] : 0,
-                    "this_year" => $year[$type]
-                ];
-            }
+//            $year = Developer::where([
+//                ["chain", $chain->id],
+//                ["day", ">=", now()->firstOfYear()->toDateTimeString()],
+//                ["day", "<=", now()->toDateTimeString()]
+//            ])->pluck("author")->toArray();
+//            foreach (["full_time", "part_time", "one_time"] as $type) {
+//
+//                $data[$type] = [
+//                    "ath" => Developer::where("chain", $chain->id)->max("total_$type"),
+//                    "atl" => Developer::where("chain", $chain->id)->min("total_$type"),
+//                    "this_month" => ($devs = Developer::where([
+//                        ["chain", $chain->id],
+//                        ["day", ">=", now()->firstOfMonth()->toDateTimeString()],
+//                        ["day", "<=", now()->toDateTimeString()]
+//                    ])->first()) ? $devs["total_$type"] : 0,
+//                    "this_year" => $year[$type]
+//                ];
+//            }
 
             $data["developer_chart"] = Developer::where("chain", $chain->id)
-                ->where("year", ">=", now()->year - 5)
-                ->select("month", "year", "total_developer", 'total_one_time', 'total_part_time', 'total_full_time')
-                ->orderBy("year", "ASC")->orderBy("month", "ASC")
+                ->select("day", "total_developer", 'total_one_time', 'total_part_time', 'total_full_time')
+                ->orderBy("day", "ASC")
                 ->get();
 
-        }
-        else {
-            $data["total_developer"] = Chain::sum("total_developer");
-            $data["total_full_time"] = Chain::sum("total_full_time_developer");
-            $data["total_part_time"] = Chain::sum("total_part_time_developer");
-            $data["total_one_time"] = Chain::sum("total_one_time_developer");
-
-            $year = Developer::where("year", now()->year)->pluck("author")->toArray();
-            $year = process_developer_string(implode(",", $year));
-            foreach (["full_time", "part_time", "one_time"] as $type) {
-                $data[$type] = [
-                    "ath" => Developer::max("total_$type"),
-                    "atl" => Developer::min("total_$type"),
-                    "this_month" => ($devs = Developer::where([
-                        ["month", now()->month],
-                        ["year", now()->year]
-                    ])->first()) ? $devs["total_$type"] : 0,
-                    "this_year" => $year[$type]
-                ];
-            }
-
-            $data["developer_chart"] = Developer::groupByRaw("month, year")
-                ->where("year", ">=", now()->year - 5)
-                ->selectRaw("month, year, SUM(total_developer) as total_developer, SUM(total_one_time) as total_one_time, SUM(total_part_time) as total_part_time, SUM(total_full_time) as total_full_time")
-                ->orderBy("year", "ASC")->orderBy("month", "ASC")
-                ->get();
-        }
+//        }
+//        else {
+//            $data["total_developer"] = Chain::sum("total_developer");
+//            $data["total_full_time"] = Chain::sum("total_full_time_developer");
+//            $data["total_part_time"] = Chain::sum("total_part_time_developer");
+//            $data["total_one_time"] = Chain::sum("total_one_time_developer");
+//
+//            $year = Developer::where("year", now()->year)->pluck("author")->toArray();
+//            $year = process_developer_string(implode(",", $year));
+//            foreach (["full_time", "part_time", "one_time"] as $type) {
+//                $data[$type] = [
+//                    "ath" => Developer::max("total_$type"),
+//                    "atl" => Developer::min("total_$type"),
+//                    "this_month" => ($devs = Developer::where([
+//                        ["month", now()->month],
+//                        ["year", now()->year]
+//                    ])->first()) ? $devs["total_$type"] : 0,
+//                    "this_year" => $year[$type]
+//                ];
+//            }
+//
+//            $data["developer_chart"] = Developer::groupByRaw("month, year")
+//                ->where("year", ">=", now()->year - 5)
+//                ->selectRaw("month, year, SUM(total_developer) as total_developer, SUM(total_one_time) as total_one_time, SUM(total_part_time) as total_part_time, SUM(total_full_time) as total_full_time")
+//                ->orderBy("year", "ASC")->orderBy("month", "ASC")
+//                ->get();
+//        }
 
         return $response->setData($data);
     }

@@ -41,12 +41,7 @@ class GetRepositories extends Command
     public function handle()
     {
         $chains = Chain::all();
-        $sortByCommit = Chain::orderBY("total_commit", "DESC")->pluck("id")->toArray();
-        $sortByIssue = Chain::orderBY("total_issue_solved", "DESC")->pluck("id")->toArray();
-        $sortByPRSolved = Chain::orderBY("total_pull_request", "DESC")->pluck("id")->toArray();
-        $sortByDeveloper = Chain::orderBY("total_developer", "DESC")->pluck("id")->toArray();
-        $sortByFork = Chain::orderBY("total_fork", "DESC")->pluck("id")->toArray();
-        $sortByStar = Chain::orderBY("total_star", "DESC")->pluck("id")->toArray();
+
         $categories = ['Infrastructure', 'Data', 'NFT', 'NFT', 'Infrastructure,Bridge', 'Infrastructure,Oracle', 'Payment',
             'NFT,Social,Marketplace', 'Infrastructure', 'Meme', 'Infrastructure,Finance', 'Infrastructure',
             'Finance', 'Infrastructure', 'Infrastructure,Web3', 'Infrastructure,Social', 'Finance', 'Infrastructure',
@@ -56,10 +51,11 @@ class GetRepositories extends Command
             'Infrastructure', 'NFT,Infrastructure,Social', 'Finance', 'Finance', 'Web3', 'Finance,Bridge', 'Infrastructure,Finance',
             'Finance', 'Finance', 'Infrastructure,Social', 'Infrastructure,Finance', 'Privacy', 'Infrastructure,Privacy',
             'Infrastructure,Privacy', 'Finance', 'Finance', 'Finance', 'NFT,Social,Marketplace', 'Name Service', 'Finance',
-            'Infrastructure,Web3', 'Infrastructure', 'Finance', 'Web3,Social,Games', 'Infrastructure'];
-        foreach ($chains as $i => $chain){
+            'Infrastructure,Web3', 'Infrastructure', 'Finance', 'Web3,Social,Games', 'Infrastructure', 'Infrastructure', 'Infrastructure,Data'];
+        foreach ($chains as $i => $chain) {
             echo "Chain " . $chain->name . PHP_EOL;
-            try{
+            if (!in_array($chain->id, [27, 43, 60])) continue;
+            try {
 //                $chainUrl = "https://api.github.com/orgs/" . $chain->github_prefix;
 //                $chainInfo = json_decode(get_github_data($chainUrl));
 //                $chain->avatar = $chainInfo->avatar_url ? $chainInfo->avatar_url : null;
@@ -67,54 +63,71 @@ class GetRepositories extends Command
 //                $chain->website = $chainInfo->blog;
 //                $chain->description = $chainInfo->description;
 //                $chain->categories = $categories[$i];
-//                $commitRank = count($chains) - array_search($chain->id, $sortByCommit) + 1;
-//                $issueRank = count($chains) - array_search($chain->id, $sortByIssue) + 1;
-//                $PRSolvedRank = count($chains) - array_search($chain->id, $sortByPRSolved) + 1;
-//                $developerRank = count($chains) - array_search($chain->id, $sortByDeveloper) + 1;
-//                $forkRank = count($chains) - array_search($chain->id, $sortByFork) + 1;
-//                $starRank = count($chains) - array_search($chain->id, $sortByStar) + 1;
-//                $chain->seriousness = round($commitRank / 100 * 35, 2) + round($issueRank / 100 * 20, 2)
-//                    + round($PRSolvedRank / 100 * 20, 2) + round($developerRank / 100 * 25, 2);
-//                $chain->rising_star = round($forkRank / 100 * 65, 2) + round($starRank / 100 * 35, 2);
-//                $chain->ibc_astronaut = round($commitRank / 100 * 50, 2) + round($issueRank / 100 * 20, 2)
-//                    + round($PRSolvedRank / 100 * 30, 2);
                 // Get all repository from chain (test aura-nw)
                 $prefix = $chain->github_prefix;
                 $url = "https://api.github.com/orgs/$prefix/repos?per_page=100";
                 $lastPage = get_last_page(get_github_data($url, "header"));
                 $repository = [];
-                for ( $i = 1; $i <= $lastPage; $i++){
-                    $repository = array_merge($repository, array_column( (array) json_decode(get_github_data($url . "&page=$i")), "full_name", "name"));
+                for ($i = 1; $i <= $lastPage; $i++) {
+                    $repository = array_merge($repository, array_column((array)json_decode(get_github_data($url . "&page=$i")), "full_name", "name"));
                 }
 
-                foreach ($repository as $name => $repoPrefix){
-                    $repoUrl = "https://api.github.com/repos/$prefix/$repoPrefix";
+//                echo print_r($repository, true) . PHP_EOL; return;
+
+                foreach ($repository as $name => $repoPrefix) {
+                    $repoUrl = "https://api.github.com/repos/$repoPrefix";
+                    echo "Repo " . $repoUrl . " of chain " . $chain->name . PHP_EOL;
                     $repoInfo = json_decode(get_github_data($repoUrl));
-                    if (isset($data->message) && $data->message == "Git Repository is empty.")
+                    if (isset($repoInfo->message) && $repoInfo->message == "Git Repository is empty.")
                         continue;
-                    if (!$repo = Repository::where("github_prefix", $prefix)->first()){
+                    if (!$repo = Repository::where("github_prefix", $repoPrefix)->first()) {
                         $repo = new Repository();
                         $repo->name = $name;
-                        $repo->github_prefix = $prefix;
+                        $repo->github_prefix = $repoPrefix;
                         $repo->chain = $chain->id;
                         $repo->save();
                         echo "Created repository " . $name . " of chain " . $chain->name . PHP_EOL;
                     }
                     $repo->subscribers = $repoInfo->subscribers_count;
+                    $repo->total_star = $repoInfo->stargazers_count;
+                    $repo->total_fork = $repoInfo->forks_count;
+
+                    $issueUrl = "https://api.github.com/repos/$repoPrefix/issues?per_page=100&state=closed";
+                    $issueLastPage = get_last_page(get_github_data($issueUrl, "header"));
+//                    echo $issueUrl . "&page=$issueLastPage" . PHP_EOL; return;
+//                    echo print_r(json_decode(get_github_data($issueUrl . "&page=$issueLastPage")), true) . PHP_EOL;
+                    $totalIssueLastPage = count(json_decode(get_github_data($issueUrl . "&page=$issueLastPage")));
+//                    echo "Pass count 1" . PHP_EOL;
+                    $repo->total_issue_solved = (($issueLastPage - 1) * 100 + $totalIssueLastPage);
+
+                    $pullUrl = "https://api.github.com/repos/$repoPrefix/pulls?per_page=100&state=closed";
+                    $pullLastPage = get_last_page(get_github_data($pullUrl, "header"));
+                    $totalPullLastPage = count(json_decode(get_github_data($pullUrl . "&page=$pullLastPage")));
+//                    echo "Pass count 2" . PHP_EOL;
+                    $repo->pull_request_closed = (($pullLastPage - 1) * 100 + $totalPullLastPage);
+
+                    $contributorUrl = "https://api.github.com/repos/$repoPrefix/contributors?per_page=100";
+                    $contributorLastPage = get_last_page(get_github_data($contributorUrl, "header"));
+                    $contributors = [];
+                    for ( $i = 1; $i <= $contributorLastPage; $i++){
+                        $contributors = array_merge($contributors, array_column( (array) json_decode(get_github_data($contributorUrl . "&page=$i")), "login"));
+                    }
+                    $repo->total_contributor = implode(",", $contributors);
+
                     $repo->save();
 
-                    $chain->subscribers += $repoInfo->subscribers_count;
+//                    $chain->subscribers += $repoInfo->subscribers_count;
                 }
 
                 $chain->last_updated = now();
                 $chain->save();
-            } catch (\Exception $exception){
+            } catch (\Exception $exception) {
                 echo $exception->getMessage() . PHP_EOL;
                 continue;
             }
         }
 
 
-        echo "Done";
+        echo "Done" . PHP_EOL;
     }
 }
