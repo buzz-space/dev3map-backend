@@ -47,14 +47,16 @@ class GetCommits extends Command
         ini_set("memory_limit", -1);
         $totalRequest = 0;
         $lastExactDate = null;
-        $begin = "2023-01-01";
+        $begin = "2018-01-01";
         $lastRepo = setting("last_repo", 0);
         $start = now();
-        $repositories = Repository::orderBy("id", "ASC")->get();
+        $chain = Chain::find($this->ask("Chain id ?"));
+        echo "Chain: " . $chain->name . PHP_EOL;
+        $repositories = Repository::where("chain", $chain->id)->orderBy("id", "ASC")->get();
         foreach ($repositories as $repository) {
-            if ($repository->chain != 4) continue;
+//            if ($repository->chain != 2) continue;
 //            if (!in_array($repository->chain, [27, 43, 60])) continue;
-            if ($repository->id < $lastRepo) continue;
+//            if ($repository->id < $lastRepo) continue;
             echo "Repository: " . $repository->name . PHP_EOL;
             try {
                 $prefix = $repository->github_prefix;
@@ -71,8 +73,11 @@ class GetCommits extends Command
                     $commitUrl = $url . "&page=$i";
                     $data = json_decode(get_github_data($commitUrl));
                     $totalRequest += 1;
-                    if (isset($data->message))
-                        break;
+                    if (isset($data->message)) {
+                        Log::info("Repository " . $repository->name . " is " . $data->message);
+                        continue;
+//                        throw new \Exception("Limit reached!");
+                    }
 //                        echo $commitUrl . PHP_EOL;
                     $date = null;
                     $save = null;
@@ -121,7 +126,7 @@ class GetCommits extends Command
                         $sha[] = $commit->sha;
                         $save->additions += 0;
                         $save->deletions += 0;
-                        $save->author_list = array_merge($save->author_list, [$commit->commit->author->email]);
+                        $save->author_list = array_merge($save->author_list, [$commit->author ? $commit->author->login : $commit->commit->author->name]);
                         $save->total_commit += 1;
                     }
                 }

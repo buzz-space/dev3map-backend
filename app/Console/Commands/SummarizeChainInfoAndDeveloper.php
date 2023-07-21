@@ -43,12 +43,12 @@ class SummarizeChainInfoAndDeveloper extends Command
      */
     public function fHandle()
     {
-        $sortByCommit = Chain::orderBY("total_commit", "DESC")->pluck("id")->toArray();
-        $sortByIssue = Chain::orderBY("total_issue_solved", "DESC")->pluck("id")->toArray();
-        $sortByPRSolved = Chain::orderBY("total_pull_request", "DESC")->pluck("id")->toArray();
-        $sortByDeveloper = Chain::orderBY("total_developer", "DESC")->pluck("id")->toArray();
-        $sortByFork = Chain::orderBY("total_fork", "DESC")->pluck("id")->toArray();
-        $sortByStar = Chain::orderBY("total_star", "DESC")->pluck("id")->toArray();
+        $sortByCommit = Chain::orderBy("total_commit", "DESC")->pluck("id")->toArray();
+        $sortByIssue = Chain::orderBy("total_issue_solved", "DESC")->pluck("id")->toArray();
+        $sortByPRSolved = Chain::orderBy("total_pull_request", "DESC")->pluck("id")->toArray();
+        $sortByDeveloper = Chain::orderBy("total_developer", "DESC")->pluck("id")->toArray();
+        $sortByFork = Chain::orderBy("total_fork", "DESC")->pluck("id")->toArray();
+        $sortByStar = Chain::orderBy("total_star", "DESC")->pluck("id")->toArray();
         $chains = Chain::all();
         foreach ($chains as $chain) {
             echo "Chain " . $chain->name . PHP_EOL;
@@ -80,7 +80,7 @@ class SummarizeChainInfoAndDeveloper extends Command
 
     public function handle()
     {
-        $chain = Chain::find(4);
+        $chain = Chain::find($this->ask("Chain id?"));
 //        foreach (Chain::all() as $chain) {
             echo "Chain " . $chain->name . PHP_EOL;
 //            if ($chain->id <= 60) continue;
@@ -92,27 +92,24 @@ class SummarizeChainInfoAndDeveloper extends Command
 //            }
 //            $chain->total_contributor = count(array_unique($contributors));
 
-            // Summarize Commit
+        // Summarize Commit
 //            $chain->total_commit = Commit::where("chain", $chain->id)->sum("total_commit");
 //            if ($chain->total_commit == 0)
 //                continue;
 
-            // Summarize developer
-            $date = Commit::where("chain", $chain->id)
-//                ->where("exact_date", ">=", "2023-04-01")
+        // Summarize developer
+        $repos = Repository::where("chain", $chain->id)->get();
+        foreach ($repos as $repo) {
+            echo "Repo " . $repo->name . PHP_EOL;
+            $cms = Commit::where("chain", $chain->id)
+                ->where("repo", $repo->id)
 //                ->where("exact_date", "<", "2023-06-01")
                 ->orderBy("exact_date", "ASC")
-                ->pluck("exact_date")->toArray();
-            foreach(array_unique($date) as $day){
-                $day = Carbon::createFromTimestamp(strtotime($day));
+                ->get();
+            foreach ($cms as $item) {
+                $day = Carbon::createFromTimestamp(strtotime($item->exact_date));
 //                echo "Day " . $day->toDateString() . PHP_EOL;
-                $currentAuthor = Commit::where("chain", $chain->id)
-                    ->where("exact_date", $day->toDateString())
-                    ->pluck("author_list")->toArray();
-//                Log::info(print_r($currentAuthor, true));
-                $currentAuthor = array_filter(explode(",", implode(",", $currentAuthor)));
-//                Log::info("After: " . implode(",", $currentAuthor));
-//                if ($day->toDateString() == "2020-01-08") return;
+                $currentAuthor = array_filter(explode(",", $item->author_list));
                 if (empty($currentAuthor)) continue;
                 $last30Day = (clone $day)->addDays(-30);
                 $lastAuthor = Commit::where("chain", $chain->id)
@@ -134,7 +131,7 @@ class SummarizeChainInfoAndDeveloper extends Command
                 ];
                 foreach ($authors as $author => $commits) {
                     if (isset($last30DayAuthors[$author]))
-                    $commits += $last30DayAuthors[$author];
+                        $commits += $last30DayAuthors[$author];
                     if ($commits > 10) {
                         $full += 1;
                         $saving["full_time"][] = $author;
@@ -151,25 +148,13 @@ class SummarizeChainInfoAndDeveloper extends Command
                     $totalCommit += $commits;
                 }
 
-                $exist = Developer::where("day", $day->toDateString())->where("chain", $chain->id)->first();
-                if (!$exist) {
-                    Developer::create([
-                        "chain" => $chain->id,
-                        "total_full_time" => $full,
-                        "total_part_time" => $part,
-                        "total_one_time" => $one,
-                        "total_developer" => $full + $part + $one,
-                        "total_commit" => $totalCommit,
-                        "author" => implode(",", $currentAuthor),
-                        'day' => $day->toDateString(),
-                        "full_time" => implode(",", $saving["full_time"]),
-                        "part_time" => implode(",", $saving["part_time"]),
-                        "one_time" => implode(",", $saving["one_time"]),
-                    ]);
+                $item->full_time = implode(",", $saving["full_time"]);
+                $item->part_time = implode(",", $saving["part_time"]);
+                $item->one_time = implode(",", $saving["one_time"]);
+                $item->save();
 
-                    echo "Created developer info in " . $day->toDateString() . PHP_EOL;
-                }
             }
+        }
 
 //            $choice = $this->choice("Continue?", ["no", "yes"], "no");
 //            if ($choice == "no")

@@ -6,7 +6,7 @@ use Botble\Base\Traits\EnumCastable;
 use Botble\Base\Enums\BaseStatusEnum;
 use Botble\Base\Models\BaseModel;
 
-class Commit extends BaseModel
+class Contributor extends BaseModel
 {
 
     /**
@@ -14,23 +14,14 @@ class Commit extends BaseModel
      *
      * @var string
      */
-    protected $table = 'commits';
+    protected $table = 'repository_contributors';
 
     /**
      * @var array
      */
     protected $fillable = [
-        'chain',
+        "chain",
         "repo",
-        "exact_date",
-        "author_list",
-        "total_commit",
-        "total_fork_commit",
-        "additions",
-        "deletion",
-        "full_time",
-        "part_time",
-        "one_time",
+        "contributors",
     ];
-
 }

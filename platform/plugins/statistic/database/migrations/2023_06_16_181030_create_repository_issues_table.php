@@ -13,18 +13,16 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('repository_pulls', function (Blueprint $table) {
+        Schema::create('repository_issues', function (Blueprint $table) {
             $table->increments("id");
-            $table->integer("pull_id");
+            $table->integer("issue_id");
             $table->integer("repo");
             $table->integer("chain");
-            $table->string("author");
-            $table->string("status");
+            $table->string("creator");
+            $table->dateTime("open_date");
+            $table->dateTime("close_date")->nullable();
+            $table->unsignedBigInteger("total_minute")->default(0);
             $table->timestamps();
-        });
-
-        Schema::table('commits', function (Blueprint $table) {
-            $table->text("author_list")->nullable()->change();
         });
     }
 
@@ -35,6 +33,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::drop("repository_pulls");
+        Schema::drop("repository_issues");
     }
 };
