@@ -50,95 +50,98 @@ class GetCommits extends Command
         $begin = "2018-01-01";
         $lastRepo = setting("last_repo", 0);
         $start = now();
-        $chain = Chain::find($this->ask("Chain id ?"));
-        echo "Chain: " . $chain->name . PHP_EOL;
-        $repositories = Repository::where("chain", $chain->id)->orderBy("id", "ASC")->get();
-        foreach ($repositories as $repository) {
-//            if ($repository->chain != 2) continue;
-//            if (!in_array($repository->chain, [27, 43, 60])) continue;
-//            if ($repository->id < $lastRepo) continue;
-            echo "Repository: " . $repository->name . PHP_EOL;
+        foreach (Chain::all() as $chain) {
+            if ($chain->id < 11) continue;
+            $repositories = Repository::where("chain", $chain->id)->orderBy("id", "ASC")->get();
+            echo "Chain: " . $chain->name . " with " . count($repositories) . " repositories!" . PHP_EOL;
             try {
-                $prefix = $repository->github_prefix;
-                // Get commit
+                foreach ($repositories as $i => $repository) {
+            if ($repository->chain == 11 && $i < 32) continue;
+//            if (!in_array($repository->chain, [27, 43, 60])) continue;
+//                if ($repository->id < $lastRepo) continue;
+                    echo ($i + 1) . ": " . $repository->name . PHP_EOL;
+                    $prefix = $repository->github_prefix;
+                    // Get commit
 //                if ($lastCommit = Commit::where("repo", $repository->id)->orderBy("exact_date", "ASC")->first())
 //                    $last = $lastCommit->exact_date;
-                $url = "https://api.github.com/repos/$prefix/commits?per_page=100";
-                $url .= "&since=" . date(DATE_ISO8601, strtotime($begin));
-                $lastPage = get_last_page(get_github_data($url, "header"));
-                $totalRequest += 1;
-                echo "Total page: " . $lastPage . PHP_EOL;
-                for ($i = 1; $i <= $lastPage; $i++) {
-                    echo "Process page $i..." . PHP_EOL;
-                    $commitUrl = $url . "&page=$i";
-                    $data = json_decode(get_github_data($commitUrl));
+                    $url = "https://api.github.com/repos/$prefix/commits?per_page=100";
+                    $url .= "&since=" . date(DATE_ISO8601, strtotime($begin));
+                    $lastPage = get_last_page(get_github_data($url, "header"));
                     $totalRequest += 1;
-                    if (isset($data->message)) {
-                        Log::info("Repository " . $repository->name . " is " . $data->message);
-                        continue;
+                    echo "Total page: " . $lastPage . PHP_EOL;
+                    for ($i = 1; $i <= $lastPage; $i++) {
+                        echo "Process page $i..." . PHP_EOL;
+                        $commitUrl = $url . "&page=$i";
+                        $data = json_decode(get_github_data($commitUrl));
+                        $totalRequest += 1;
+                        if (isset($data->message)) {
+                            Log::info("Repository " . $repository->name . ": " . $data->message);
+                            continue;
 //                        throw new \Exception("Limit reached!");
-                    }
+                        }
 //                        echo $commitUrl . PHP_EOL;
-                    $date = null;
-                    $save = null;
-                    $sha = [];
+                        $date = null;
+                        $save = null;
+                        $sha = [];
 //                    Log::info(print_r($data, true));
-                    foreach ($data as $commit) {
+                        foreach ($data as $commit) {
 //                        $detailUrl = "https://api.github.com/repos/$prefix/commits/" . $commit->sha;
 //                        $detail = json_decode(get_github_data($detailUrl));
-                        $totalRequest += 1;
-                        $commitDate = date("Y-m-d", strtotime($commit->commit->author->date));
-                        if ($date != $commitDate) {
-                            if ($save) {
-                                $save->author_list = implode(",", $save->author_list);
-                                $save->save();
+                            $totalRequest += 1;
+                            $commitDate = date("Y-m-d", strtotime($commit->commit->author->date));
+                            if ($date != $commitDate) {
+                                if ($save) {
+                                    $save->author_list = implode(",", $save->author_list);
+                                    $save->save();
 
-                                // save sha
-                                foreach ($sha as $z){
-                                    CommitSHA::create([
-                                        "sha" => $z,
-                                        "commit_id" => $save->id
-                                    ]);
+                                    // save sha
+                                    foreach ($sha as $z) {
+                                        if (!$find = CommitSHA::where("sha", $z)->where("commit_id", $save->id)->first())
+                                            CommitSHA::create([
+                                                "sha" => $z,
+                                                "commit_id" => $save->id
+                                            ]);
+                                    }
+                                    $sha = [];
+//                                    if (now()->gt($start) && now()->diffInMinutes($start) > 55) {
+//                                        $lastExactDate = null;
+//                                        throw new \Exception("Stopped. Start: " . $start->toDateTimeString() . ", end: " . now()->toDateTimeString());
+//                                    }
                                 }
-                                $sha = [];
-                                if (now()->gt($start) && now()->diffInMinutes($start) > 55) {
-                                    $lastExactDate = null;
-                                    throw new \Exception("Stopped. Start: " . $start->toDateTimeString() . ", end: " . now()->toDateTimeString());
+                                if (!$save = Commit::where("repo", $repository->id)
+                                    ->where("exact_date", $commitDate)
+                                    ->first()
+                                ) {
+                                    $save = new Commit();
+                                    $save->chain = $repository->chain;
+                                    $save->repo = $repository->id;
+                                    $save->exact_date = $commitDate;
+                                    $save->additions = 0;
+                                    $save->deletions = 0;
                                 }
-                            }
-                            if (!$save = Commit::where("repo", $repository->id)
-                                ->where("exact_date", $commitDate)
-                                ->first()
-                            ) {
-                                $save = new Commit();
-                                $save->chain = $repository->chain;
-                                $save->repo = $repository->id;
-                                $save->exact_date = $commitDate;
-                                $save->additions = 0;
-                                $save->deletions = 0;
-                            }
-                            $save->total_commit = 0;
-                            $save->author_list = [];
+                                $save->total_commit = 0;
+                                $save->author_list = [];
 
-                            $date = $commitDate;
-                            $lastExactDate = $commitDate;
+                                $date = $commitDate;
+                                $lastExactDate = $commitDate;
+                            }
+                            $sha[] = $commit->sha;
+                            $save->additions += 0;
+                            $save->deletions += 0;
+                            $save->author_list = array_merge($save->author_list, [$commit->commit->author->name]);
+                            $save->total_commit += 1;
                         }
-                        $sha[] = $commit->sha;
-                        $save->additions += 0;
-                        $save->deletions += 0;
-                        $save->author_list = array_merge($save->author_list, [$commit->author ? $commit->author->login : $commit->commit->author->name]);
-                        $save->total_commit += 1;
                     }
                 }
             } catch (\Exception $exception) {
-                Log::error($exception->getMessage());
-                setting()->set("last_repo", $repository->id);
-                setting()->save();
+                Log::error("Chain " . $chain->id . "-" . $chain->name . " have exception: " .$exception->getMessage());
+//                    setting()->set("last_repo", $repository->id);
+//                    setting()->save();
 //                Commit::where("repo", $repository->id)->where("exact_date", $lastExactDate)->delete();
                 break;
             }
-            setting()->set("last_repo", $repository->id);
-            setting()->save();
+//                setting()->set("last_repo", $repository->id);
+//                setting()->save();
         }
     }
 }
