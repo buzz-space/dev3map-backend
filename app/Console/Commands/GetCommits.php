@@ -50,16 +50,16 @@ class GetCommits extends Command
         $begin = "2018-01-01";
         $lastRepo = setting("last_repo", 0);
         $start = now();
-        foreach (Chain::all() as $chain) {
-            if ($chain->id < 11) continue;
+        foreach (Chain::orderBy("id", "ASC")->get() as $chain) {
             $repositories = Repository::where("chain", $chain->id)->orderBy("id", "ASC")->get();
             echo "Chain: " . $chain->name . " with " . count($repositories) . " repositories!" . PHP_EOL;
+            if ($chain->id < 5) continue;
             try {
-                foreach ($repositories as $i => $repository) {
-            if ($repository->chain == 11 && $i < 32) continue;
+                foreach ($repositories as $j => $repository) {
+                    if ($repository->chain == 5 && $j < 24) continue;
 //            if (!in_array($repository->chain, [27, 43, 60])) continue;
 //                if ($repository->id < $lastRepo) continue;
-                    echo ($i + 1) . ": " . $repository->name . PHP_EOL;
+                    echo ($j + 1) . ": " . $repository->name . PHP_EOL;
                     $prefix = $repository->github_prefix;
                     // Get commit
 //                if ($lastCommit = Commit::where("repo", $repository->id)->orderBy("exact_date", "ASC")->first())
@@ -70,6 +70,7 @@ class GetCommits extends Command
                     $totalRequest += 1;
                     echo "Total page: " . $lastPage . PHP_EOL;
                     for ($i = 1; $i <= $lastPage; $i++) {
+//                        if ($repository->chain == 19 && $repository->id == 785 && $i < 104) continue;
                         echo "Process page $i..." . PHP_EOL;
                         $commitUrl = $url . "&page=$i";
                         $data = json_decode(get_github_data($commitUrl));
@@ -95,12 +96,15 @@ class GetCommits extends Command
                                     $save->save();
 
                                     // save sha
+                                    $exists = CommitSHA::where("commit_id", $save->id)->pluck("sha")->toArray();
+                                    $sha = array_filter($sha, function ($row) use ($exists){
+                                       return !in_array($row, $exists);
+                                    });
                                     foreach ($sha as $z) {
-                                        if (!$find = CommitSHA::where("sha", $z)->where("commit_id", $save->id)->first())
-                                            CommitSHA::create([
-                                                "sha" => $z,
-                                                "commit_id" => $save->id
-                                            ]);
+                                        CommitSHA::create([
+                                            "sha" => $z,
+                                            "commit_id" => $save->id
+                                        ]);
                                     }
                                     $sha = [];
 //                                    if (now()->gt($start) && now()->diffInMinutes($start) > 55) {
@@ -134,7 +138,7 @@ class GetCommits extends Command
                     }
                 }
             } catch (\Exception $exception) {
-                Log::error("Chain " . $chain->id . "-" . $chain->name . " have exception: " .$exception->getMessage());
+                Log::error("Chain " . $chain->id . "-" . $chain->name . " have exception: " . $exception->getMessage());
 //                    setting()->set("last_repo", $repository->id);
 //                    setting()->save();
 //                Commit::where("repo", $repository->id)->where("exact_date", $lastExactDate)->delete();

@@ -11,7 +11,7 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
-class GetIssues extends Command
+class GetRepositoryInfo extends Command
 {
     /**
      * The name and signature of the console command.
@@ -42,50 +42,12 @@ class GetIssues extends Command
      *
      * @return int
      */
-    public function shandle()
-    {
-        foreach (Repository::orderBy("chain", "ASC")->get() as $repo) {
-            try {
-                if ($repo->chain != 4) continue;
-                echo "Process repo " . $repo->name . PHP_EOL;
-                $prefix = $repo->github_prefix;
-                $url = "https://api.github.com/repos/$prefix/issues?per_page=100&state=closed";
-                $lastPage = get_last_page(get_github_data($url, "header"));
-                echo "Total page: " . $lastPage . PHP_EOL;
-                for ($i = 1; $i <= $lastPage; $i++) {
-                    echo "Process page: $i" . PHP_EOL;
-                    $pageUrl = $url . "&page=$i";
-                    $data = json_decode(get_github_data($pageUrl));
-                    if (isset($data->message))
-                        throw new \Exception($data->message);
-
-//                    Log::info(print_r($data[0], true));
-                    foreach ($data as $issue){
-                        if (!$exist = Issue::where("issue_id", $issue->id)->first()){
-                            $open = Carbon::createFromTimestamp(strtotime($issue->created_at));
-                            $closed = Carbon::createFromTimestamp(strtotime($issue->closed_at));
-
-                            Issue::create([
-                                "issue_id" => $issue->id,
-                                "creator" => $issue->user->login,
-                                "repo" => $repo->id,
-                                "chain" => $repo->chain,
-                                "open_date" => $open->toDateTimeString(),
-                                "close_date" => $closed->toDateTimeString(),
-                                "total_minute" => $closed->diffInMinutes($open)
-                            ]);
-                        }
-                    }
-                }
-            } catch (\Exception $exception) {
-                echo $exception->getMessage() . PHP_EOL;
-            }
-        }
-    }
 
     public function handle()
     {
         foreach (Chain::all() as $chain) {
+            if ($chain != 4) continue;
+            echo "Chain " . $chain->name . PHP_EOL;
             foreach (Repository::where("chain", $chain->id)->get() as $repo) {
                 try {
                     echo "Process repo " . $repo->name . " with id " . $repo->id . PHP_EOL;
@@ -108,6 +70,10 @@ class GetIssues extends Command
                     // Fork contributor
                     $infoUrl = "https://api.github.com/repos/$prefix";
                     $info = json_decode(get_github_data($infoUrl));
+                    $repo->total_star = $info->stargazers_count;
+                    $repo->total_fork = $info->forks_count;
+                    $repo->subscribers = $info->subscribers_count;
+
                     if ($info->fork) {
                         echo "Repo " . $repo->name . " has fork is " . $info->parent->name . PHP_EOL;
                         $cUrl = "https://api.github.com/repos/" . $info->parent->full_name . "/contributors?per_page=100";
@@ -132,6 +98,7 @@ class GetIssues extends Command
                     $url = "https://api.github.com/repos/$prefix/issues?per_page=100&state=closed";
                     $lastPage = get_last_page(get_github_data($url, "header"));
                     echo "Total page: " . $lastPage . PHP_EOL;
+                    $total_issue = 0;
                     for ($i = 1; $i <= $lastPage; $i++) {
                         echo "Process page: $i" . PHP_EOL;
                         $pageUrl = $url . "&page=$i";
@@ -141,6 +108,7 @@ class GetIssues extends Command
 
 //                    Log::info(print_r($data[0], true));
                         foreach ($data as $issue) {
+                            $total_issue += 1;
                             if (!$exist = Issue::where("issue_id", $issue->id)->first()) {
                                 $open = Carbon::createFromTimestamp(strtotime($issue->created_at));
                                 $closed = Carbon::createFromTimestamp(strtotime($issue->closed_at));
@@ -158,9 +126,12 @@ class GetIssues extends Command
                         }
                     }
 
+                    $repo->total_issue_solved = $total_issue;
+                    // Pull
                     $url = "https://api.github.com/repos/$prefix/pulls?per_page=100&state=closed";
                     $lastPage = get_last_page(get_github_data($url, "header"));
                     echo "Total page: " . $lastPage . PHP_EOL;
+                    $total_pulls = 0;
                     for ($i = 1; $i <= $lastPage; $i++) {
                         echo "Process page: $i" . PHP_EOL;
                         $pageUrl = $url . "&page=$i";
@@ -169,6 +140,7 @@ class GetIssues extends Command
                             throw new \Exception($data->message);
 
                         foreach ($data as $pull) {
+                            $total_pulls += 1;
                             if (!$exist = Pull::where("pull_id", $pull->id)->first()) {
                                 Pull::create([
                                     "pull_id" => $pull->id,
@@ -180,6 +152,8 @@ class GetIssues extends Command
                             }
                         }
                     }
+                    $repo->pull_request_closed = $total_pulls;
+                    $repo->save();
                 } catch (\Exception $exception) {
                     echo $exception->getMessage() . PHP_EOL;
                 }

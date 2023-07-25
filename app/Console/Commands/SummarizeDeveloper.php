@@ -10,7 +10,7 @@ use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
-class SummarizeChainInfoAndDeveloper extends Command
+class SummarizeDeveloper extends Command
 {
     /**
      * The name and signature of the console command.
@@ -49,10 +49,10 @@ class SummarizeChainInfoAndDeveloper extends Command
         $sortByDeveloper = Chain::orderBy("total_developer", "DESC")->pluck("id")->toArray();
         $sortByFork = Chain::orderBy("total_fork", "DESC")->pluck("id")->toArray();
         $sortByStar = Chain::orderBy("total_star", "DESC")->pluck("id")->toArray();
-        $chains = Chain::all();
+        $chains = Chain::orderBy("id", "ASC")->get();
         foreach ($chains as $chain) {
             echo "Chain " . $chain->name . PHP_EOL;
-            if ($chain->id <= 60) continue;
+            if ($chain->id != 4) continue;
 //            $developers = Developer::where("chain", $chain->id)->pluck("author")->toArray();
 //            $data = process_developer_string(implode(",", $developers));
 //            $chain->total_full_time_developer += $data["full_time"];
@@ -156,63 +156,6 @@ class SummarizeChainInfoAndDeveloper extends Command
             }
         }
 
-//            $choice = $this->choice("Continue?", ["no", "yes"], "no");
-//            if ($choice == "no")
-//                break;
-
-//            $diff = $dateFirstCommit->diffInMonths($dateLastCommit) + ($dateFirstCommit->day > $dateLastCommit->day ? 2 : 1);
-//            for ($i = 0; $i < $diff; $i++) {
-//                $exactMonth = (clone $dateFirstCommit)->addMonths($i);
-//                echo "Month " . $exactMonth->month . ", year: " . $exactMonth->year . PHP_EOL;
-//                $authors = Commit::where("chain", $chain->id)
-//                    ->where("exact_date", ">=", $exactMonth->firstOfMonth()->toDateTimeString())
-//                    ->where("exact_date", "<", $exactMonth->endOfMonth()->toDateTimeString())
-//                    ->pluck("author_list")->toArray();
-//                $devs = [];
-//                foreach ($authors as $author) {
-//                    $lst = array_count_values(explode(",", $author));
-//                    foreach ($lst as $key => $item) {
-//                        if (isset($devs[$key]))
-//                            $devs[$key] += $item;
-//                        else
-//                            $devs[$key] = $item;
-//                    }
-//                }
-//
-////                write_to_file("devs.txt", print_r($devs, true)); return;
-//
-//                if (!$d = Developer::where("chain", $chain->id)
-//                    ->where("month", $exactMonth->month)
-//                    ->where("year", $exactMonth->year)->first()
-//                ) {
-//                    $d = new Developer();
-//                    $d->chain = $chain->id;
-//                    $d->month = $exactMonth->month;
-//                    $d->year = $exactMonth->year;
-//                }
-//                $d->author = implode(',', $authors);
-//                $d->total_developer = count($devs);
-//                $d->total_commit = 0;
-//                foreach ($devs as $dev => $commit_count) {
-////                    echo "Dev " . $dev . " with " . $commit_count . " commits" . PHP_EOL;
-//                    if ($commit_count == 1)
-//                        $d->total_one_time += 1;
-//                    if ($commit_count > 1 && $commit_count <= 10)
-//                        $d->total_part_time += 1;
-//                    if ($commit_count > 10)
-//                        $d->total_full_time += 1;
-//                    $d->total_commit += $commit_count;
-//                }
-//
-//                $d->save();
-////            }
-//
-//                $chain->save();
-//
-
-//            }
-//            break;
-//        }
         echo "Done";
     }
 
