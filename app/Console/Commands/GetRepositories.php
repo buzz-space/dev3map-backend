@@ -54,7 +54,7 @@ class GetRepositories extends Command
             'Infrastructure,Web3', 'Infrastructure', 'Finance', 'Web3,Social,Games', 'Infrastructure', 'Infrastructure', 'Infrastructure,Data'];
         foreach ($chains as $i => $chain) {
             echo "Chain " . $chain->name . PHP_EOL;
-//            if (!in_array($chain->id, [27, 43, 60])) continue;
+            if ($chain->id != 4) continue;
             try {
 //                $chainUrl = "https://api.github.com/orgs/" . $chain->github_prefix;
 //                $chainInfo = json_decode(get_github_data($chainUrl));
@@ -78,42 +78,44 @@ class GetRepositories extends Command
                     $repoUrl = "https://api.github.com/repos/$repoPrefix";
                     echo "Repo " . $repoUrl . " of chain " . $chain->name . PHP_EOL;
                     $repoInfo = json_decode(get_github_data($repoUrl));
-                    if (isset($repoInfo->message) && $repoInfo->message == "Git Repository is empty.")
-                        continue;
+                    if (isset($repoInfo->message))
+                        throw new \Exception($repoInfo->message);
                     if (!$repo = Repository::where("github_prefix", $repoPrefix)->first()) {
                         $repo = new Repository();
                         $repo->name = $name;
                         $repo->github_prefix = $repoPrefix;
                         $repo->chain = $chain->id;
+                        $repo->created_date = date("Y-m-d H:i:s", strtotime($repoInfo->created_at));
                         $repo->save();
                         echo "Created repository " . $name . " of chain " . $chain->name . PHP_EOL;
                     }
-                    $repo->subscribers = $repoInfo->subscribers_count;
-                    $repo->total_star = $repoInfo->stargazers_count;
-                    $repo->total_fork = $repoInfo->forks_count;
+//                    $repo->subscribers = $repoInfo->subscribers_count;
+//                    $repo->total_star = $repoInfo->stargazers_count;
+//                    $repo->total_fork = $repoInfo->forks_count;
+//
+//                    $issueUrl = "https://api.github.com/repos/$repoPrefix/issues?per_page=100&state=closed";
+//                    $issueLastPage = get_last_page(get_github_data($issueUrl, "header"));
+////                    echo $issueUrl . "&page=$issueLastPage" . PHP_EOL; return;
+////                    echo print_r(json_decode(get_github_data($issueUrl . "&page=$issueLastPage")), true) . PHP_EOL;
+//                    $totalIssueLastPage = count(json_decode(get_github_data($issueUrl . "&page=$issueLastPage")));
+////                    echo "Pass count 1" . PHP_EOL;
+//                    $repo->total_issue_solved = (($issueLastPage - 1) * 100 + $totalIssueLastPage);
+//
+//                    $pullUrl = "https://api.github.com/repos/$repoPrefix/pulls?per_page=100&state=closed";
+//                    $pullLastPage = get_last_page(get_github_data($pullUrl, "header"));
+//                    $totalPullLastPage = count(json_decode(get_github_data($pullUrl . "&page=$pullLastPage")));
+////                    echo "Pass count 2" . PHP_EOL;
+//                    $repo->pull_request_closed = (($pullLastPage - 1) * 100 + $totalPullLastPage);
+//
+//                    $contributorUrl = "https://api.github.com/repos/$repoPrefix/contributors?per_page=100";
+//                    $contributorLastPage = get_last_page(get_github_data($contributorUrl, "header"));
+//                    $contributors = [];
+//                    for ( $i = 1; $i <= $contributorLastPage; $i++){
+//                        $contributors = array_merge($contributors, array_column( (array) json_decode(get_github_data($contributorUrl . "&page=$i")), "login"));
+//                    }
+//                    $repo->total_contributor = implode(",", $contributors);
 
-                    $issueUrl = "https://api.github.com/repos/$repoPrefix/issues?per_page=100&state=closed";
-                    $issueLastPage = get_last_page(get_github_data($issueUrl, "header"));
-//                    echo $issueUrl . "&page=$issueLastPage" . PHP_EOL; return;
-//                    echo print_r(json_decode(get_github_data($issueUrl . "&page=$issueLastPage")), true) . PHP_EOL;
-                    $totalIssueLastPage = count(json_decode(get_github_data($issueUrl . "&page=$issueLastPage")));
-//                    echo "Pass count 1" . PHP_EOL;
-                    $repo->total_issue_solved = (($issueLastPage - 1) * 100 + $totalIssueLastPage);
-
-                    $pullUrl = "https://api.github.com/repos/$repoPrefix/pulls?per_page=100&state=closed";
-                    $pullLastPage = get_last_page(get_github_data($pullUrl, "header"));
-                    $totalPullLastPage = count(json_decode(get_github_data($pullUrl . "&page=$pullLastPage")));
-//                    echo "Pass count 2" . PHP_EOL;
-                    $repo->pull_request_closed = (($pullLastPage - 1) * 100 + $totalPullLastPage);
-
-                    $contributorUrl = "https://api.github.com/repos/$repoPrefix/contributors?per_page=100";
-                    $contributorLastPage = get_last_page(get_github_data($contributorUrl, "header"));
-                    $contributors = [];
-                    for ( $i = 1; $i <= $contributorLastPage; $i++){
-                        $contributors = array_merge($contributors, array_column( (array) json_decode(get_github_data($contributorUrl . "&page=$i")), "login"));
-                    }
-                    $repo->total_contributor = implode(",", $contributors);
-
+                    $repo->created_date = date("Y-m-d H:i:s", strtotime($repoInfo->created_at));
                     $repo->save();
 
 //                    $chain->subscribers += $repoInfo->subscribers_count;

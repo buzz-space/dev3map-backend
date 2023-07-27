@@ -83,7 +83,7 @@ class SummarizeDeveloper extends Command
         $chain = Chain::find($this->ask("Chain id?"));
 //        foreach (Chain::all() as $chain) {
             echo "Chain " . $chain->name . PHP_EOL;
-//            if ($chain->id <= 60) continue;
+//            if ($chain->id != 40) continue;
             // Summarize contributor
 //            $chainContributor = $chain->repositories()->pluck("total_contributor");
 //            $contributors = [];

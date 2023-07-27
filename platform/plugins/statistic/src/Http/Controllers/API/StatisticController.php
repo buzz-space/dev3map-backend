@@ -7,7 +7,11 @@ use Botble\Base\Http\Responses\BaseHttpResponse;
 use Botble\Statistic\Models\Chain;
 use Botble\Statistic\Models\Commit;
 use Botble\Statistic\Models\CommitChart;
+use Botble\Statistic\Models\Contributor;
 use Botble\Statistic\Models\Developer;
+use Botble\Statistic\Models\Issue;
+use Botble\Statistic\Models\Pull;
+use Botble\Statistic\Models\Repository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -16,14 +20,26 @@ class StatisticController extends BaseController
 {
     public function chainList(Request $request, BaseHttpResponse $response)
     {
-        $query = Chain::query();
+        $query = Chain::where("id", 4);
         $categories = explode(',', $request->input("categories", ""));
         if (!empty($categories)) {
             foreach ($categories as $z){
                 $query->where("categories", "like", "%$z%");
             }
         }
-        return $response->setData($query->get());
+        $data = $query->select(
+            'id',
+            'name',
+            'github_prefix',
+            'categories',
+            'avatar',
+            "subscribers",
+            'website',
+            "rising_star",
+            "ibc_astronaut",
+            "seriousness"
+        )->get();
+        return $response->setData($this->customDataChain($data));
     }
 
     public function chainInfo($prefix, BaseHttpResponse $response)
@@ -152,5 +168,46 @@ class StatisticController extends BaseController
         $type = $request->input("type");
         $data = Chain::orderBy($type, "DESC")->take(10)->get();
         return $response->setData($data);
+    }
+
+    private function customDataChain($chains, $filter = 24)
+    {
+        foreach ($chains as $chain){
+            $commits = Commit::where([
+                ["chain", $chain->id],
+                ["exact_date", "<", now()->addHours(-1 * $filter)]
+            ])->get()->toArray();
+            //commit
+            $chain->total_commit = array_sum(array_column($commits, "total_commit"));
+            //developer
+            $developers = Commit::where([
+                ["chain", $chain->id],
+                ["exact_date", "<", now()->addHours(-1 * $filter)],
+                ["exact_date", ">=", now()->addHours(-1 * $filter)->addMonths(-6)]
+            ])->get()->toArray();
+            $contributors = unique_name(Contributor::where("chain", $chain->id)->pluck("contributors")->toArray());
+            $fullTime = unique_name(array_column($developers, "full_time"));
+            $fullTime = array_filter($fullTime, function ($c) use ($contributors){
+               return !empty($c) && in_array($c, $contributors);
+            });
+            $partTime = unique_name(array_column($developers, "part_time"));
+            $partTime = array_filter($partTime, function ($c) use ($contributors, $fullTime){
+                return !empty($c) && in_array($c, $contributors) && !in_array($c, $fullTime);
+            });
+            $chain->active_developer = count($fullTime) + count($partTime);
+//            $chain->full_time_developer = $fullTime;
+//            $chain->part_time_developer = $partTime;
+            //repos
+            $chain->total_repository = Repository::where("chain", $chain->id)
+                ->where("created_date", "<", now()->addHours(-1 * $filter))->count();
+            //issue
+            $chain->total_issue_solved = Issue::where("chain", $chain->id)
+                ->where("open_date", "<", now()->addHours(-1 * $filter))->count();
+            //pull
+            $chain->total_pull_merged = Pull::where("chain", $chain->id)
+                ->where("created_date", "<", now()->addHours(-1 * $filter))->count();
+        }
+
+        return $chains;
     }
 }

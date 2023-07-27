@@ -1,13 +1,13 @@
 <?php
 
-function get_github_data($url, $return = "body")
+function get_github_data($url, $return = "body", $key = 1)
 {
     $ch = curl_init($url);
     $headers = [];
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
         "Accept: application/vnd.github+json",
         "User-Agent: Awesome-Octocat-App",
-        "Authorization: Bearer " . env("GITHUB_API_TOKEN")
+        "Authorization: Bearer " . env($key == 1 ? "GITHUB_API_TOKEN" : "GITHUB_API_TOKEN2")
     ]);
     curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
 
@@ -114,4 +114,8 @@ function process_developer_string($developerString)
             return $row == 1;
         })),
     ];
+}
+
+function unique_name($array){
+    return array_unique(explode(",", implode(",", $array)));
 }

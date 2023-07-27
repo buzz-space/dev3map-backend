@@ -46,7 +46,7 @@ class GetRepositoryInfo extends Command
     public function handle()
     {
         foreach (Chain::all() as $chain) {
-            if ($chain != 4) continue;
+            if ($chain->id != 4) continue;
             echo "Chain " . $chain->name . PHP_EOL;
             foreach (Repository::where("chain", $chain->id)->get() as $repo) {
                 try {
@@ -54,13 +54,14 @@ class GetRepositoryInfo extends Command
                     $prefix = $repo->github_prefix;
                     // Contributors
                     $url = "https://api.github.com/repos/$prefix/contributors?per_page=100";
-                    $lastPage = get_last_page(get_github_data($url, "header"));
+                    $lastPage = get_last_page(get_github_data($url, "header", 2));
                     $contributors = [];
+                    echo "Get contributors!" . PHP_EOL;
                     echo "Total page: " . $lastPage . PHP_EOL;
                     for ($i = 1; $i <= $lastPage; $i++) {
                         echo "Process page: $i" . PHP_EOL;
                         $pageUrl = $url . "&page=$i";
-                        $data = json_decode(get_github_data($pageUrl));
+                        $data = json_decode(get_github_data($pageUrl, "body", 2));
                         if (isset($data->message))
                             throw new \Exception($data->message);
 
@@ -68,8 +69,9 @@ class GetRepositoryInfo extends Command
                     }
 
                     // Fork contributor
+                    echo "Remove fork contributors!" . PHP_EOL;
                     $infoUrl = "https://api.github.com/repos/$prefix";
-                    $info = json_decode(get_github_data($infoUrl));
+                    $info = json_decode(get_github_data($infoUrl, "body", 2));
                     $repo->total_star = $info->stargazers_count;
                     $repo->total_fork = $info->forks_count;
                     $repo->subscribers = $info->subscribers_count;
@@ -77,7 +79,7 @@ class GetRepositoryInfo extends Command
                     if ($info->fork) {
                         echo "Repo " . $repo->name . " has fork is " . $info->parent->name . PHP_EOL;
                         $cUrl = "https://api.github.com/repos/" . $info->parent->full_name . "/contributors?per_page=100";
-                        $parentContributors = array_column((array)json_decode(get_github_data($cUrl)), "login");
+                        $parentContributors = array_column((array)json_decode(get_github_data($cUrl, "body", 2)), "login");
 
                         $contributors = array_filter($contributors, function ($row) use ($parentContributors) {
                             return !in_array($row, $parentContributors);
@@ -95,18 +97,18 @@ class GetRepositoryInfo extends Command
                     }
 
                     // Issue
+                    echo "Get issue solved!" . PHP_EOL;
                     $url = "https://api.github.com/repos/$prefix/issues?per_page=100&state=closed";
-                    $lastPage = get_last_page(get_github_data($url, "header"));
+                    $lastPage = get_last_page(get_github_data($url, "header",2));
                     echo "Total page: " . $lastPage . PHP_EOL;
                     $total_issue = 0;
                     for ($i = 1; $i <= $lastPage; $i++) {
                         echo "Process page: $i" . PHP_EOL;
                         $pageUrl = $url . "&page=$i";
-                        $data = json_decode(get_github_data($pageUrl));
+                        $data = json_decode(get_github_data($pageUrl, "body", 2));
                         if (isset($data->message))
                             throw new \Exception($data->message);
 
-//                    Log::info(print_r($data[0], true));
                         foreach ($data as $issue) {
                             $total_issue += 1;
                             if (!$exist = Issue::where("issue_id", $issue->id)->first()) {
@@ -125,17 +127,18 @@ class GetRepositoryInfo extends Command
                             }
                         }
                     }
-
                     $repo->total_issue_solved = $total_issue;
+
                     // Pull
+                    echo "Get pull request merged!" . PHP_EOL;
                     $url = "https://api.github.com/repos/$prefix/pulls?per_page=100&state=closed";
-                    $lastPage = get_last_page(get_github_data($url, "header"));
+                    $lastPage = get_last_page(get_github_data($url, "header",2));
                     echo "Total page: " . $lastPage . PHP_EOL;
                     $total_pulls = 0;
                     for ($i = 1; $i <= $lastPage; $i++) {
                         echo "Process page: $i" . PHP_EOL;
                         $pageUrl = $url . "&page=$i";
-                        $data = json_decode(get_github_data($pageUrl));
+                        $data = json_decode(get_github_data($pageUrl, "body", 2));
                         if (isset($data->message))
                             throw new \Exception($data->message);
 
@@ -147,8 +150,13 @@ class GetRepositoryInfo extends Command
                                     "author" => $pull->user->login,
                                     "status" => $pull->state,
                                     "repo" => $repo->id,
-                                    "chain" => $repo->chain
+                                    "chain" => $repo->chain,
+                                    "created_date" => date("Y-m-d H:i:s", strtotime($pull->created_at)),
                                 ]);
+                            }
+                            else{
+                                $exist->created_date = date("Y-m-d H:i:s", strtotime($pull->created_at));
+                                $exist->save();
                             }
                         }
                     }

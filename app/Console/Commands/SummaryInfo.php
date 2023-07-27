@@ -3,7 +3,13 @@
 namespace App\Console\Commands;
 
 use Botble\Statistic\Models\Chain;
+use Botble\Statistic\Models\ChainInfo;
+use Botble\Statistic\Models\Commit;
+use Botble\Statistic\Models\Contributor;
 use Botble\Statistic\Models\Developer;
+use Botble\Statistic\Models\Issue;
+use Botble\Statistic\Models\Pull;
+use Botble\Statistic\Models\Repository;
 use Illuminate\Console\Command;
 
 class SummaryInfo extends Command
@@ -42,14 +48,59 @@ class SummaryInfo extends Command
         $chainId = $this->ask("Chain id?");
         $chain = Chain::whereId($chainId)->first();
         echo "Chain name: " . $chain->name . PHP_EOL;
-        $developers = Developer::where("chain", $chain->id)
-            ->where("year", 2023)
-            ->where("month", "<=", now()->month)
-            ->where("month", ">", now()->month - 3)
-            ->pluck("author");
-
-        $data = process_developer_string($developers);
-
-        echo print_r($data, true) . PHP_EOL;
+        $range = [
+            24 => "24_hours",
+            (24 * 7) => "7_days",
+            (24 * 30) => "30_days"
+        ];
+        foreach ($range as $filter => $range_name){
+            echo "Range: $filter-$range_name" . PHP_EOL;
+            $info = ChainInfo::where([
+                ["chain", $chain->id],
+                ["range", $range_name]
+            ])->first();
+            if (!$info){
+                $info = new ChainInfo();
+                $info->chain = $chain->id;
+                $info->range = $range_name;
+                $info->save();
+            }
+            $commits = Commit::where([
+                ["chain", $chain->id],
+                ["exact_date", "<", now()->addHours(-1 * $filter)]
+            ])->get()->toArray();
+            //commit
+            $info->total_commits = array_sum(array_column($commits, "total_commit"));
+            //developer
+            $developers = Commit::where([
+                ["chain", $chain->id],
+                ["exact_date", "<", now()->addHours(-1 * $filter)],
+                ["exact_date", ">=", now()->addHours(-1 * $filter)->addMonths(-6)]
+            ])->get()->toArray();
+            $contributors = unique_name(Contributor::where("chain", $chain->id)->pluck("contributors")->toArray());
+            $fullTime = unique_name(array_column($developers, "full_time"));
+            $fullTime = array_filter($fullTime, function ($c) use ($contributors){
+                return !empty($c) && in_array($c, $contributors);
+            });
+            $partTime = unique_name(array_column($developers, "part_time"));
+            $partTime = array_filter($partTime, function ($c) use ($contributors, $fullTime){
+                return !empty($c) && in_array($c, $contributors) && !in_array($c, $fullTime);
+            });
+            $info->total_developer = count($fullTime) + count($partTime);
+//            $info->full_time_developer = $fullTime;
+//            $info->part_time_developer = $partTime;
+            //repos
+            $info->total_repository = Repository::where("chain", $chain->id)
+                ->where("created_date", "<", now()->addHours(-1 * $filter))->count();
+            //issue
+            $info->total_issue_solved = Issue::where("chain", $chain->id)
+                ->where("open_date", "<", now()->addHours(-1 * $filter))->count();
+            //pull
+            $info->total_pull_merged = Pull::where("chain", $chain->id)
+                ->where("created_date", "<", now()->addHours(-1 * $filter))->count();
+            $info->total_star = Repository::where("chain", $chain->id)->sum("total_star");
+            $info->total_fork = Repository::where("chain", $chain->id)->sum("total_fork");
+            $info->save();
+        }
     }
 }

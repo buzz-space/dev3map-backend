@@ -17,6 +17,13 @@ class APIController extends Controller
      *         description="Filter by categories (split by `,`)",
      *         required=false,
      *     ),
+     *     @SWG\Parameter(
+     *         name="before_hours",
+     *         in="query",
+     *         type="number",
+     *         description="Filter by hours before (day*24=hours)",
+     *         required=false,
+     *     ),
      *     @SWG\Response(
      *         response=200,
      *         description="OK",

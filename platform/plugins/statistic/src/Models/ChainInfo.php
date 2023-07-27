@@ -6,7 +6,7 @@ use Botble\Base\Traits\EnumCastable;
 use Botble\Base\Enums\BaseStatusEnum;
 use Botble\Base\Models\BaseModel;
 
-class Pull extends BaseModel
+class ChainInfo extends BaseModel
 {
 
     /**
@@ -14,17 +14,20 @@ class Pull extends BaseModel
      *
      * @var string
      */
-    protected $table = 'repository_pulls';
+    protected $table = 'chain_info';
 
     /**
      * @var array
      */
     protected $fillable = [
-        "pull_id",
-        "repo",
-        "chain",
-        "author",
-        "status",
-        "created_date"
+        'chain',
+        "total_commits",
+        "total_issue_solved",
+        "total_pull_merged",
+        "total_star",
+        "total_fork",
+        "total_developer",
+        "total_repository",
+        "range"
     ];
 }

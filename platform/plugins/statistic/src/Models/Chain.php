@@ -38,7 +38,6 @@ class Chain extends BaseModel
         'total_full_time_developer',
         'total_part_time_developer',
         'total_one_time_developer',
-        "description",
         "rising_star",
         "ibc_astronaut",
         "seriousness",

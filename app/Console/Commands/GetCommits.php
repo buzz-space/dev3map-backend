@@ -53,10 +53,10 @@ class GetCommits extends Command
         foreach (Chain::orderBy("id", "ASC")->get() as $chain) {
             $repositories = Repository::where("chain", $chain->id)->orderBy("id", "ASC")->get();
             echo "Chain: " . $chain->name . " with " . count($repositories) . " repositories!" . PHP_EOL;
-            if ($chain->id < 5) continue;
+            if ($chain->id < 29) continue;
             try {
                 foreach ($repositories as $j => $repository) {
-                    if ($repository->chain == 5 && $j < 24) continue;
+                    if ($repository->chain == 29 && $j < 18) continue;
 //            if (!in_array($repository->chain, [27, 43, 60])) continue;
 //                if ($repository->id < $lastRepo) continue;
                     echo ($j + 1) . ": " . $repository->name . PHP_EOL;
