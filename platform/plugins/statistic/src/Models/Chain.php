@@ -55,6 +55,6 @@ class Chain extends BaseModel
 
     public function info()
     {
-        return $this->hasOne(ChainInfo::class, "chain");
+        return $this->hasMany(ChainInfo::class, "chain");
     }
 }
