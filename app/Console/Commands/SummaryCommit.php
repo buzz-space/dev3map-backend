@@ -44,6 +44,7 @@ class SummaryCommit extends Command
      */
     public function handle()
     {
+        ini_set("memory_limit", -1);
         $commits = Commit::orderBy("id", "ASC")->get();
         $lastCommit = setting("last_commit", 0);
         $counting = 0;
