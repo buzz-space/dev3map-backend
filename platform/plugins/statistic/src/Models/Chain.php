@@ -45,7 +45,7 @@ class Chain extends BaseModel
 
     public function stats()
     {
-        return $this->hasOne(ChainInfo::class, "chain");
+        return $this->hasMany(ChainInfo::class, "chain");
     }
 
     public function repositories()
@@ -55,6 +55,6 @@ class Chain extends BaseModel
 
     public function info()
     {
-        return $this->hasMany(ChainInfo::class, "chain");
+        return $this->hasOne(ChainInfo::class, "chain");
     }
 }
