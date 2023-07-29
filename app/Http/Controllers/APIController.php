@@ -17,6 +17,13 @@ class APIController extends Controller
      *         description="Filter by categories (split by `,`)",
      *         required=false,
      *     ),
+     *     @SWG\Parameter(
+     *         name="before_hours",
+     *         in="query",
+     *         type="number",
+     *         description="Filter by hours before (day*24=hours)",
+     *         required=false,
+     *     ),
      *     @SWG\Response(
      *         response=200,
      *         description="OK",
@@ -43,8 +50,26 @@ class APIController extends Controller
      */
     /**
      * @SWG\Get (
-     *     path="/api/v1/commit-info",
+     *     path="/api/v1/summary-info",
      *     description="Get commit info for chain",
+     *     tags={"chain"},
+     *     @SWG\Parameter(
+     *         name="chain",
+     *         in="query",
+     *         type="number",
+     *         description="Chain id",
+     *         required=false,
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="OK",
+     *     ),
+     * )
+     */
+    /**
+     * @SWG\Get (
+     *     path="/api/v1/commit-chart",
+     *     description="Get commit chart",
      *     tags={"chain"},
      *     @SWG\Parameter(
      *         name="chain",
@@ -63,6 +88,24 @@ class APIController extends Controller
      * @SWG\Get (
      *     path="/api/v1/developer-info",
      *     description="Get developer info for chain",
+     *     tags={"chain"},
+     *     @SWG\Parameter(
+     *         name="chain",
+     *         in="query",
+     *         type="number",
+     *         description="Chain id",
+     *         required=false,
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="OK",
+     *     ),
+     * )
+     */
+    /**
+     * @SWG\Get (
+     *     path="/api/v1/developer-chart",
+     *     description="Get developer chart",
      *     tags={"chain"},
      *     @SWG\Parameter(
      *         name="chain",

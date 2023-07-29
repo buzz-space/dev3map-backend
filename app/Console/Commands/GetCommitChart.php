@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Botble\Statistic\Models\Chain;
 use Botble\Statistic\Models\Commit;
 use Botble\Statistic\Models\CommitChart;
+use Botble\Statistic\Models\Repository;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 
@@ -41,11 +42,11 @@ class GetCommitChart extends Command
      */
     public function handle()
     {
-        foreach (Chain::all() as $chain) {
+        foreach (Chain::orderBy("id", "ASC")->get() as $chain) {
             echo "Chain " . $chain->name . PHP_EOL;
 
-            if ($chain->total_commit <= 0)
-                continue;
+//            if ($chain->total_commit <= 0)
+//                continue;
             // Get commit chart
             $firstCommit = Commit::where("chain", $chain->id)->orderBy("exact_date", "ASC")->first();
             $lastCommit = Commit::where("chain", $chain->id)->orderBy("exact_date", "DESC")->first();
@@ -104,5 +105,27 @@ class GetCommitChart extends Command
 //                break;
         }
         echo "Done";
+    }
+
+    public function handles()
+    {
+        $chainId = $this->ask("Chain id?");
+        $chain = Chain::whereId($chainId)->first();
+        echo "Chain name: " . $chain->name . PHP_EOL;
+        $total = 0;
+        foreach (Repository::where("chain", $chain->id)->get() as $repo){
+            echo "Repo name: " . $repo->name . PHP_EOL;
+            $prefix = $repo->github_prefix;
+            $url = "https://api.github.com/repos/$prefix/commits?per_page=100";
+//            echo "url " . $url . PHP_EOL;
+            $lastPage = get_last_page(get_github_data($url, "header"));
+            $totalCommitLastPage = count(json_decode(get_github_data($url . "&page=$lastPage")));
+            $totalCommit = ($lastPage - 1) * 100 + $totalCommitLastPage;
+            echo "Has " . $totalCommit . PHP_EOL;
+            $total += $totalCommit;
+        }
+        echo "So total commit of chain " . $chain->name . " is " . number_format($total);
+//        $chain->total_commit = $total;
+//        $chain->save();
     }
 }

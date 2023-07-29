@@ -5,9 +5,14 @@ namespace Botble\Statistic\Http\Controllers\API;
 use Botble\Base\Http\Controllers\BaseController;
 use Botble\Base\Http\Responses\BaseHttpResponse;
 use Botble\Statistic\Models\Chain;
+use Botble\Statistic\Models\ChainInfo;
 use Botble\Statistic\Models\Commit;
 use Botble\Statistic\Models\CommitChart;
+use Botble\Statistic\Models\Contributor;
 use Botble\Statistic\Models\Developer;
+use Botble\Statistic\Models\Issue;
+use Botble\Statistic\Models\Pull;
+use Botble\Statistic\Models\Repository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -23,12 +28,35 @@ class StatisticController extends BaseController
                 $query->where("categories", "like", "%$z%");
             }
         }
-        return $response->setData($query->get());
+        $data = $query->select(
+            'id',
+            'name',
+            'github_prefix',
+            'categories',
+            'avatar',
+            "subscribers",
+            'website',
+            "rising_star",
+            "ibc_astronaut",
+            "seriousness"
+        )->with("stats")->get();
+        return $response->setData($data);
     }
 
     public function chainInfo($prefix, BaseHttpResponse $response)
     {
-        if (!$chain = Chain::where("github_prefix", $prefix)->first())
+        if (!$chain = Chain::where("github_prefix", $prefix)->select(
+            'id',
+            'name',
+            'github_prefix',
+            'categories',
+            'avatar',
+            "subscribers",
+            'website',
+            "rising_star",
+            "ibc_astronaut",
+            "seriousness"
+        )->with("stats")->first())
             return $response->setError()->setMessage("Chain not found!");
 
         return $response->setData($chain);
@@ -36,87 +64,114 @@ class StatisticController extends BaseController
 
     public function commitInfo(Request $request, BaseHttpResponse $response)
     {
-        if ($chain = Chain::find($request->input("chain", 0))) {
-            $data["total_commit"] = $chain->total_commit;
-            $data["commit_chart"] = CommitChart::where("chain", $chain->id)
-                ->selectRaw("week, month, year, total_commit, total_additions, total_deletions")
-                ->orderBy("year", "DESC")->orderBy("month", "DESC")->orderBy("week", "DESC")
-                ->take(62)
-                ->get();
+        if ($chain = Chain::find($request->input("chain"))) {
+            $data = [
+                "total_commit" => Commit::where("chain", $chain->id)->sum("total_commit"),
+                "total_issue" => Issue::where("chain", $chain->id)->count(),
+                "total_pull_request" => Pull::where("chain", $chain->id)->count(),
+                "total_star" => Repository::where("chain", $chain->id)->sum("total_star"),
+                "total_fork" => Repository::where("chain", $chain->id)->sum("total_fork")
+            ];
         }
-        else {
-            $data["total_commit"] = Chain::sum("total_commit");
-            $data["commit_chart"] = CommitChart::groupByRaw("week, month, year")
-                ->selectRaw("week, month, year, SUM(total_commit) as total_commit, SUM(total_additions) as total_additions, SUM(total_deletions) as total_deletions")
-                ->orderBy("year", "DESC")->orderBy("month", "DESC")->orderBy("week", "DESC")
-                ->take(62)
-                ->get();
+        else{
+            $data = [
+                "total_commit" => Commit::sum("total_commit"),
+                "total_issue" => Issue::count(),
+                "total_pull_request" => Pull::count(),
+                "total_star" => Repository::sum("total_star"),
+                "total_fork" => Repository::sum("total_fork")
+            ];
+        }
+            return $response->setData($data);
+    }
+
+    public function summaryInfo(Request $request, BaseHttpResponse $response)
+    {
+        if ($chain = Chain::find($request->input("chain"))) {
+            // Devs
+            $info = $chain->info()->where("range", "24_hours")->first();
+            //Issue
+            $total = Issue::where("chain", $chain->id)->groupBy("chain")
+                ->selectRaw("chain, COUNT(*) as count, SUM(total_minute) as total")->first()->toArray();
+            $issuePerform = $total["total"] / $total["count"] / 60 / 24;
+            //Pull
+            $contributors = array_unique(explode(",", implode(",", Contributor::where("chain", $chain->id)->pluck("contributors")->toArray())));
+            $pullCreator = array_unique(explode(",", implode(",",Pull::where("chain", $chain->id)->pluck("author")->toArray())));
+            $outbound = array_filter($pullCreator, function ($row) use ($contributors){
+                return !in_array($row, $contributors);
+            });
+            $outboundPulls = Pull::whereIn("author", $outbound)->where("chain", $chain->id)->count();
+            $communityAttribute = $outboundPulls / count($outbound);
+
+            $data = [
+                "total_commit" => Commit::where("chain", $chain->id)->sum("total_commit"),
+                "total_issue" => Issue::where("chain", $chain->id)->count(),
+                "total_pull_request" => Pull::where("chain", $chain->id)->count(),
+                "total_star" => Repository::where("chain", $chain->id)->sum("total_star"),
+                "total_fork" => Repository::where("chain", $chain->id)->sum("total_fork"),
+                "total_developer" => $info->full_time_developer + $info->part_time_developer,
+                "issue_performance" => number_format($issuePerform, 2),
+                "community_attribute" => number_format($communityAttribute, 2),
+            ];
+        }
+        else{
+            $info = ChainInfo::where("range", "24_hours")
+                ->select("full_time_developer", "part_time_developer")->get()->toArray();
+            //Issue
+            $total = Issue::groupBy("chain")->selectRaw("chain, COUNT(*) as count, SUM(total_minute) as total")->get()->toArray();
+            $issuePerform = array_sum(array_column($total, "count")) / array_sum(array_column($total, "total")) / 60 / 24;
+            //Pull
+            $contributors = unique_name(Contributor::pluck("contributors")->toArray());
+            $pullCreator = unique_name(Pull::pluck("author")->toArray());
+            $outbound = array_filter($pullCreator, function ($row) use ($contributors){
+                return !in_array($row, $contributors);
+            });
+            $outboundPulls = Pull::whereIn("author", $outbound)->count();
+            $communityAttribute = $outboundPulls / count($outbound);
+            $data = [
+                "total_commit" => Commit::sum("total_commit"),
+                "total_issue" => Issue::count(),
+                "total_pull_request" => Pull::count(),
+                "total_star" => Repository::sum("total_star"),
+                "total_fork" => Repository::sum("total_fork"),
+                "total_developer" => array_sum(array_column($info, "full_time_developer")) + array_sum(array_column($info, "part_time_developer")),
+                "issue_performance" => number_format($issuePerform, 2),
+                "community_attribute" => number_format($communityAttribute, 2),
+            ];
         }
         return $response->setData($data);
     }
 
-    public function developerInfo(Request $request, BaseHttpResponse $response)
+    public function getCommitChart(Request $request, BaseHttpResponse $response)
     {
-        $data = [];
-        if ($chain = Chain::find($request->input("chain", 0))) {
-            $data["total_developer"] = $chain->total_developer;
-            $data["total_full_time"] = $chain->total_full_time_developer;
-            $data["total_part_time"] = $chain->total_part_time_developer;
-            $data["total_one_time"] = $chain->total_one_time_developer;
-
-            $year = Developer::where([
-                ["chain", $chain->id],
-                ["year", now()->year]
-            ])->pluck("author")->toArray();
-            $year = process_developer_string(implode(",", $year));
-            foreach (["full_time", "part_time", "one_time"] as $type) {
-
-                $data[$type] = [
-                    "ath" => Developer::where("chain", $chain->id)->max("total_$type"),
-                    "atl" => Developer::where("chain", $chain->id)->min("total_$type"),
-                    "this_month" => ($devs = Developer::where([
-                        ["chain", $chain->id],
-                        ["month", now()->month],
-                        ["year", now()->year]
-                    ])->first()) ? $devs["total_$type"] : 0,
-                    "this_year" => $year[$type]
-                ];
-            }
-
-            $data["developer_chart"] = Developer::where("chain", $chain->id)
-                ->where("year", ">=", now()->year - 5)
-                ->select("month", "year", "total_developer", 'total_one_time', 'total_part_time', 'total_full_time')
-                ->orderBy("year", "ASC")->orderBy("month", "ASC")
-                ->get();
-
+        if ($chain = Chain::find($request->input("chain"))){
+            $data = CommitChart::where("chain", $chain->id)
+                ->orderBy("year", "DESC")->orderBy("month", "DESC")->orderBy("week", "DESC")
+                ->select("week", "month", "year", "total_commit", "total_additions", "total_deletions")
+                ->take(62)->get()->toArray();
         }
         else {
-            $data["total_developer"] = Chain::sum("total_developer");
-            $data["total_full_time"] = Chain::sum("total_full_time_developer");
-            $data["total_part_time"] = Chain::sum("total_part_time_developer");
-            $data["total_one_time"] = Chain::sum("total_one_time_developer");
-
-            $year = Developer::where("year", now()->year)->pluck("author")->toArray();
-            $year = process_developer_string(implode(",", $year));
-            foreach (["full_time", "part_time", "one_time"] as $type) {
-                $data[$type] = [
-                    "ath" => Developer::max("total_$type"),
-                    "atl" => Developer::min("total_$type"),
-                    "this_month" => ($devs = Developer::where([
-                        ["month", now()->month],
-                        ["year", now()->year]
-                    ])->first()) ? $devs["total_$type"] : 0,
-                    "this_year" => $year[$type]
-                ];
-            }
-
-            $data["developer_chart"] = Developer::groupByRaw("month, year")
-                ->where("year", ">=", now()->year - 5)
-                ->selectRaw("month, year, SUM(total_developer) as total_developer, SUM(total_one_time) as total_one_time, SUM(total_part_time) as total_part_time, SUM(total_full_time) as total_full_time")
-                ->orderBy("year", "ASC")->orderBy("month", "ASC")
-                ->get();
+            $data = CommitChart::groupByRaw("week, month, year")
+                ->selectRaw("week, month, year, SUM(total_commit) as total_commit, SUM(total_additions) as total_additions, SUM(total_deletions) as total_deletions")
+                ->orderBy("year", "DESC")->orderBy("month", "DESC")->orderBy("week", "DESC")
+                ->take(62)->get()->toArray();
         }
+        $data = array_reverse($data);
+        return $response->setData($data);
+    }
 
+    public function getDeveloperChart(Request $request, BaseHttpResponse $response)
+    {
+        if ($chain = Chain::find($request->input("chain"))){
+            $data = Commit::where("chain", $chain->id)
+                ->selectRaw("exact_date, (total_full_time + total_part_time) as active_developer")
+                ->orderBy("exact_date", "ASC")->get();
+        }
+        else {
+            $data = Commit::groupBy("exact_date")
+                ->selectRaw("exact_date, (SUM(total_full_time) + SUM(total_part_time)) as active_developer")
+                ->orderBy("exact_date", "ASC")->get();
+        }
         return $response->setData($data);
     }
 

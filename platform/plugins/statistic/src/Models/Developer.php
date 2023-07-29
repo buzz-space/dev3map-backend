@@ -21,14 +21,16 @@ class Developer extends BaseModel
      */
     protected $fillable = [
         'chain',
-        "month",
-        "year",
+        'day',
         "author",
         "total_commit",
         "total_developer",
         'total_one_time',
         'total_part_time',
         'total_full_time',
+        'one_time',
+        'part_time',
+        'full_time',
     ];
 
     public function repositories()
