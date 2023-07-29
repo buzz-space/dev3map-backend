@@ -66,12 +66,34 @@
                 }
             }
         },
-        "/api/v1/commit-info": {
+        "/api/v1/summary-info": {
             "get": {
                 "tags": [
                     "chain"
                 ],
                 "description": "Get commit info for chain",
+                "parameters": [
+                    {
+                        "name": "chain",
+                        "in": "query",
+                        "description": "Chain id",
+                        "required": false,
+                        "type": "number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/v1/commit-chart": {
+            "get": {
+                "tags": [
+                    "chain"
+                ],
+                "description": "Get commit chart",
                 "parameters": [
                     {
                         "name": "chain",
@@ -94,6 +116,28 @@
                     "chain"
                 ],
                 "description": "Get developer info for chain",
+                "parameters": [
+                    {
+                        "name": "chain",
+                        "in": "query",
+                        "description": "Chain id",
+                        "required": false,
+                        "type": "number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/v1/developer-chart": {
+            "get": {
+                "tags": [
+                    "chain"
+                ],
+                "description": "Get developer chart",
                 "parameters": [
                     {
                         "name": "chain",
