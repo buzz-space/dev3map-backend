@@ -86,24 +86,6 @@ class APIController extends Controller
      */
     /**
      * @SWG\Get (
-     *     path="/api/v1/developer-info",
-     *     description="Get developer info for chain",
-     *     tags={"chain"},
-     *     @SWG\Parameter(
-     *         name="chain",
-     *         in="query",
-     *         type="number",
-     *         description="Chain id",
-     *         required=false,
-     *     ),
-     *     @SWG\Response(
-     *         response=200,
-     *         description="OK",
-     *     ),
-     * )
-     */
-    /**
-     * @SWG\Get (
      *     path="/api/v1/developer-chart",
      *     description="Get developer chart",
      *     tags={"chain"},
