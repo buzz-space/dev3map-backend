@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Botble\Statistic\Models\Chain;
 use Botble\Statistic\Models\Commit;
 use Botble\Statistic\Models\CommitSHA;
+use Botble\Statistic\Models\Contributor;
 use Botble\Statistic\Models\Repository;
 
 //use Carbon\Carbon;
@@ -45,7 +46,6 @@ class GetCommits extends Command
     public function handle()
     {
         ini_set("memory_limit", -1);
-        $totalRequest = 0;
         $lastExactDate = null;
         $begin = "2018-01-01";
         $lastRepo = setting("last_repo", 0);
@@ -53,13 +53,13 @@ class GetCommits extends Command
         foreach (Chain::orderBy("id", "ASC")->get() as $chain) {
             $repositories = Repository::where("chain", $chain->id)->orderBy("id", "ASC")->get();
             echo "Chain: " . $chain->name . " with " . count($repositories) . " repositories!" . PHP_EOL;
-            if ($chain->id < 29) continue;
+            if ($chain->id < 61) continue;
             try {
                 foreach ($repositories as $j => $repository) {
-                    if ($repository->chain == 29 && $j < 18) continue;
 //            if (!in_array($repository->chain, [27, 43, 60])) continue;
-//                if ($repository->id < $lastRepo) continue;
-                    echo ($j + 1) . ": " . $repository->name . PHP_EOL;
+                    if ($chain->id == 61 && $repository->id < 2634 ) continue;
+                    echo ($j + 1) . ": " . $repository->id . "-" . $repository->name . PHP_EOL;
+                    $contributors = ($c = Contributor::where("repo", $repository->id)->first()) ? explode(",", $c->contributors) : [];
                     $prefix = $repository->github_prefix;
                     // Get commit
 //                if ($lastCommit = Commit::where("repo", $repository->id)->orderBy("exact_date", "ASC")->first())
@@ -67,18 +67,15 @@ class GetCommits extends Command
                     $url = "https://api.github.com/repos/$prefix/commits?per_page=100";
                     $url .= "&since=" . date(DATE_ISO8601, strtotime($begin));
                     $lastPage = get_last_page(get_github_data($url, "header"));
-                    $totalRequest += 1;
                     echo "Total page: " . $lastPage . PHP_EOL;
                     for ($i = 1; $i <= $lastPage; $i++) {
-//                        if ($repository->chain == 19 && $repository->id == 785 && $i < 104) continue;
+                        if ($repository->chain == 61 && $repository->id == 2634 && $i < 97) continue;
                         echo "Process page $i..." . PHP_EOL;
                         $commitUrl = $url . "&page=$i";
                         $data = json_decode(get_github_data($commitUrl));
-                        $totalRequest += 1;
                         if (isset($data->message)) {
                             Log::info("Repository " . $repository->name . ": " . $data->message);
                             continue;
-//                        throw new \Exception("Limit reached!");
                         }
 //                        echo $commitUrl . PHP_EOL;
                         $date = null;
@@ -86,9 +83,14 @@ class GetCommits extends Command
                         $sha = [];
 //                    Log::info(print_r($data, true));
                         foreach ($data as $commit) {
-//                        $detailUrl = "https://api.github.com/repos/$prefix/commits/" . $commit->sha;
-//                        $detail = json_decode(get_github_data($detailUrl));
-                            $totalRequest += 1;
+                            if (strpos($commit->commit->message, "Merge pull request") === 0)
+                                continue;
+                            if (isset($commit->author))
+                                $author = $commit->author->login ?? "";
+                            else
+                                $author = $commit->commit->author->name;
+                            if (!in_array($author, $contributors))
+                                continue;
                             $commitDate = date("Y-m-d", strtotime($commit->commit->author->date));
                             if ($date != $commitDate) {
                                 if ($save) {
@@ -97,8 +99,8 @@ class GetCommits extends Command
 
                                     // save sha
                                     $exists = CommitSHA::where("commit_id", $save->id)->pluck("sha")->toArray();
-                                    $sha = array_filter($sha, function ($row) use ($exists){
-                                       return !in_array($row, $exists);
+                                    $sha = array_filter($sha, function ($row) use ($exists) {
+                                        return !in_array($row, $exists);
                                     });
                                     foreach ($sha as $z) {
                                         CommitSHA::create([

@@ -40,13 +40,13 @@ class GetCommitChart extends Command
      *
      * @return int
      */
-    public function handles()
+    public function handle()
     {
-        foreach (Chain::all() as $chain) {
+        foreach (Chain::orderBy("id", "ASC")->get() as $chain) {
             echo "Chain " . $chain->name . PHP_EOL;
 
-            if ($chain->total_commit <= 0)
-                continue;
+//            if ($chain->total_commit <= 0)
+//                continue;
             // Get commit chart
             $firstCommit = Commit::where("chain", $chain->id)->orderBy("exact_date", "ASC")->first();
             $lastCommit = Commit::where("chain", $chain->id)->orderBy("exact_date", "DESC")->first();
@@ -107,7 +107,7 @@ class GetCommitChart extends Command
         echo "Done";
     }
 
-    public function handle()
+    public function handles()
     {
         $chainId = $this->ask("Chain id?");
         $chain = Chain::whereId($chainId)->first();

@@ -43,10 +43,18 @@ class Chain extends BaseModel
         "seriousness",
     ];
 
+    public function stats()
+    {
+        return $this->hasOne(ChainInfo::class, "chain");
+    }
 
-    public
-    function repositories()
+    public function repositories()
     {
         return $this->hasMany(Repository::class, "chain");
+    }
+
+    public function info()
+    {
+        return $this->hasOne(ChainInfo::class, "chain");
     }
 }

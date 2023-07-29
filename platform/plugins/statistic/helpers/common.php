@@ -116,6 +116,6 @@ function process_developer_string($developerString)
     ];
 }
 
-function unique_name($array){
+function unique_name(array $array){
     return array_unique(explode(",", implode(",", $array)));
 }

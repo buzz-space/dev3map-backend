@@ -30,6 +30,7 @@ class Repository extends BaseModel
         "total_fork",
         "subscribers",
         'chain',
+        'is_fork',
         'github_prefix',
         "created_date"
     ];

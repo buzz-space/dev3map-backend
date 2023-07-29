@@ -30,6 +30,8 @@ class Commit extends BaseModel
         "deletion",
         "full_time",
         "part_time",
+        "total_full_time",
+        "total_part_time",
         "one_time",
     ];
 
