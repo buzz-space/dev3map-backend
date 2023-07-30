@@ -58,7 +58,7 @@ class SummaryCommit extends Command
             $total_deletion = 0;
             foreach ($sha as $item) {
                 $detailUrl = "https://api.github.com/repos/$prefix/commits/" . $item;
-                $detail = json_decode(get_github_data($detailUrl, "body", 2));
+                $detail = json_decode(get_github_data($detailUrl, "body"));
                 if (isset($detail->message))
                     throw new \Exception($commit->id . " with SHA $item: " . $detail->message);
                 $total_addition += $detail->stats->additions;
