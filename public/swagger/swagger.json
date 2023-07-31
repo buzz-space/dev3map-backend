@@ -110,28 +110,6 @@
                 }
             }
         },
-        "/api/v1/developer-info": {
-            "get": {
-                "tags": [
-                    "chain"
-                ],
-                "description": "Get developer info for chain",
-                "parameters": [
-                    {
-                        "name": "chain",
-                        "in": "query",
-                        "description": "Chain id",
-                        "required": false,
-                        "type": "number"
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK"
-                    }
-                }
-            }
-        },
         "/api/v1/developer-chart": {
             "get": {
                 "tags": [
@@ -187,6 +165,42 @@
                         "name": "type",
                         "in": "query",
                         "description": "Type of rank (rising_star,ibc_astronaut,seriousness)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/v1/add-chain": {
+            "post": {
+                "tags": [
+                    "backend"
+                ],
+                "description": "Add info for chain",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Chain name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "github_prefix",
+                        "in": "query",
+                        "description": "Chain github",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "categories",
+                        "in": "query",
+                        "description": "Chain categories",
                         "required": true,
                         "type": "string"
                     }

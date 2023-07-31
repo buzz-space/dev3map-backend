@@ -58,7 +58,7 @@ class GetRepositories extends Command
             'Infrastructure,Web3', 'Infrastructure', 'Finance', 'Web3,Social,Games', 'Infrastructure', 'Infrastructure', 'Infrastructure,Data'];
         foreach ($chains as $i => $chain) {
             echo "Chain " . $chain->name . PHP_EOL;
-            if ($chain->id < 11) continue;
+            if ($chain->id != 11) continue;
             try {
 //                $chainUrl = "https://api.github.com/orgs/" . $chain->github_prefix;
 //                $chainInfo = json_decode(get_github_data($chainUrl));

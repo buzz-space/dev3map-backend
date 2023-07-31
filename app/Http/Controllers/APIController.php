@@ -138,6 +138,36 @@ class APIController extends Controller
      *     ),
      * )
      */
-
-
+    /**
+     * @SWG\Post (
+     *     path="/api/v1/add-chain",
+     *     description="Add info for chain",
+     *     tags={"backend"},
+     *     @SWG\Parameter(
+     *         name="name",
+     *         in="query",
+     *         type="string",
+     *         description="Chain name",
+     *         required=true,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="github_prefix",
+     *         in="query",
+     *         type="string",
+     *         description="Chain github",
+     *         required=true,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="categories",
+     *         in="query",
+     *         type="string",
+     *         description="Chain categories",
+     *         required=true,
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="OK",
+     *     ),
+     * )
+     */
 }
