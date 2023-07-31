@@ -15,7 +15,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command('get:commits')->hourly();
+         $schedule->command('summary:commit')->hourlyAt(30);
     }
 
     /**

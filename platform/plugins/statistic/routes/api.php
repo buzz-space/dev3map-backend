@@ -9,8 +9,10 @@ Route::group([
 ], function () {
     Route::get("chain-list", "StatisticController@chainList");
     Route::get("chain/{id}", "StatisticController@chainInfo");
-    Route::get("commit-info", "StatisticController@commitInfo");
-    Route::get("developer-info", "StatisticController@developerInfo");
+    Route::get("summary-info", "StatisticController@summaryInfo");
+    Route::get("commit-chart", "StatisticController@getCommitChart");
+    Route::get("developer-chart", "StatisticController@getDeveloperChart");
     Route::get("categories", "StatisticController@getCategories");
     Route::get("ranking", "StatisticController@ranking");
+    Route::post("add-chain", "StatisticController@addChain");
 });

@@ -38,16 +38,23 @@ class Chain extends BaseModel
         'total_full_time_developer',
         'total_part_time_developer',
         'total_one_time_developer',
-        "description",
         "rising_star",
         "ibc_astronaut",
         "seriousness",
     ];
 
+    public function stats()
+    {
+        return $this->hasMany(ChainInfo::class, "chain");
+    }
 
-    public
-    function repositories()
+    public function repositories()
     {
         return $this->hasMany(Repository::class, "chain");
+    }
+
+    public function info()
+    {
+        return $this->hasOne(ChainInfo::class, "chain");
     }
 }

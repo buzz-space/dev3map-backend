@@ -28,4 +28,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/ibclab-backend:1.0.0
+          tags: ${{ secrets.DOCKER_USERNAME }}/ibclab-backend:1.0.1

@@ -21,6 +21,22 @@
                     "chain"
                 ],
                 "description": "Get chain list",
+                "parameters": [
+                    {
+                        "name": "categories",
+                        "in": "query",
+                        "description": "Filter by categories (split by `,`)",
+                        "required": false,
+                        "type": "string"
+                    },
+                    {
+                        "name": "before_hours",
+                        "in": "query",
+                        "description": "Filter by hours before (day*24=hours)",
+                        "required": false,
+                        "type": "number"
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK"
@@ -28,7 +44,29 @@
                 }
             }
         },
-        "/api/v1/commit-info": {
+        "/api/v1/chain/{prefix}": {
+            "get": {
+                "tags": [
+                    "chain"
+                ],
+                "description": "Get chain info",
+                "parameters": [
+                    {
+                        "name": "prefix",
+                        "in": "path",
+                        "description": "Chain prefix",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/v1/summary-info": {
             "get": {
                 "tags": [
                     "chain"
@@ -39,8 +77,132 @@
                         "name": "chain",
                         "in": "query",
                         "description": "Chain id",
-                        "required": true,
+                        "required": false,
                         "type": "number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/v1/commit-chart": {
+            "get": {
+                "tags": [
+                    "chain"
+                ],
+                "description": "Get commit chart",
+                "parameters": [
+                    {
+                        "name": "chain",
+                        "in": "query",
+                        "description": "Chain id",
+                        "required": false,
+                        "type": "number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/v1/developer-chart": {
+            "get": {
+                "tags": [
+                    "chain"
+                ],
+                "description": "Get developer chart",
+                "parameters": [
+                    {
+                        "name": "chain",
+                        "in": "query",
+                        "description": "Chain id",
+                        "required": false,
+                        "type": "number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/v1/categories": {
+            "get": {
+                "tags": [
+                    "chain"
+                ],
+                "description": "Get categories",
+                "parameters": [
+                    {
+                        "name": "with_data",
+                        "in": "query",
+                        "description": "Optional: Get addtional chain with filter category",
+                        "required": false,
+                        "type": "number"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/v1/ranking": {
+            "get": {
+                "tags": [
+                    "chain"
+                ],
+                "description": "Get ranking",
+                "parameters": [
+                    {
+                        "name": "type",
+                        "in": "query",
+                        "description": "Type of rank (rising_star,ibc_astronaut,seriousness)",
+                        "required": true,
+                        "type": "string"
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK"
+                    }
+                }
+            }
+        },
+        "/api/v1/add-chain": {
+            "post": {
+                "tags": [
+                    "backend"
+                ],
+                "description": "Add info for chain",
+                "parameters": [
+                    {
+                        "name": "name",
+                        "in": "query",
+                        "description": "Chain name",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "github_prefix",
+                        "in": "query",
+                        "description": "Chain github",
+                        "required": true,
+                        "type": "string"
+                    },
+                    {
+                        "name": "categories",
+                        "in": "query",
+                        "description": "Chain categories",
+                        "required": true,
+                        "type": "string"
                     }
                 ],
                 "responses": {

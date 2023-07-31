@@ -28,6 +28,11 @@ class Commit extends BaseModel
         "total_fork_commit",
         "additions",
         "deletion",
+        "full_time",
+        "part_time",
+        "total_full_time",
+        "total_part_time",
+        "one_time",
     ];
 
 }
