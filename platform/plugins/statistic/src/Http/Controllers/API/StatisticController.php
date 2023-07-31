@@ -4,6 +4,7 @@ namespace Botble\Statistic\Http\Controllers\API;
 
 use Botble\Base\Http\Controllers\BaseController;
 use Botble\Base\Http\Responses\BaseHttpResponse;
+use Botble\Statistic\Jobs\GetInfoChain;
 use Botble\Statistic\Models\Chain;
 use Botble\Statistic\Models\ChainInfo;
 use Botble\Statistic\Models\Commit;
@@ -90,18 +91,6 @@ class StatisticController extends BaseController
         if ($chain = Chain::find($request->input("chain"))) {
             // Devs
             $info = $chain->info()->where("range", "24_hours")->first();
-            //Issue
-            $total = Issue::where("chain", $chain->id)->groupBy("chain")
-                ->selectRaw("chain, COUNT(*) as count, SUM(total_minute) as total")->first()->toArray();
-            $issuePerform = $total["total"] / $total["count"] / 60 / 24;
-            //Pull
-            $contributors = array_unique(explode(",", implode(",", Contributor::where("chain", $chain->id)->pluck("contributors")->toArray())));
-            $pullCreator = array_unique(explode(",", implode(",",Pull::where("chain", $chain->id)->pluck("author")->toArray())));
-            $outbound = array_filter($pullCreator, function ($row) use ($contributors){
-                return !in_array($row, $contributors);
-            });
-            $outboundPulls = Pull::whereIn("author", $outbound)->where("chain", $chain->id)->count();
-            $communityAttribute = $outboundPulls / count($outbound);
 
             $data = [
                 "total_commit" => Commit::where("chain", $chain->id)->sum("total_commit"),
@@ -110,24 +99,14 @@ class StatisticController extends BaseController
                 "total_star" => Repository::where("chain", $chain->id)->sum("total_star"),
                 "total_fork" => Repository::where("chain", $chain->id)->sum("total_fork"),
                 "total_developer" => $info->full_time_developer + $info->part_time_developer,
-                "issue_performance" => number_format($issuePerform, 2),
-                "community_attribute" => number_format($communityAttribute, 2),
+                "issue_performance" => number_format($info->issue_performance, 2),
+                "community_attribute" => number_format($info->community_attribute, 2),
             ];
         }
         else{
             $info = ChainInfo::where("range", "24_hours")
                 ->select("full_time_developer", "part_time_developer")->get()->toArray();
-            //Issue
-            $total = Issue::groupBy("chain")->selectRaw("chain, COUNT(*) as count, SUM(total_minute) as total")->get()->toArray();
-            $issuePerform = array_sum(array_column($total, "count")) / array_sum(array_column($total, "total")) / 60 / 24;
-            //Pull
-            $contributors = unique_name(Contributor::pluck("contributors")->toArray());
-            $pullCreator = unique_name(Pull::pluck("author")->toArray());
-            $outbound = array_filter($pullCreator, function ($row) use ($contributors){
-                return !in_array($row, $contributors);
-            });
-            $outboundPulls = Pull::whereIn("author", $outbound)->count();
-            $communityAttribute = $outboundPulls / count($outbound);
+
             $data = [
                 "total_commit" => Commit::sum("total_commit"),
                 "total_issue" => Issue::count(),
@@ -135,8 +114,8 @@ class StatisticController extends BaseController
                 "total_star" => Repository::sum("total_star"),
                 "total_fork" => Repository::sum("total_fork"),
                 "total_developer" => array_sum(array_column($info, "full_time_developer")) + array_sum(array_column($info, "part_time_developer")),
-                "issue_performance" => number_format($issuePerform, 2),
-                "community_attribute" => number_format($communityAttribute, 2),
+                "issue_performance" => setting("issue_performance", 0),
+                "community_attribute" => setting("community_attribute", 0),
             ];
         }
         return $response->setData($data);
@@ -165,12 +144,12 @@ class StatisticController extends BaseController
         if ($chain = Chain::find($request->input("chain"))){
             $data = Commit::where("chain", $chain->id)
                 ->selectRaw("exact_date, (total_full_time + total_part_time) as active_developer")
-                ->orderBy("exact_date", "ASC")->get();
+                ->orderBy("exact_date", "DESC")->limit(500)->get();
         }
         else {
             $data = Commit::groupBy("exact_date")
                 ->selectRaw("exact_date, (SUM(total_full_time) + SUM(total_part_time)) as active_developer")
-                ->orderBy("exact_date", "ASC")->get();
+                ->orderBy("exact_date", "DESC")->limit(500)->get();
         }
         return $response->setData($data);
     }
@@ -207,5 +186,27 @@ class StatisticController extends BaseController
         $type = $request->input("type");
         $data = Chain::orderBy($type, "DESC")->take(10)->get();
         return $response->setData($data);
+    }
+
+    public function addChain(Request $request, BaseHttpResponse $response)
+    {
+        $validator = Validator::make($request->all(), [
+            "name" => "required",
+            "github_prefix" => "required|unique:chains,github_prefix",
+            "categories" => "required",
+        ]);
+
+        if ($validator->fails())
+            return $response->setError()->setMessage(processValidators($validator->errors()->toArray()));
+
+        $chain = Chain::create([
+            "name" => $request->input("name"),
+            "github_prefix" => $request->input("github_prefix"),
+            "categories" => $request->input("categories")
+        ]);
+
+        dispatch(new GetInfoChain($chain->id));
+
+        return $response->setMessage("Created!");
     }
 }

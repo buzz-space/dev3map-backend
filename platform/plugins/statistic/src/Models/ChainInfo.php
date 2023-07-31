@@ -30,6 +30,8 @@ class ChainInfo extends BaseModel
         "part_time_developer",
         "full_time",
         "part_time",
+        "issue_performance",
+        "community_attribute",
         "total_repository",
         "range"
     ];

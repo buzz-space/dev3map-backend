@@ -2,6 +2,7 @@
 
 function get_github_data($url, $return = "body", $key = 1)
 {
+    $key = 1;
     $ch = curl_init($url);
     $headers = [];
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
