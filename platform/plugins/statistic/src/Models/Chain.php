@@ -22,25 +22,16 @@ class Chain extends BaseModel
     protected $fillable = [
         'name',
         'description',
-        "total_commit",
-        "total_contributor",
-        "total_issue_solved",
-        "total_star",
-        "total_fork",
         'last_updated',
         'github_prefix',
         'categories',
         'avatar',
         "subscribers",
         'website',
-        'total_pull_request',
-        'total_developer',
-        'total_full_time_developer',
-        'total_part_time_developer',
-        'total_one_time_developer',
         "rising_star",
         "ibc_astronaut",
         "seriousness",
+        "is_repo",
     ];
 
     public function stats()

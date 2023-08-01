@@ -22,6 +22,7 @@ class Repository extends BaseModel
      */
     protected $fillable = [
         'name',
+        'description',
         "total_commit",
         "total_contributor",
         "total_issue_solved",
@@ -32,7 +33,7 @@ class Repository extends BaseModel
         'chain',
         'is_fork',
         'github_prefix',
-        "created_date"
+        "created_date",
     ];
 
     public function chain()
