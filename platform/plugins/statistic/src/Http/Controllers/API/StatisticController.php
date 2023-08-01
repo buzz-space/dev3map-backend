@@ -218,8 +218,8 @@ class StatisticController extends BaseController
 
         foreach ($calculate as $item){
             $author = $item->author;
-            $item->open = count(array_filter($pullDevelopers, function ($row) use ($author){
-                return $row["author"] == $author && $row["status"] == "open";
+            $item->closed = count(array_filter($pullDevelopers, function ($row) use ($author){
+                return $row["author"] == $author && $row["status"] == "closed";
             }));
             $item->repos = array_column(array_filter($repos, function ($row) use ($author){
                 return strpos($row["total_contributor"], $author);
