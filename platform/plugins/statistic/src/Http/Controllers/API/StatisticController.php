@@ -188,6 +188,47 @@ class StatisticController extends BaseController
         return $response->setData($data);
     }
 
+    public function getChainRepository($chain_id, BaseHttpResponse $response)
+    {
+        if (!$chain = Chain::find($chain_id))
+            return $response->setError()->setMessage("Chain not found!");
+
+        $repos = Repository::where("chain", $chain->id)
+            ->selectRaw("id, name, github_prefix, description, contributors, total_star, total_commit")
+            ->orderBy("total_commit", "DESC")->orderBy("total_star", "DESC")->orderBy("contributors", "DESC")
+            ->get();
+
+        return $response->setData($repos);
+    }
+
+    public function getTopDeveloper($chain_id, BaseHttpResponse $response)
+    {
+        if (!$chain = Chain::find($chain_id))
+            return $response->setError()->setMessage("Chain not found!");
+
+        $repos = Repository::where("chain", $chain->id)->select("name", "total_contributor")->get()->toArray();
+        $contributors = unique_name(array_column($repos, "total_contributor"));
+
+        $pullDevelopers = Pull::where("chain", $chain->id)->whereIn("author", $contributors)
+            ->select("author", "status")->get()->toArray();
+
+        $calculate = Pull::where("chain", $chain->id)->whereIn("author", $contributors)
+            ->groupBy("author")
+            ->selectRaw("author, COUNT(*) as total")->orderBy("total", "DESC")->get();
+
+        foreach ($calculate as $item){
+            $author = $item->author;
+            $item->open = count(array_filter($pullDevelopers, function ($row) use ($author){
+                return $row["author"] == $author && $row["status"] == "open";
+            }));
+            $item->repos = array_column(array_filter($repos, function ($row) use ($author){
+                return strpos($row["total_contributor"], $author);
+            }), "name");
+        }
+
+        return $response->setData($calculate);
+    }
+
     public function addChain(Request $request, BaseHttpResponse $response)
     {
         $validator = Validator::make($request->all(), [
@@ -202,11 +243,10 @@ class StatisticController extends BaseController
         $chain = Chain::create([
             "name" => $request->input("name"),
             "github_prefix" => $request->input("github_prefix"),
-            "categories" => $request->input("categories")
+            "categories" => $request->input("categories"),
+            "is_repo" => $request->has("is_repo")
         ]);
 
-        dispatch(new GetInfoChain($chain->id));
-
-        return $response->setMessage("Created!");
+        return $response->setMessage("Created " . $chain->name);
     }
 }
