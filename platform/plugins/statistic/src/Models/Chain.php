@@ -31,6 +31,9 @@ class Chain extends BaseModel
         "rising_star",
         "ibc_astronaut",
         "seriousness",
+        "commit_rank",
+        "pull_rank",
+        "dev_rank",
         "is_repo",
     ];
 
