@@ -34,6 +34,9 @@ class Chain extends BaseModel
         "commit_rank",
         "pull_rank",
         "dev_rank",
+        "issue_rank",
+        "fork_rank",
+        "star_rank",
         "is_repo",
     ];
 

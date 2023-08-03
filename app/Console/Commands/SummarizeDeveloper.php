@@ -63,20 +63,23 @@ class SummarizeDeveloper extends Command
 //            $chain->total_one_time_developer += $data["one_time"];
 //            $chain->total_developer += ($data["full_time"] + $data["part_time"] + $data["one_time"]);
 
-            $commitRank = count($chains) - array_search($chain->id, $sortByCommit) + 1;
-            $issueRank = count($chains) - array_search($chain->id, $sortByIssue) + 1;
-            $PRSolvedRank = count($chains) - array_search($chain->id, $sortByPRSolved) + 1;
-            $developerRank = count($chains) - array_search($chain->id, $sortByDeveloper) + 1;
-            $forkRank = count($chains) - array_search($chain->id, $sortByFork) + 1;
-            $starRank = count($chains) - array_search($chain->id, $sortByStar) + 1;
-            $chain->seriousness = round($commitRank / 100 * 35, 2) + round($issueRank / 100 * 20, 2)
-                + round($PRSolvedRank / 100 * 20, 2) + round($developerRank / 100 * 25, 2);
-            $chain->rising_star = round($forkRank / 100 * 65, 2) + round($starRank / 100 * 35, 2);
-            $chain->ibc_astronaut = round($commitRank / 100 * 50, 2) + round($issueRank / 100 * 20, 2)
-                + round($PRSolvedRank / 100 * 30, 2);
-            echo "Seriousness: " . number_format($chain->seriousness, 2) . PHP_EOL;
-            echo "Rising star: " . number_format($chain->rising_star, 2) . PHP_EOL;
-            echo "IBC Astronaut: " . number_format($chain->ibc_astronaut, 2) . PHP_EOL;
+            $chain->commit_rank = array_search($chain->id, $sortByCommit) + 1;
+            $chain->pull_rank = array_search($chain->id, $sortByPRSolved) + 1;
+            $chain->issue_rank = array_search($chain->id, $sortByIssue) + 1;
+            $chain->developer_rank = array_search($chain->id, $sortByDeveloper) + 1;
+            $chain->star_rank = array_search($chain->id, $sortByStar) + 1;
+            $chain->fork_rank = array_search($chain->id, $sortByFork) + 1;
+            $commitRank = count($chains) - $chain->commit_rank;
+            $issueRank = count($chains) - $chain->issue_rank;
+            $PRSolvedRank = count($chains) - $chain->pull_rank;
+            $developerRank = count($chains) - $chain->developer_rank;
+            $forkRank = count($chains) - $chain->fork_rank;
+            $starRank = count($chains) - $chain->star_rank;
+            $chain->seriousness = (round($commitRank / 100 * 35, 2) + round($issueRank / 100 * 20, 2)
+                + round($PRSolvedRank / 100 * 20, 2) + round($developerRank / 100 * 25, 2)) / 4;
+            $chain->rising_star = (round($forkRank / 100 * 65, 2) + round($starRank / 100 * 35, 2)) / 2;
+            $chain->ibc_astronaut = (round($commitRank / 100 * 50, 2) + round($issueRank / 100 * 20, 2)
+                + round($PRSolvedRank / 100 * 30, 2)) / 3;
             $chain->save();
             echo PHP_EOL;
         }
