@@ -151,6 +151,9 @@ class StatisticController extends BaseController
                 ->selectRaw("exact_date, (SUM(total_full_time) + SUM(total_part_time)) as active_developer")
                 ->orderBy("exact_date", "DESC")->limit(500)->get();
         }
+
+        $data = array_reverse($data->toArray());
+
         return $response->setData($data);
     }
 
@@ -185,7 +188,60 @@ class StatisticController extends BaseController
 
         $type = $request->input("type");
         $data = Chain::orderBy($type, "DESC")->take(10)->get();
+        $total_chain = Chain::count();
+        foreach ($data as $chain){
+            $info = $chain->info()->where("range", "24_hours")->first();
+            $chain->total_commit = $info->total_commits ?? 0;
+            $chain->total_pulls = $info->total_pull_merged ?? 0;
+            $chain->total_developer = $info->full_time_developer ?? 0;
+            $chain->total_chain = $total_chain;
+        }
         return $response->setData($data);
+    }
+
+    public function getChainRepository($chain_id, BaseHttpResponse $response)
+    {
+        if (!$chain = Chain::find($chain_id))
+            return $response->setError()->setMessage("Chain not found!");
+
+        $repos = Repository::where("chain", $chain->id)
+            ->selectRaw("id, name, github_prefix, description, contributors, total_star, total_commit")
+            ->orderBy("total_commit", "DESC")->orderBy("total_star", "DESC")->orderBy("contributors", "DESC")
+            ->get();
+
+        return $response->setData($repos);
+    }
+
+    public function getTopDeveloper($chain_id, BaseHttpResponse $response)
+    {
+        if (!$chain = Chain::find($chain_id))
+            return $response->setError()->setMessage("Chain not found!");
+
+        $repos = Repository::where("chain", $chain->id)->select("name", "total_contributor")->get()->toArray();
+        $contributors = unique_name(array_column($repos, "total_contributor"));
+
+        $pullDevelopers = Pull::where("chain", $chain->id)->whereIn("author", $contributors)
+            ->select("author", "status")->get()->toArray();
+
+        $calculate = Pull::where("chain", $chain->id)->whereIn("author", $contributors)
+            ->groupBy("author")
+            ->selectRaw("author, COUNT(*) as total")->orderBy("total", "DESC")->get();
+
+        $commits = explode(",", implode(",", Commit::where("chain", $chain->id)->pluck("author_list")->toArray()));
+        $commits = array_count_values($commits);
+
+        foreach ($calculate as $item){
+            $author = $item->author;
+            $item->closed = count(array_filter($pullDevelopers, function ($row) use ($author){
+                return $row["author"] == $author && $row["status"] == "closed";
+            }));
+            $item->repos = array_column(array_filter($repos, function ($row) use ($author){
+                return strpos($row["total_contributor"], $author);
+            }), "name");
+            $item->commits = isset($commits[$author]) ? $commits[$author] : 0;
+        }
+
+        return $response->setData($calculate);
     }
 
     public function addChain(Request $request, BaseHttpResponse $response)
@@ -202,11 +258,10 @@ class StatisticController extends BaseController
         $chain = Chain::create([
             "name" => $request->input("name"),
             "github_prefix" => $request->input("github_prefix"),
-            "categories" => $request->input("categories")
+            "categories" => $request->input("categories"),
+            "is_repo" => $request->has("is_repo")
         ]);
 
-        dispatch(new GetInfoChain($chain->id));
-
-        return $response->setMessage("Created!");
+        return $response->setMessage("Created " . $chain->name);
     }
 }
