@@ -151,6 +151,9 @@ class StatisticController extends BaseController
                 ->selectRaw("exact_date, (SUM(total_full_time) + SUM(total_part_time)) as active_developer")
                 ->orderBy("exact_date", "DESC")->limit(500)->get();
         }
+
+        $data = array_reverse($data->toArray());
+
         return $response->setData($data);
     }
 
@@ -185,6 +188,12 @@ class StatisticController extends BaseController
 
         $type = $request->input("type");
         $data = Chain::orderBy($type, "DESC")->take(10)->get();
+        foreach ($data as $chain){
+            $info = $chain->info()->where("range", "24_hours")->first();
+            $chain->total_commit = $info->total_commits ?? 0;
+            $chain->total_pulls = $info->total_pull_merged ?? 0;
+            $chain->total_developer = $info->full_time_developer ?? 0;
+        }
         return $response->setData($data);
     }
 
@@ -216,6 +225,9 @@ class StatisticController extends BaseController
             ->groupBy("author")
             ->selectRaw("author, COUNT(*) as total")->orderBy("total", "DESC")->get();
 
+        $commits = explode(",", implode(",", Commit::where("chain", $chain->id)->pluck("author_list")->toArray()));
+        $commits = array_count_values($commits);
+
         foreach ($calculate as $item){
             $author = $item->author;
             $item->closed = count(array_filter($pullDevelopers, function ($row) use ($author){
@@ -224,6 +236,7 @@ class StatisticController extends BaseController
             $item->repos = array_column(array_filter($repos, function ($row) use ($author){
                 return strpos($row["total_contributor"], $author);
             }), "name");
+            $item->commits = isset($commits[$author]) ? $commits[$author] : 0;
         }
 
         return $response->setData($calculate);

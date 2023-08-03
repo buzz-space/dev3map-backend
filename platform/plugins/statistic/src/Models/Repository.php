@@ -40,4 +40,9 @@ class Repository extends BaseModel
     {
         return $this->belongsTo(Chain::class, "chain");
     }
+
+    public function commits()
+    {
+        return $this->hasMany(Commit::class, "repo");
+    }
 }
