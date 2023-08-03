@@ -188,11 +188,13 @@ class StatisticController extends BaseController
 
         $type = $request->input("type");
         $data = Chain::orderBy($type, "DESC")->take(10)->get();
+        $total_chain = Chain::count();
         foreach ($data as $chain){
             $info = $chain->info()->where("range", "24_hours")->first();
             $chain->total_commit = $info->total_commits ?? 0;
             $chain->total_pulls = $info->total_pull_merged ?? 0;
             $chain->total_developer = $info->full_time_developer ?? 0;
+            $chain->total_chain = $total_chain;
         }
         return $response->setData($data);
     }
