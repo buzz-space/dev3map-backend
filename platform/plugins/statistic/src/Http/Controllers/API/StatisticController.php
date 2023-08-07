@@ -193,11 +193,10 @@ class StatisticController extends BaseController
             $info = $chain->info()->where("range", "24_hours")->first();
             $chain->total_commit = $info->total_commits ?? 0;
             $chain->total_pulls = $info->total_pull_merged ?? 0;
-            $chain->total_developer = $info->full_time_developer ?? 0;
+            $chain->total_developer = ($info->full_time_developer ?? 0) + ($info->part_time_developer ?? 0);
             $chain->total_issue = $info->total_issue_solved ?? 0;
             $chain->total_star = $info->total_star ?? 0;
             $chain->total_fork = $info->total_fork ?? 0;
-            $chain->total_developer = $info->full_time_developer ?? 0;
             $chain->total_chain = $total_chain;
         }
         return $response->setData($data);
