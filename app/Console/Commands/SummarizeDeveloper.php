@@ -66,13 +66,13 @@ class SummarizeDeveloper extends Command
             $chain->commit_rank = array_search($chain->id, $sortByCommit) + 1;
             $chain->pull_rank = array_search($chain->id, $sortByPRSolved) + 1;
             $chain->issue_rank = array_search($chain->id, $sortByIssue) + 1;
-            $chain->developer_rank = array_search($chain->id, $sortByDeveloper) + 1;
+            $chain->dev_rank = array_search($chain->id, $sortByDeveloper) + 1;
             $chain->star_rank = array_search($chain->id, $sortByStar) + 1;
             $chain->fork_rank = array_search($chain->id, $sortByFork) + 1;
             $commitRank = count($chains) - $chain->commit_rank;
             $issueRank = count($chains) - $chain->issue_rank;
             $PRSolvedRank = count($chains) - $chain->pull_rank;
-            $developerRank = count($chains) - $chain->developer_rank;
+            $developerRank = count($chains) - $chain->dev_rank;
             $forkRank = count($chains) - $chain->fork_rank;
             $starRank = count($chains) - $chain->star_rank;
             $chain->seriousness = (round($commitRank / 100 * 35, 2) + round($issueRank / 100 * 20, 2)
