@@ -51,8 +51,7 @@ class SummaryCommit extends Command
         foreach ($commits as $commit) {
             $repo = Repository::find($commit->repo);
             $prefix = $repo->github_prefix;
-            if ($commit->id < $lastCommit) continue;
-            echo "Commit ID: " . $commit->id . PHP_EOL;
+            if ($commit->id <= $lastCommit) continue;
             $sha = CommitSHA::where("commit_id", $commit->id)->pluck("sha");
             $total_addition = 0;
             $total_deletion = 0;
@@ -72,7 +71,7 @@ class SummaryCommit extends Command
                 ->where("from", "<=", $commit->exact_date)
                 ->where("to", ">=", $commit->exact_date)
                 ->first();
-            echo "Chart ID: " . $chart->id . PHP_EOL;
+//            echo "Chart ID: " . $chart->id . PHP_EOL;
             $chart->total_additions += $total_addition;
             $chart->total_deletions += $total_deletion;
             $chart->save();
