@@ -68,21 +68,21 @@ class SummaryCommit extends Command
             $commit->deletions = $total_deletion;
             $commit->save();
 
-//            $chart = CommitChart::where("chain", $repo->chain)
-//                ->where("from", "<=", $commit->exact_date)
-//                ->where("to", ">=", $commit->exact_date)
-//                ->first();
-//            echo "Chart ID: " . $chart->id . PHP_EOL;
-//            $chart->total_additions += $total_addition;
-//            $chart->total_deletions += $total_deletion;
-//            $chart->save();
+            $chart = CommitChart::where("chain", $repo->chain)
+                ->where("from", "<=", $commit->exact_date)
+                ->where("to", ">=", $commit->exact_date)
+                ->first();
+            echo "Chart ID: " . $chart->id . PHP_EOL;
+            $chart->total_additions += $total_addition;
+            $chart->total_deletions += $total_deletion;
+            $chart->save();
 
             setting()->set("last_commit", $commit->id);
             setting()->save();
 
             $counting++;
             if ($counting == 5000)
-                throw new \Exception("Limit reached!");
+                throw new \Exception("Limit reached at " . now()->toDateTimeString());
 
 //            return;
         }
