@@ -71,12 +71,12 @@ class SummarizeDeveloper extends Command
             $star_index = array_search($chain->id, $sortByStar);
             $fork_index = array_search($chain->id, $sortByFork);
             // Rank
-            $chain->commit_rank = $commit_index ? 1 + $commit_index : 101;
-            $chain->pull_rank = $pull_index ? 1 + $pull_index : 101;
-            $chain->issue_rank = $issue_index ? 1 + $issue_index : 101;
-            $chain->dev_rank = $dev_index ? 1 + $dev_index : 101;
-            $chain->star_rank = $star_index ? 1 + $star_index : 101;
-            $chain->fork_rank = $fork_index ? 1 + $fork_index : 101;
+            $chain->commit_rank = $commit_index !== false ? 1 + $commit_index : 101;
+            $chain->pull_rank = $pull_index !== false ? 1 + $pull_index : 101;
+            $chain->issue_rank = $issue_index !== false ? 1 + $issue_index : 101;
+            $chain->dev_rank = $dev_index !== false ? 1 + $dev_index : 101;
+            $chain->star_rank = $star_index !== false ? 1 + $star_index : 101;
+            $chain->fork_rank = $fork_index !== false ? 1 + $fork_index : 101;
             // Score
             $commit_score = 101 - $chain->commit_rank;
             $pull_score = 101 - $chain->pull_rank;
