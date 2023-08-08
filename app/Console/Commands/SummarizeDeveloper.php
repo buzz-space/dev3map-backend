@@ -85,11 +85,9 @@ class SummarizeDeveloper extends Command
             $star_score = 101 - $chain->star_rank;
             $fork_score = 101 - $chain->fork_rank;
 
-            $chain->seriousness = (round($commit_score / 100 * 35, 2) + round($issue_score / 100 * 20, 2)
-                    + round($pull_score / 100 * 20, 2) + round($dev_score / 100 * 25, 2)) / 4;
-            $chain->rising_star = (round($fork_score / 100 * 65, 2) + round($star_score / 100 * 35, 2)) / 2;
-            $chain->ibc_astronaut = (round($commit_score / 100 * 50, 2) + round($issue_score / 100 * 20, 2)
-                    + round($pull_score / 100 * 30, 2)) / 3;
+            $chain->seriousness = ($commit_score + $issue_score + $pull_score + $dev_score) / 4;
+            $chain->rising_star = ($star_score + $fork_score) / 2;
+            $chain->ibc_astronaut = ($commit_score + $issue_score + $pull_score) / 3;
             $chain->symbol = $symbol[$i];
             if ($chain->is_repo)
                 $chain->github_prefix = str_replace("/", "-", $chain->github_prefix);
