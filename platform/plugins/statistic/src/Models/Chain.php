@@ -24,6 +24,7 @@ class Chain extends BaseModel
         'description',
         'last_updated',
         'github_prefix',
+        'symbol',
         'categories',
         'avatar',
         "subscribers",

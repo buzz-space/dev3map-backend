@@ -44,16 +44,17 @@ class SummarizeDeveloper extends Command
      */
     public function handle()
     {
-        $sortByCommit = ChainInfo::where("range", "24_hours")->orderBy("total_commits", "DESC")->pluck("chain")->toArray();
-        $sortByIssue = ChainInfo::where("range", "24_hours")->orderBy("total_issue_solved", "DESC")->pluck("chain")->toArray();
-        $sortByPRSolved = ChainInfo::where("range", "24_hours")->orderBy("total_pull_merged", "DESC")->pluck("chain")->toArray();
+        $sortByCommit = ChainInfo::where("range", "24_hours")->orderBy("total_commits", "DESC")->take(100)->pluck("chain")->toArray();
+        $sortByIssue = ChainInfo::where("range", "24_hours")->orderBy("total_issue_solved", "DESC")->take(100)->pluck("chain")->toArray();
+        $sortByPRSolved = ChainInfo::where("range", "24_hours")->orderBy("total_pull_merged", "DESC")->take(100)->pluck("chain")->toArray();
         $sortByDeveloper = ChainInfo::where("range", "24_hours")
             ->selectRaw("chain, (full_time_developer + part_time_developer) as total_developer")
-            ->orderBy("total_developer", "DESC")->pluck("chain")->toArray();
-        $sortByFork = ChainInfo::where("range", "24_hours")->orderBy("total_fork", "DESC")->pluck("chain")->toArray();
-        $sortByStar = ChainInfo::where("range", "24_hours")->orderBy("total_star", "DESC")->pluck("chain")->toArray();
+            ->orderBy("total_developer", "DESC")->take(100)->pluck("chain")->toArray();
+        $sortByFork = ChainInfo::where("range", "24_hours")->orderBy("total_fork", "DESC")->take(100)->pluck("chain")->toArray();
+        $sortByStar = ChainInfo::where("range", "24_hours")->orderBy("total_star", "DESC")->take(100)->pluck("chain")->toArray();
         $chains = Chain::orderBy("id", "ASC")->get();
-        foreach ($chains as $chain) {
+        $symbol = ['AKT', 'MNTL', 'AURA', 'AXL', 'BAND', 'BCNA', 'BTSG', 'CANTO', 'HUAHUA', 'CMDX', 'CORE', 'CRE', 'CRO', 'CUDOS', 'DSM', 'NGM', 'EVMOS', 'FET', 'GRAVITION', 'INJ', 'IRIS', 'IXO', 'JUNO', 'KAVA', 'XKI', 'DARC', 'KUJI', 'KYVE', 'LIKE', 'LUM', 'MARS', 'NTRN', 'MED', 'NOBLE', 'NYM', 'FLIX', 'NOM', 'XPRT', 'HASH', 'QSR', 'QCK', 'REGEN', 'ATOLO', 'DVPN', 'SCRT', 'CTK', 'ROWAN', 'SOMM', 'FIS', 'STARS', 'IOV', 'STRD', 'TORI', 'UMEE', 'XPLA', 'FNSA', 'KNOW', '', '', 'BLD', 'ARCH', '', '', 'PLQ', 'LUNA', 'ALEPH', 'ANKR', '', 'SWTH', 'CHEQ', 'CET', '', '', 'CMT', 'DASH', 'DEC', 'DETF', 'TGD', 'XFI', 'DIG', 'MPWR', 'FCT', 'FOAM', 'L1', 'GNOT', 'GARD', 'HiD', 'IDNA', '', 'JKL', 'KDA', 'KIRA', 'KLV', 'MEME', 'NLS', 'NOM', 'ODIN', 'OKT', 'ORAI', '', 'QKC', 'REBUS', '', 'RUNE', 'UPTICK', 'OSMO',];
+        foreach ($chains as $i => $chain) {
             echo "Chain " . $chain->name . PHP_EOL;
 //            if ($chain->id != 4) continue;
 //            $developers = Developer::where("chain", $chain->id)->pluck("author")->toArray();
@@ -63,23 +64,33 @@ class SummarizeDeveloper extends Command
 //            $chain->total_one_time_developer += $data["one_time"];
 //            $chain->total_developer += ($data["full_time"] + $data["part_time"] + $data["one_time"]);
 
-            $chain->commit_rank = array_search($chain->id, $sortByCommit) + 1;
-            $chain->pull_rank = array_search($chain->id, $sortByPRSolved) + 1;
-            $chain->issue_rank = array_search($chain->id, $sortByIssue) + 1;
-            $chain->dev_rank = array_search($chain->id, $sortByDeveloper) + 1;
-            $chain->star_rank = array_search($chain->id, $sortByStar) + 1;
-            $chain->fork_rank = array_search($chain->id, $sortByFork) + 1;
-            $commitRank = count($chains) - $chain->commit_rank;
-            $issueRank = count($chains) - $chain->issue_rank;
-            $PRSolvedRank = count($chains) - $chain->pull_rank;
-            $developerRank = count($chains) - $chain->dev_rank;
-            $forkRank = count($chains) - $chain->fork_rank;
-            $starRank = count($chains) - $chain->star_rank;
-            $chain->seriousness = (round($commitRank / 100 * 35, 2) + round($issueRank / 100 * 20, 2)
-                + round($PRSolvedRank / 100 * 20, 2) + round($developerRank / 100 * 25, 2)) / 4;
-            $chain->rising_star = (round($forkRank / 100 * 65, 2) + round($starRank / 100 * 35, 2)) / 2;
-            $chain->ibc_astronaut = (round($commitRank / 100 * 50, 2) + round($issueRank / 100 * 20, 2)
-                + round($PRSolvedRank / 100 * 30, 2)) / 3;
+            $commit_index = array_search($chain->id, $sortByCommit);
+            $pull_index = array_search($chain->id, $sortByPRSolved);
+            $issue_index = array_search($chain->id, $sortByIssue);
+            $dev_index = array_search($chain->id, $sortByDeveloper);
+            $star_index = array_search($chain->id, $sortByStar);
+            $fork_index = array_search($chain->id, $sortByFork);
+            // Rank
+            $chain->commit_rank = $commit_index !== false ? 1 + $commit_index : 101;
+            $chain->pull_rank = $pull_index !== false ? 1 + $pull_index : 101;
+            $chain->issue_rank = $issue_index !== false ? 1 + $issue_index : 101;
+            $chain->dev_rank = $dev_index !== false ? 1 + $dev_index : 101;
+            $chain->star_rank = $star_index !== false ? 1 + $star_index : 101;
+            $chain->fork_rank = $fork_index !== false ? 1 + $fork_index : 101;
+            // Score
+            $commit_score = 101 - $chain->commit_rank;
+            $pull_score = 101 - $chain->pull_rank;
+            $issue_score = 101 - $chain->issue_rank;
+            $dev_score = 101 - $chain->dev_rank;
+            $star_score = 101 - $chain->star_rank;
+            $fork_score = 101 - $chain->fork_rank;
+
+            $chain->seriousness = ($commit_score + $issue_score + $pull_score + $dev_score) / 4;
+            $chain->rising_star = ($star_score + $fork_score) / 2;
+            $chain->ibc_astronaut = ($commit_score + $issue_score + $pull_score) / 3;
+            $chain->symbol = $symbol[$i];
+            if ($chain->is_repo)
+                $chain->github_prefix = str_replace("/", "-", $chain->github_prefix);
             $chain->save();
             echo PHP_EOL;
         }

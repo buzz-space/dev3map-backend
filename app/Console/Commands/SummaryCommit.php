@@ -44,10 +44,10 @@ class SummaryCommit extends Command
      */
     public function handle()
     {
+        $start = now();
         ini_set("memory_limit", -1);
         $commits = Commit::orderBy("id", "ASC")->get();
         $lastCommit = setting("last_commit", 0);
-        $counting = 0;
         foreach ($commits as $commit) {
             $repo = Repository::find($commit->repo);
             $prefix = $repo->github_prefix;
@@ -58,8 +58,10 @@ class SummaryCommit extends Command
             foreach ($sha as $item) {
                 $detailUrl = "https://api.github.com/repos/$prefix/commits/" . $item;
                 $detail = json_decode(get_github_data($detailUrl, "body"));
-                if (isset($detail->message))
-                    throw new \Exception($commit->id . " with SHA $item: " . $detail->message);
+                if (isset($detail->message)){
+                    Log::error($detail->message);
+                    return 0;
+                }
                 $total_addition += $detail->stats->additions;
                 $total_deletion += $detail->stats->deletions;
             }
@@ -71,7 +73,6 @@ class SummaryCommit extends Command
                 ->where("from", "<=", $commit->exact_date)
                 ->where("to", ">=", $commit->exact_date)
                 ->first();
-//            echo "Chart ID: " . $chart->id . PHP_EOL;
             $chart->total_additions += $total_addition;
             $chart->total_deletions += $total_deletion;
             $chart->save();
@@ -79,11 +80,13 @@ class SummaryCommit extends Command
             setting()->set("last_commit", $commit->id);
             setting()->save();
 
-            $counting++;
-            if ($counting == 5000)
-                throw new \Exception("Limit reached at " . now()->toDateTimeString());
+            if (now()->diffInMinutes($start) > 55){
+                Log::info("Stop at " . now()->toDateTimeString());
+                return 1;
+            }
 
-//            return;
         }
+
+        return 1;
     }
 }

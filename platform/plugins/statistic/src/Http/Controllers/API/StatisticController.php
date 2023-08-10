@@ -33,6 +33,7 @@ class StatisticController extends BaseController
             'id',
             'name',
             'github_prefix',
+            'symbol',
             'categories',
             'avatar',
             "subscribers",
@@ -56,10 +57,16 @@ class StatisticController extends BaseController
             'website',
             "rising_star",
             "ibc_astronaut",
-            "seriousness"
+            "seriousness",
+            "is_repo"
         )->with("stats")->first())
             return $response->setError()->setMessage("Chain not found!");
 
+        if ($chain->is_repo){
+            $repo = Repository::where("chain", $chain->id)->first();
+            if ($repo)
+                $chain->github_prefix = $repo->github_prefix;
+        }
         return $response->setData($chain);
     }
 
@@ -197,6 +204,13 @@ class StatisticController extends BaseController
             $chain->total_issue = $info->total_issue_solved ?? 0;
             $chain->total_star = $info->total_star ?? 0;
             $chain->total_fork = $info->total_fork ?? 0;
+            $chain->commit_score = 101 - $chain->commit_rank;
+            $chain->pulls_score = 101 - $chain->pull_rank;
+            $chain->dev_score = 101 - $chain->dev_rank;
+            $chain->issue_score = 101 - $chain->issue_rank;
+            $chain->star_score = 101 - $chain->star_rank;
+            $chain->fork_score = 101 - $chain->fork_rank;
+
             $chain->total_chain = $total_chain;
         }
         return $response->setData($data);
