@@ -35,11 +35,4 @@ class ChainInfo extends BaseModel
         "total_repository",
         "range"
     ];
-
-    protected $appends = ["total_developer"];
-
-    public function getTotalDeveloperAttribute()
-    {
-        return $this->full_time_developer + $this->part_time_developer;
-    }
 }

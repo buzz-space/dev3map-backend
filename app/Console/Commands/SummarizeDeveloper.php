@@ -44,16 +44,43 @@ class SummarizeDeveloper extends Command
      */
     public function handle()
     {
-        $sortByCommit = ChainInfo::where("range", "24_hours")->orderBy("total_commits", "DESC")->take(100)->pluck("chain")->toArray();
-        $sortByIssue = ChainInfo::where("range", "24_hours")->orderBy("total_issue_solved", "DESC")->take(100)->pluck("chain")->toArray();
-        $sortByPRSolved = ChainInfo::where("range", "24_hours")->orderBy("total_pull_merged", "DESC")->take(100)->pluck("chain")->toArray();
-        $sortByDeveloper = ChainInfo::where("range", "24_hours")
-            ->selectRaw("chain, (full_time_developer + part_time_developer) as total_developer")
-            ->orderBy("total_developer", "DESC")->take(100)->pluck("chain")->toArray();
-        $sortByFork = ChainInfo::where("range", "24_hours")->orderBy("total_fork", "DESC")->take(100)->pluck("chain")->toArray();
-        $sortByStar = ChainInfo::where("range", "24_hours")->orderBy("total_star", "DESC")->take(100)->pluck("chain")->toArray();
+
+        $sortByCommit = [];
+        $sortByIssue = [];
+        $sortByPRSolved = [];
+        $sortByDeveloper = [];
+        $sortByFork = [];
+        $sortByStar = [];
         $chains = Chain::orderBy("id", "ASC")->get();
-        $symbol = ['AKT', 'MNTL', 'AURA', 'AXL', 'BAND', 'BCNA', 'BTSG', 'CANTO', 'HUAHUA', 'CMDX', 'CORE', 'CRE', 'CRO', 'CUDOS', 'DSM', 'NGM', 'EVMOS', 'FET', 'GRAVITION', 'INJ', 'IRIS', 'IXO', 'JUNO', 'KAVA', 'XKI', 'DARC', 'KUJI', 'KYVE', 'LIKE', 'LUM', 'MARS', 'NTRN', 'MED', 'NOBLE', 'NYM', 'FLIX', 'NOM', 'XPRT', 'HASH', 'QSR', 'QCK', 'REGEN', 'ATOLO', 'DVPN', 'SCRT', 'CTK', 'ROWAN', 'SOMM', 'FIS', 'STARS', 'IOV', 'STRD', 'TORI', 'UMEE', 'XPLA', 'FNSA', 'KNOW', '', '', 'BLD', 'ARCH', '', '', 'PLQ', 'LUNA', 'ALEPH', 'ANKR', '', 'SWTH', 'CHEQ', 'CET', '', '', 'CMT', 'DASH', 'DEC', 'DETF', 'TGD', 'XFI', 'DIG', 'MPWR', 'FCT', 'FOAM', 'L1', 'GNOT', 'GARD', 'HiD', 'IDNA', '', 'JKL', 'KDA', 'KIRA', 'KLV', 'MEME', 'NLS', 'NOM', 'ODIN', 'OKT', 'ORAI', '', 'QKC', 'REBUS', '', 'RUNE', 'UPTICK', 'OSMO',];
+//        $symbol = ['AKT', 'MNTL', 'AURA', 'AXL', 'BAND', 'BCNA', 'BTSG', 'CANTO', 'HUAHUA', 'CMDX', 'CORE', 'CRE', 'CRO', 'CUDOS', 'DSM', 'NGM', 'EVMOS', 'FET', 'GRAVITION', 'INJ', 'IRIS', 'IXO', 'JUNO', 'KAVA', 'XKI', 'DARC', 'KUJI', 'KYVE', 'LIKE', 'LUM', 'MARS', 'NTRN', 'MED', 'NOBLE', 'NYM', 'FLIX', 'NOM', 'XPRT', 'HASH', 'QSR', 'QCK', 'REGEN', 'ATOLO', 'DVPN', 'SCRT', 'CTK', 'ROWAN', 'SOMM', 'FIS', 'STARS', 'IOV', 'STRD', 'TORI', 'UMEE', 'XPLA', 'FNSA', 'KNOW', '', '', 'BLD', 'ARCH', '', '', 'PLQ', 'LUNA', 'ALEPH', 'ANKR', '', 'SWTH', 'CHEQ', 'CET', '', '', 'CMT', 'DASH', 'DEC', 'DETF', 'TGD', 'XFI', 'DIG', 'MPWR', 'FCT', 'FOAM', 'L1', 'GNOT', 'GARD', 'HiD', 'IDNA', '', 'JKL', 'KDA', 'KIRA', 'KLV', 'MEME', 'NLS', 'NOM', 'ODIN', 'OKT', 'ORAI', '', 'QKC', 'REBUS', '', 'RUNE', 'UPTICK', 'OSMO',];
+        foreach ($chains as $chain) {
+            $now = ChainInfo::where("chain", $chain->id)->where("range", 0)->first();
+            $last7d = ChainInfo::where("chain", $chain->id)->where("range", "7_days")->first();
+            $sortByCommit[$chain->id] = $now->total_commits - $last7d->total_commits;
+            $sortByIssue[$chain->id] = $now->total_issue_solved - $last7d->total_issue_solved;
+            $sortByPRSolved[$chain->id] = $now->total_pull_merged - $last7d->total_pull_merged;
+            $sortByDeveloper[$chain->id] = ($now->full_time_developer + $now->part_time_developer) - ($last7d->full_time_developer + $last7d->part_time_developer);
+            $sortByFork[$chain->id] = $now->total_fork - $last7d->total_fork;
+            $sortByStar[$chain->id] = $now->total_star - $last7d->total_star;
+        }
+
+        asort($sortByCommit);
+        asort($sortByIssue);
+        asort($sortByPRSolved);
+        asort($sortByDeveloper);
+        asort($sortByFork);
+        asort($sortByStar);
+
+
+        $sortByCommit = array_keys($sortByCommit);
+        $sortByIssue = array_keys($sortByIssue);
+        $sortByPRSolved = array_keys($sortByPRSolved);
+        $sortByDeveloper = array_keys($sortByDeveloper);
+        $sortByFork = array_keys($sortByFork);
+        $sortByStar = array_keys($sortByStar);
+
+//        Log::info(print_r($sortByCommit, true)); return;
+
         foreach ($chains as $i => $chain) {
             echo "Chain " . $chain->name . PHP_EOL;
 //            if ($chain->id != 4) continue;
@@ -78,17 +105,17 @@ class SummarizeDeveloper extends Command
             $chain->star_rank = $star_index !== false ? 1 + $star_index : 101;
             $chain->fork_rank = $fork_index !== false ? 1 + $fork_index : 101;
             // Score
-            $commit_score = 101 - $chain->commit_rank;
-            $pull_score = 101 - $chain->pull_rank;
-            $issue_score = 101 - $chain->issue_rank;
-            $dev_score = 101 - $chain->dev_rank;
-            $star_score = 101 - $chain->star_rank;
-            $fork_score = 101 - $chain->fork_rank;
+            $commit_score = 101 - ($chain->commit_rank > 101 ? 101 : $chain->commit_rank);
+            $pull_score = 101 - ($chain->pull_rank > 101 ? 101 : $chain->pull_rank);
+            $issue_score = 101 - ($chain->issue_rank > 101 ? 101 : $chain->issue_rank);
+            $dev_score = 101 - ($chain->dev_rank > 101 ? 101 : $chain->dev_rank);
+            $star_score = 101 - ($chain->star_rank > 101 ? 101 : $chain->star_rank);
+            $fork_score = 101 - ($chain->fork_rank > 101 ? 101 : $chain->fork_rank);
 
             $chain->seriousness = ($commit_score + $issue_score + $pull_score + $dev_score) / 4;
             $chain->rising_star = ($star_score + $fork_score) / 2;
             $chain->ibc_astronaut = ($commit_score + $issue_score + $pull_score) / 3;
-            $chain->symbol = $symbol[$i];
+//            $chain->symbol = $symbol[$i];
             if ($chain->is_repo)
                 $chain->github_prefix = str_replace("/", "-", $chain->github_prefix);
             $chain->save();

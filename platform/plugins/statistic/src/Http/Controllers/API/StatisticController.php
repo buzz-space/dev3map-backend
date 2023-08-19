@@ -33,6 +33,7 @@ class StatisticController extends BaseController
             'id',
             'name',
             'github_prefix',
+            'slug',
             'symbol',
             'categories',
             'avatar',
@@ -41,13 +42,29 @@ class StatisticController extends BaseController
             "rising_star",
             "ibc_astronaut",
             "seriousness"
-        )->with("stats")->get();
+        )->get();
+        foreach ($data as $item){
+            $present = ChainInfo::where("chain", $item->id)->where("range", 0)->first();
+            $other = ChainInfo::where("chain", $item->id)->where("range", "!=", 0)->get();
+            foreach ($other as $range){
+                $range->total_commits = $present->total_commits - $range->total_commits;
+                $range->full_time_developer = $present->full_time_developer - $range->full_time_developer;
+                $range->part_time_developer = $present->part_time_developer - $range->part_time_developer;
+//                $range->total_star = $present->total_star - $range->total_star;
+//                $range->total_fork = $present->total_fork - $range->total_fork;
+                $range->total_repository = $present->total_repository - $range->total_repository;
+                $range->total_issue_solved = $present->total_issue_solved - $range->total_issue_solved;
+                $range->total_pull_merged = $present->total_pull_merged - $range->total_pull_merged;
+            }
+            $item->stats = $other;
+            $item->github_prefix = $item->slug;
+        }
         return $response->setData($data);
     }
 
     public function chainInfo($prefix, BaseHttpResponse $response)
     {
-        if (!$chain = Chain::where("github_prefix", $prefix)->select(
+        if (!$chain = Chain::where("slug", $prefix)->select(
             'id',
             'name',
             'github_prefix',
@@ -172,7 +189,8 @@ class StatisticController extends BaseController
         $additionalData = $request->has("with_data");
         $z = [];
         foreach ($data as $item){
-            $chains = Chain::where("categories", "like", "%$item%")->select("id", "name", "github_prefix", "avatar")->get();
+            $chains = Chain::where("categories", "like", "%$item%")
+                ->selectRaw("id, name, slug as github_prefix, avatar")->get();
             $row = [
                 'name' => $item,
                 'total' => count($chains)
@@ -197,7 +215,7 @@ class StatisticController extends BaseController
         $data = Chain::orderBy($type, "DESC")->take(10)->get();
         $total_chain = Chain::count();
         foreach ($data as $chain){
-            $info = $chain->info()->where("range", "24_hours")->first();
+            $info = $chain->info()->where("range", 0)->first();
             $chain->total_commit = $info->total_commits ?? 0;
             $chain->total_pulls = $info->total_pull_merged ?? 0;
             $chain->total_developer = ($info->full_time_developer ?? 0) + ($info->part_time_developer ?? 0);
