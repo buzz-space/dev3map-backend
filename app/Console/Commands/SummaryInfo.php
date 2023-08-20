@@ -46,9 +46,9 @@ class SummaryInfo extends Command
      */
     public function handle()
     {
-        $day = now();
+        $day = Carbon::createFromTimestamp(strtotime("2023-08-18"));
         foreach (Chain::orderBy("id", "ASC")->get() as $chain){
-//            if ($chain->id != 4) continue;
+            if ($chain->id != 4) continue;
             echo "Chain name: " . $chain->name . PHP_EOL;
             $range = [
                 0 => "0",
@@ -75,11 +75,15 @@ class SummaryInfo extends Command
                 //commit
                 $info->total_commits = array_sum(array_column($commits, "total_commit"));
                 //developer (6 month range)
-                $developers = Commit::where([
-                    ["chain", $chain->id],
-                    ["exact_date", "<", (clone $day)->addHours(-1 * $filter)],
-                    ["exact_date", ">=", (clone $day)->addHours(-1 * $filter)->addMonths(-3)]
-                ])->get()->toArray();
+                $query =  Commit::where("chain", $chain->id);
+                if ($filter == 0)
+                    $query->where([
+                        ["exact_date", "<", (clone $day)->addHours(-1 * $filter)],
+                        ["exact_date", ">=", (clone $day)->addHours(-1 * $filter)->addMonths(-3)]
+                    ]);
+                else
+                    $query->where("exact_date", ">=", (clone $day)->addHours(-1 * $filter));
+                $developers = $query->get()->toArray();
                 $contributors = unique_name(Repository::where("chain", $chain->id)->pluck("total_contributor")->toArray());
                 $fullTime = unique_name(array_column($developers, "full_time"));
                 $fullTime = array_filter($fullTime, function ($c) use ($contributors){
@@ -128,20 +132,20 @@ class SummaryInfo extends Command
             }
         }
 
-        //Issue
-        $total = Issue::groupBy("chain")->selectRaw("chain, COUNT(*) as count, SUM(total_minute) as total")->get()->toArray();
-        $issuePerform = array_sum(array_column($total, "total")) / array_sum(array_column($total, "count")) / 60 / 24;
-        setting()->set("issue_performance", number_format(floor($issuePerform), 2));
-        //Pull
-        $contributors = unique_name(Repository::pluck("total_contributor")->toArray());
-        $pullCreator = unique_name(Pull::pluck("author")->toArray());
-        $outbound = array_filter($pullCreator, function ($row) use ($contributors){
-            return !in_array($row, $contributors);
-        });
-        $outboundPulls = Pull::whereNotIn("author", $outbound)->count();
-        $communityAttribute = $outboundPulls / count($outbound);
-        setting()->set("community_attribute", number_format($communityAttribute, 2));
-        setting()->save();
+//        //Issue
+//        $total = Issue::groupBy("chain")->selectRaw("chain, COUNT(*) as count, SUM(total_minute) as total")->get()->toArray();
+//        $issuePerform = array_sum(array_column($total, "total")) / array_sum(array_column($total, "count")) / 60 / 24;
+//        setting()->set("issue_performance", number_format(floor($issuePerform), 2));
+//        //Pull
+//        $contributors = unique_name(Repository::pluck("total_contributor")->toArray());
+//        $pullCreator = unique_name(Pull::pluck("author")->toArray());
+//        $outbound = array_filter($pullCreator, function ($row) use ($contributors){
+//            return !in_array($row, $contributors);
+//        });
+//        $outboundPulls = Pull::whereNotIn("author", $outbound)->count();
+//        $communityAttribute = $outboundPulls / count($outbound);
+//        setting()->set("community_attribute", number_format($communityAttribute, 2));
+//        setting()->save();
 
     }
 }
