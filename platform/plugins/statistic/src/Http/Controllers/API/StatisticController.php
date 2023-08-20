@@ -84,7 +84,7 @@ class StatisticController extends BaseController
             if ($repo)
                 $chain->github_prefix = $repo->github_prefix;
         }
-        $chain->stats = $chain->stats->orderBy("range", "ASC")->get();
+        $chain->stats = $chain->stats()->where("range", 0)->get();
         return $response->setData($chain);
     }
 
@@ -115,7 +115,7 @@ class StatisticController extends BaseController
     {
         if ($chain = Chain::find($request->input("chain"))) {
             // Devs
-            $info = $chain->info()->where("range", "24_hours")->first();
+            $info = $chain->info()->where("range", 0)->first();
 
             $data = [
                 "total_commit" => Commit::where("chain", $chain->id)->sum("total_commit"),
