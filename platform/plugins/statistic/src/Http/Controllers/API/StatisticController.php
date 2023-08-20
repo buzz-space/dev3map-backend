@@ -48,8 +48,8 @@ class StatisticController extends BaseController
             $other = ChainInfo::where("chain", $item->id)->where("range", "!=", 0)->get();
             foreach ($other as $range){
                 $range->total_commits = $present->total_commits - $range->total_commits;
-                $range->full_time_developer = $present->full_time_developer - $range->full_time_developer;
-                $range->part_time_developer = $present->part_time_developer - $range->part_time_developer;
+//                $range->full_time_developer = $present->full_time_developer - $range->full_time_developer;
+//                $range->part_time_developer = $present->part_time_developer - $range->part_time_developer;
 //                $range->total_star = $present->total_star - $range->total_star;
 //                $range->total_fork = $present->total_fork - $range->total_fork;
                 $range->total_repository = $present->total_repository - $range->total_repository;
@@ -76,7 +76,7 @@ class StatisticController extends BaseController
             "ibc_astronaut",
             "seriousness",
             "is_repo"
-        )->with("stats")->first())
+        )->first())
             return $response->setError()->setMessage("Chain not found!");
 
         if ($chain->is_repo){
@@ -84,6 +84,7 @@ class StatisticController extends BaseController
             if ($repo)
                 $chain->github_prefix = $repo->github_prefix;
         }
+        $chain->stats = $chain->stats->orderBy("range", "ASC")->get();
         return $response->setData($chain);
     }
 
