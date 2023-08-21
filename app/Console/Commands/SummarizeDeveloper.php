@@ -48,6 +48,7 @@ class SummarizeDeveloper extends Command
         $sortByCommit = [];
         $sortByIssue = [];
         $sortByPRSolved = [];
+        $sortByPR = [];
         $sortByDeveloper = [];
         $sortByFork = [];
         $sortByStar = [];
@@ -60,7 +61,8 @@ class SummarizeDeveloper extends Command
             $sortByIssue[$chain->id] = $last7d->total_issue_solved;
             $sortByPRSolved[$chain->id] = $last7d->total_pull_merged;
             $sortByDeveloper[$chain->id] = $last7d->part_time_developer;
-//            $sortByFork[$chain->id] = $now->total_fork - $last7d->total_fork;
+            $sortByPR[$chain->id] = $last7d->total_pull_request;
+            $sortByFork[$chain->id] = $now->total_fork;
 //            $sortByStar[$chain->id] = $now->total_star - $last7d->total_star;
         }
 
@@ -70,6 +72,7 @@ class SummarizeDeveloper extends Command
         asort($sortByDeveloper);
         asort($sortByFork);
         asort($sortByStar);
+        asort($sortByPR);
 
 
         $sortByCommit = array_keys($sortByCommit);
@@ -78,6 +81,7 @@ class SummarizeDeveloper extends Command
         $sortByDeveloper = array_keys($sortByDeveloper);
         $sortByFork = array_keys($sortByFork);
         $sortByStar = array_keys($sortByStar);
+        $sortByPR = array_keys($sortByPR);
 
 //        Log::info(print_r($sortByCommit, true)); return;
 
@@ -97,6 +101,7 @@ class SummarizeDeveloper extends Command
             $dev_index = array_search($chain->id, $sortByDeveloper);
             $star_index = array_search($chain->id, $sortByStar);
             $fork_index = array_search($chain->id, $sortByFork);
+            $pr_index = array_search($chain->id, $sortByPR);
             // Rank
             $chain->commit_rank = $commit_index !== false ? 1 + $commit_index : 101;
             $chain->pull_rank = $pull_index !== false ? 1 + $pull_index : 101;
@@ -104,6 +109,7 @@ class SummarizeDeveloper extends Command
             $chain->dev_rank = $dev_index !== false ? 1 + $dev_index : 101;
             $chain->star_rank = $star_index !== false ? 1 + $star_index : 101;
             $chain->fork_rank = $fork_index !== false ? 1 + $fork_index : 101;
+            $chain->pr_rank = $pr_index !== false ? 1 + $pr_index : 101;
             // Score
             $commit_score = 101 - ($chain->commit_rank > 101 ? 101 : $chain->commit_rank);
             $pull_score = 101 - ($chain->pull_rank > 101 ? 101 : $chain->pull_rank);
@@ -111,9 +117,10 @@ class SummarizeDeveloper extends Command
             $dev_score = 101 - ($chain->dev_rank > 101 ? 101 : $chain->dev_rank);
             $star_score = 101 - ($chain->star_rank > 101 ? 101 : $chain->star_rank);
             $fork_score = 101 - ($chain->fork_rank > 101 ? 101 : $chain->fork_rank);
+            $pr_score = 101 - ($chain->pr_rank > 101 ? 101 : $chain->pr_rank);
 
             $chain->seriousness = ($commit_score + $issue_score + $pull_score + $dev_score) / 4;
-            $chain->rising_star = ($star_score + $fork_score) / 2;
+            $chain->rising_star = ($fork_score + $commit_score + $pr_score) / 3;
             $chain->ibc_astronaut = ($commit_score + $issue_score + $pull_score) / 3;
 //            $chain->symbol = $symbol[$i];
             if ($chain->is_repo)

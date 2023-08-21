@@ -213,7 +213,7 @@ class StatisticController extends BaseController
             return $response->setError()->setMessage(processValidators($validator->errors()->toArray()));
 
         $type = $request->input("type");
-        $data = Chain::orderBy($type, "DESC")->take(10)->get();
+        $data = Chain::orderBy($type, "DESC")->take(100)->get();
         $total_chain = Chain::count();
         foreach ($data as $chain){
             $info = $chain->info()->where("range", 0)->first();

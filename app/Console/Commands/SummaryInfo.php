@@ -128,6 +128,10 @@ class SummaryInfo extends Command
                     ["status", "closed"],
                     ["created_date", "<", (clone $day)->addHours(-1 * $filter)]
                 ])->count();
+                $info->total_pull_merged = Pull::where([
+                    ["chain", $chain->id],
+                    ["created_date", "<", (clone $day)->addHours(-1 * $filter)]
+                ])->count();
                 $info->save();
             }
         }
