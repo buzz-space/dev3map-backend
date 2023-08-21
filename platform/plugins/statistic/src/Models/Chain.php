@@ -38,6 +38,7 @@ class Chain extends BaseModel
         "issue_rank",
         "fork_rank",
         "star_rank",
+        "pr_rank",
         "is_repo",
     ];
 

@@ -24,6 +24,7 @@ class ChainInfo extends BaseModel
         "total_commits",
         "total_issue_solved",
         "total_pull_merged",
+        "total_pull_request",
         "total_star",
         "total_fork",
         "full_time_developer",
@@ -35,11 +36,4 @@ class ChainInfo extends BaseModel
         "total_repository",
         "range"
     ];
-
-    protected $appends = ["total_developer"];
-
-    public function getTotalDeveloperAttribute()
-    {
-        return $this->full_time_developer + $this->part_time_developer;
-    }
 }

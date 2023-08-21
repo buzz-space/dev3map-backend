@@ -43,6 +43,7 @@ class GetCommitChart extends Command
     public function handle()
     {
         foreach (Chain::orderBy("id", "ASC")->get() as $chain) {
+            if ($chain->id != 113) continue;
             echo "Chain " . $chain->name . PHP_EOL;
 
 //            if ($chain->total_commit <= 0)
@@ -53,6 +54,7 @@ class GetCommitChart extends Command
             if ($firstCommit && $lastCommit) {
                 $dateFirstCommit = Carbon::createFromTimestamp(strtotime($firstCommit->exact_date));
                 $dateLastCommit = Carbon::createFromTimestamp(strtotime($lastCommit->exact_date));
+                if ($dateFirstCommit->gt($dateLastCommit)) continue;
                 echo "From " . $dateFirstCommit->toDateTimeString() . " to " . $dateLastCommit->toDateTimeString() . PHP_EOL;
                 $diff = $dateFirstCommit->diffInMonths($dateLastCommit) + ($dateFirstCommit->day > $dateLastCommit->day ? 2 : 1);
                 for ($i = 0; $i < $diff; $i++) {

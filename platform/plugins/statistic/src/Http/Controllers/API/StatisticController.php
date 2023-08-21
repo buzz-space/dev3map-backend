@@ -33,6 +33,7 @@ class StatisticController extends BaseController
             'id',
             'name',
             'github_prefix',
+            'slug',
             'symbol',
             'categories',
             'avatar',
@@ -41,13 +42,29 @@ class StatisticController extends BaseController
             "rising_star",
             "ibc_astronaut",
             "seriousness"
-        )->with("stats")->get();
+        )->get();
+        foreach ($data as $item){
+            $present = ChainInfo::where("chain", $item->id)->where("range", 0)->first();
+            $other = ChainInfo::where("chain", $item->id)->where("range", "!=", 0)->get();
+            foreach ($other as $range){
+                $range->total_commits = $present->total_commits - $range->total_commits;
+//                $range->full_time_developer = $present->full_time_developer - $range->full_time_developer;
+//                $range->part_time_developer = $present->part_time_developer - $range->part_time_developer;
+//                $range->total_star = $present->total_star - $range->total_star;
+//                $range->total_fork = $present->total_fork - $range->total_fork;
+                $range->total_repository = $present->total_repository - $range->total_repository;
+                $range->total_issue_solved = $present->total_issue_solved - $range->total_issue_solved;
+                $range->total_pull_merged = $present->total_pull_merged - $range->total_pull_merged;
+            }
+            $item->stats = $other;
+            $item->github_prefix = $item->slug;
+        }
         return $response->setData($data);
     }
 
     public function chainInfo($prefix, BaseHttpResponse $response)
     {
-        if (!$chain = Chain::where("github_prefix", $prefix)->select(
+        if (!$chain = Chain::where("slug", $prefix)->select(
             'id',
             'name',
             'github_prefix',
@@ -59,7 +76,7 @@ class StatisticController extends BaseController
             "ibc_astronaut",
             "seriousness",
             "is_repo"
-        )->with("stats")->first())
+        )->first())
             return $response->setError()->setMessage("Chain not found!");
 
         if ($chain->is_repo){
@@ -67,6 +84,7 @@ class StatisticController extends BaseController
             if ($repo)
                 $chain->github_prefix = $repo->github_prefix;
         }
+        $chain->stats = $chain->stats()->where("range", 0)->get();
         return $response->setData($chain);
     }
 
@@ -97,7 +115,7 @@ class StatisticController extends BaseController
     {
         if ($chain = Chain::find($request->input("chain"))) {
             // Devs
-            $info = $chain->info()->where("range", "24_hours")->first();
+            $info = $chain->info()->where("range", 0)->first();
 
             $data = [
                 "total_commit" => Commit::where("chain", $chain->id)->sum("total_commit"),
@@ -172,7 +190,8 @@ class StatisticController extends BaseController
         $additionalData = $request->has("with_data");
         $z = [];
         foreach ($data as $item){
-            $chains = Chain::where("categories", "like", "%$item%")->select("id", "name", "github_prefix", "avatar")->get();
+            $chains = Chain::where("categories", "like", "%$item%")
+                ->selectRaw("id, name, slug as github_prefix, avatar")->get();
             $row = [
                 'name' => $item,
                 'total' => count($chains)
@@ -194,22 +213,24 @@ class StatisticController extends BaseController
             return $response->setError()->setMessage(processValidators($validator->errors()->toArray()));
 
         $type = $request->input("type");
-        $data = Chain::orderBy($type, "DESC")->take(10)->get();
+        $data = Chain::orderBy($type, "DESC")->take(100)->get();
         $total_chain = Chain::count();
         foreach ($data as $chain){
-            $info = $chain->info()->where("range", "24_hours")->first();
+            $info = $chain->info()->where("range", 0)->first();
             $chain->total_commit = $info->total_commits ?? 0;
-            $chain->total_pulls = $info->total_pull_merged ?? 0;
+            $chain->total_pull_merged = $info->total_pull_merged ?? 0;
             $chain->total_developer = ($info->full_time_developer ?? 0) + ($info->part_time_developer ?? 0);
             $chain->total_issue = $info->total_issue_solved ?? 0;
             $chain->total_star = $info->total_star ?? 0;
             $chain->total_fork = $info->total_fork ?? 0;
+            $chain->total_pull_request = $info->total_pull_request ?? 0;
             $chain->commit_score = 101 - $chain->commit_rank;
             $chain->pulls_score = 101 - $chain->pull_rank;
             $chain->dev_score = 101 - $chain->dev_rank;
             $chain->issue_score = 101 - $chain->issue_rank;
             $chain->star_score = 101 - $chain->star_rank;
             $chain->fork_score = 101 - $chain->fork_rank;
+            $chain->pr_score = 101 - $chain->pr_rank;
 
             $chain->total_chain = $total_chain;
         }
