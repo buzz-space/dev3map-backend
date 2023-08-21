@@ -64,12 +64,12 @@ class SummarizeDeveloper extends Command
 //            $sortByStar[$chain->id] = $now->total_star - $last7d->total_star;
         }
 
-        asort($sortByCommit);
-        asort($sortByIssue);
-        asort($sortByPRSolved);
-        asort($sortByDeveloper);
-        asort($sortByFork);
-        asort($sortByStar);
+        arsort($sortByCommit);
+        arsort($sortByIssue);
+        arsort($sortByPRSolved);
+        arsort($sortByDeveloper);
+        arsort($sortByFork);
+        arsort($sortByStar);
 
 
         $sortByCommit = array_keys($sortByCommit);
