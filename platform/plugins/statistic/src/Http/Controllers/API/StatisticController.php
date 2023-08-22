@@ -216,14 +216,15 @@ class StatisticController extends BaseController
         $data = Chain::orderBy($type, "DESC")->take(100)->get();
         $total_chain = Chain::count();
         foreach ($data as $chain){
-            $info = $chain->info()->where("range", 0)->first();
-            $chain->total_commit = $info->total_commits ?? 0;
-            $chain->total_pull_merged = $info->total_pull_merged ?? 0;
-            $chain->total_developer = ($info->full_time_developer ?? 0) + ($info->part_time_developer ?? 0);
-            $chain->total_issue = $info->total_issue_solved ?? 0;
-            $chain->total_star = $info->total_star ?? 0;
-            $chain->total_fork = $info->total_fork ?? 0;
-            $chain->total_pull_request = $info->total_pull_request ?? 0;
+            $now = $chain->info()->where("range", 0)->first();
+            $info = $chain->info()->where("range", "7_days")->first();
+            $chain->total_commit = $now->total_commits - $info->total_commits;
+            $chain->total_pull_merged = $now->total_pull_merged - $info->total_pull_merged;
+            $chain->total_developer = ($info->full_time_developer) + ($info->part_time_developer);
+            $chain->total_issue = $now->total_issue_solved - $info->total_issue_solved;
+            $chain->total_star = $now->total_star;
+            $chain->total_fork = $now->total_fork;
+            $chain->total_pull_request = $now->total_pull_request - $info->total_pull_request;
             $chain->commit_score = 101 - $chain->commit_rank;
             $chain->pulls_score = 101 - $chain->pull_rank;
             $chain->dev_score = 101 - $chain->dev_rank;
