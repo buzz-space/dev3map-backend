@@ -57,22 +57,22 @@ class SummarizeDeveloper extends Command
         foreach ($chains as $chain) {
             $now = ChainInfo::where("chain", $chain->id)->where("range", 0)->first();
             $last7d = ChainInfo::where("chain", $chain->id)->where("range", "7_days")->first();
-            $sortByCommit[$chain->id] = $last7d->total_commits;
-            $sortByIssue[$chain->id] = $last7d->total_issue_solved;
-            $sortByPRSolved[$chain->id] = $last7d->total_pull_merged;
-            $sortByDeveloper[$chain->id] = $last7d->part_time_developer;
-            $sortByPR[$chain->id] = $last7d->total_pull_request;
+            $sortByCommit[$chain->id] = $now->total_commits - $last7d->total_commits;
+            $sortByIssue[$chain->id] = $now->total_issue_solved - $last7d->total_issue_solved;
+            $sortByPRSolved[$chain->id] = $now->total_pull_merged - $last7d->total_pull_merged;
+            $sortByDeveloper[$chain->id] = $last7d->full_time_developer + $last7d->part_time_developer;
+            $sortByPR[$chain->id] = $now->total_pull_request - $last7d->total_pull_request;
             $sortByFork[$chain->id] = $now->total_fork;
 //            $sortByStar[$chain->id] = $now->total_star - $last7d->total_star;
         }
 
-        asort($sortByCommit);
-        asort($sortByIssue);
-        asort($sortByPRSolved);
-        asort($sortByDeveloper);
-        asort($sortByFork);
-        asort($sortByStar);
-        asort($sortByPR);
+        arsort($sortByCommit);
+        arsort($sortByIssue);
+        arsort($sortByPRSolved);
+        arsort($sortByDeveloper);
+        arsort($sortByFork);
+        arsort($sortByStar);
+        arsort($sortByPR);
 
 
         $sortByCommit = array_keys($sortByCommit);
