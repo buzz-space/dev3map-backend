@@ -45,8 +45,9 @@ class StatisticController extends BaseController
         )->get();
         foreach ($data as $item){
             $present = ChainInfo::where("chain", $item->id)->where("range", 0)->first();
-            $other = ChainInfo::where("chain", $item->id)->where("range", "!=", 0)->get();
+            $other = ChainInfo::where("chain", $item->id)->get();
             foreach ($other as $range){
+                if ($range->range == 0) continue;
                 $range->total_commits = $present->total_commits - $range->total_commits;
 //                $range->full_time_developer = $present->full_time_developer - $range->full_time_developer;
 //                $range->part_time_developer = $present->part_time_developer - $range->part_time_developer;
