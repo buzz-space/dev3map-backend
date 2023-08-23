@@ -28,7 +28,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/ibclab-backend:latest
+          tags: ${{ secrets.DOCKER_USERNAME }}/dev3map-backend:latest
 
   deploy:
     name: Redeploy webhook call
@@ -38,4 +38,4 @@ jobs:
       - name: Deploy docker container webhook
         uses: joelwmale/webhook-action@master
         with:
-          url: ${{ vars.DEPLOY_WEBHOOK_URL  }}/deploy-ibclab-dev
+          url: ${{ vars.DEPLOY_WEBHOOK_URL  }}/deploy-dev3map-dev
