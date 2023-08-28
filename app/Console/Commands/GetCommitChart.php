@@ -43,7 +43,7 @@ class GetCommitChart extends Command
     public function handle()
     {
         foreach (Chain::orderBy("id", "ASC")->get() as $chain) {
-            if ($chain->id != 113) continue;
+//            if ($chain->id != 113) continue;
             echo "Chain " . $chain->name . PHP_EOL;
 
 //            if ($chain->total_commit <= 0)
@@ -86,18 +86,30 @@ class GetCommitChart extends Command
                             ->where("exact_date", "<", $endWeek->toDateTimeString())
                             ->sum("deletions");
 
-                        CommitChart::create([
-                            "chain" => $chain->id,
-                            "week" => $j,
-                            "month" => $thisMonth->month,
-                            "year" => $thisMonth->year,
-                            "total_commit" => $total_commit,
-                            "total_additions" => $total_additions,
-                            "total_deletions" => $total_deletions,
-                            "total_fork_commit" => 0,
-                            'from' => $startWeek->toDateString(),
-                            "to" => $endWeek->toDateString()
-                        ]);
+                        if (!$exist = CommitChart::where([
+                            ["chain", $chain->id],
+                            ["week", $j],
+                            ["month", $thisMonth->month],
+                            ["year", $thisMonth->year]
+                        ])->first())
+                            CommitChart::create([
+                                "chain" => $chain->id,
+                                "week" => $j,
+                                "month" => $thisMonth->month,
+                                "year" => $thisMonth->year,
+                                "total_commit" => $total_commit,
+                                "total_additions" => $total_additions,
+                                "total_deletions" => $total_deletions,
+                                "total_fork_commit" => 0,
+                                'from' => $startWeek->toDateString(),
+                                "to" => $endWeek->toDateString()
+                            ]);
+                        else{
+                            $exist->total_commit = $total_commit;
+                            $exist->total_additions = $total_additions;
+                            $exist->total_deletions = $total_deletions;
+                            $exist->save();
+                        }
                     }
                 }
             }
