@@ -8,6 +8,7 @@ use Botble\Statistic\Models\CommitChart;
 use Botble\Statistic\Models\CommitSHA;
 use Botble\Statistic\Models\Contributor;
 use Botble\Statistic\Models\Repository;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
 
@@ -73,6 +74,17 @@ class SummaryCommit extends Command
                 ->where("from", "<=", $commit->exact_date)
                 ->where("to", ">=", $commit->exact_date)
                 ->first();
+            if (!$chart){
+                $date = Carbon::createFromTimestamp(strtotime($commit->exact_date));
+                $chart = new CommitChart();
+                $chart->from =  Carbon::create($date->year, $date->month, $date->day > 15 ? 16 : 1);
+                $chart->to = Carbon::create($date->year, $date->month, $date->day > 15 ? 15 : $date->daysInMonth);
+                $chart->week = $date->day > 15 ? 2 : 1;
+                $chart->month = $date->month;
+                $chart->year = $date->year;
+                $chart->chain = $repo->chain;
+                $chart->save();
+            }
             $chart->total_additions += $total_addition;
             $chart->total_deletions += $total_deletion;
             $chart->save();
