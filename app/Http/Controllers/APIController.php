@@ -68,24 +68,6 @@ class APIController extends Controller
      */
     /**
      * @SWG\Get (
-     *     path="/api/v1/commit-chart",
-     *     description="Get commit chart",
-     *     tags={"chain"},
-     *     @SWG\Parameter(
-     *         name="chain",
-     *         in="query",
-     *         type="number",
-     *         description="Chain id",
-     *         required=false,
-     *     ),
-     *     @SWG\Response(
-     *         response=200,
-     *         description="OK",
-     *     ),
-     * )
-     */
-    /**
-     * @SWG\Get (
      *     path="/api/v1/developer-chart",
      *     description="Get developer chart",
      *     tags={"chain"},
@@ -94,6 +76,13 @@ class APIController extends Controller
      *         in="query",
      *         type="number",
      *         description="Chain id",
+     *         required=false,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="filter",
+     *         in="query",
+     *         type="number",
+     *         description="Filter by range (7,30)",
      *         required=false,
      *     ),
      *     @SWG\Response(
@@ -130,7 +119,7 @@ class APIController extends Controller
      *         in="query",
      *         type="string",
      *         description="Type of rank (rising_star,ibc_astronaut,seriousness)",
-     *         required=true,
+     *         required=true
      *     ),
      *     @SWG\Response(
      *         response=200,
@@ -150,6 +139,13 @@ class APIController extends Controller
      *         description="Chain ID",
      *         required=true,
      *     ),
+     *     @SWG\Parameter(
+     *         name="hide_fork",
+     *         in="query",
+     *         type="number",
+     *         description="Hide fork repository (0|1)",
+     *         required=false,
+     *     ),
      *     @SWG\Response(
      *         response=200,
      *         description="OK",
@@ -167,6 +163,13 @@ class APIController extends Controller
      *         type="number",
      *         description="Chain ID",
      *         required=true,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="sort",
+     *         in="query",
+     *         type="string",
+     *         description="Sorting contribution (DESC|ASC)",
+     *         required=false,
      *     ),
      *     @SWG\Response(
      *         response=200,

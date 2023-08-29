@@ -120,3 +120,7 @@ function process_developer_string($developerString)
 function unique_name(array $array){
     return array_unique(explode(",", implode(",", $array)));
 }
+
+function check_percent($percent){
+    return $percent > 100 ? $percent - 100 : -1 * (100 - $percent);
+}
