@@ -46,12 +46,8 @@ class SummaryInfo extends Command
      */
     public function handle()
     {
-        if (!setting("latest", null)){
-            setting()->set("latest", "2023-08-24");
-            setting()->save();
-        }
-        $day = Carbon::createFromTimestamp(strtotime(setting("latest")));
-        foreach (Chain::orderBy("id", "ASC")->take(3)->get() as $chain){
+        $day = Carbon::createFromTimestamp(strtotime("2023-08-24"));
+        foreach (Chain::orderBy("id", "ASC")->get() as $chain){
             echo "Chain name: " . $chain->name . PHP_EOL;
             $range = [
                 [
