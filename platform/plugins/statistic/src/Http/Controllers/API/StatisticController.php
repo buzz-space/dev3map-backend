@@ -171,7 +171,8 @@ class StatisticController extends BaseController
             $data = Commit::query();
 
         $data->groupBy("exact_date")
-            ->selectRaw("exact_date, (SUM(total_full_time) + SUM(total_part_time)) as active_developer, SUM(total_commit) as total_commit")
+            ->selectRaw("exact_date, (SUM(total_full_time) + SUM(total_part_time)) as active_developer, SUM(total_commit) as total_commit,
+             SUM(additions) as additions, SUM(deletions) as deletions")
             ->orderBy("exact_date", "DESC");
 
         $filter = $request->input("filter", false);
