@@ -246,7 +246,7 @@ class StatisticController extends BaseController
             return $response->setError()->setMessage("Chain not found!");
 
         $repos = Repository::where("chain", $chain->id)
-            ->selectRaw("id, name, github_prefix, description, contributors, total_star, total_commit")
+            ->selectRaw("id, name, github_prefix, description, contributors, total_star, total_commit, is_fork")
             ->orderBy("total_commit", "DESC")->orderBy("total_star", "DESC")->orderBy("contributors", "DESC");
 
         if ($request->input("hide_fork", false))
