@@ -25,40 +25,27 @@ class StatisticController extends BaseController
         $query = Chain::query();
         $categories = explode(',', $request->input("categories", ""));
         if (!empty($categories)) {
-            foreach ($categories as $z){
+            foreach ($categories as $z) {
                 $query->where("categories", "like", "%$z%");
             }
         }
-        $data = $query->select(
-            'id',
-            'name',
-            'github_prefix',
-            'slug',
-            'symbol',
-            'categories',
-            'avatar',
-            "subscribers",
-            'website',
-            "rising_star",
-            "ibc_astronaut",
-            "seriousness"
-        )->get();
-        foreach ($data as $item){
-            $present = ChainInfo::where("chain", $item->id)->where("range", 0)->first();
-            $other = ChainInfo::where("chain", $item->id)->get();
-            foreach ($other as $range){
-                if ($range->range == 0) continue;
-                $range->total_commits = $present->total_commits - $range->total_commits;
-//                $range->full_time_developer = $present->full_time_developer - $range->full_time_developer;
-//                $range->part_time_developer = $present->part_time_developer - $range->part_time_developer;
-//                $range->total_star = $present->total_star - $range->total_star;
-//                $range->total_fork = $present->total_fork - $range->total_fork;
-                $range->total_repository = $present->total_repository - $range->total_repository;
-                $range->total_issue_solved = $present->total_issue_solved - $range->total_issue_solved;
-                $range->total_pull_merged = $present->total_pull_merged - $range->total_pull_merged;
+        $data = $query->selectRaw("id, name, slug as github_prefix, symbol, avatar")->get();
+        foreach ($data as $item) {
+            $stats = $item->stats()->whereNotIn("range", ["before_7_days", "before_30_days", "24_hours"])->get();
+            $before['7_days'] = $item->stats()->where("range", "before_7_days")->first();
+            $before['30_days'] = $item->stats()->where("range", "before_30_days")->first();
+            foreach ($stats as $stat) {
+                if ($stat->range == "all") continue;
+                $stat->commit_percent = number_format(check_percent($stat->total_commits / ($before[$stat->range]->total_commits > 0 ? $before[$stat->range]->total_commits : 1) * 100), 2);
+                $stat->developer_percent = number_format(check_percent(($stat->total_developer) / ($before[$stat->range]->total_developer > 0 ? $before[$stat->range]->total_developer : 1) * 100), 2);
+                $stat->repository_percent = number_format(check_percent($stat->total_repository / ($before[$stat->range]->total_repository > 0 ? $before[$stat->range]->total_repository : 1) * 100), 2);
+//                $stat->star_percent = number_format(check_percent($stat->total_star / ($before[$stat->range]->total_star > 0 ? $before[$stat->range]->total_star : 1) * 100), 2);
+//                $stat->fork_percent = number_format(check_percent($stat->total_fork / ($before[$stat->range]->total_fork > 0 ? $before[$stat->range]->total_fork : 1) * 100), 2);
+                $stat->issue_percent = number_format(check_percent($stat->total_issue_solved / ($before[$stat->range]->total_issue_solved > 0 ? $before[$stat->range]->total_issue_solved : 1) * 100), 2);
+                $stat->pull_percent = number_format(check_percent($stat->total_pull_merged / ($before[$stat->range]->total_pull_merged > 0 ? $before[$stat->range]->total_pull_merged : 1) * 100), 2);
             }
-            $item->stats = $other;
-            $item->github_prefix = $item->slug;
+
+            $item->stats = $stats;
         }
         return $response->setData($data);
     }
@@ -80,12 +67,12 @@ class StatisticController extends BaseController
         )->first())
             return $response->setError()->setMessage("Chain not found!");
 
-        if ($chain->is_repo){
+        if ($chain->is_repo) {
             $repo = Repository::where("chain", $chain->id)->first();
             if ($repo)
                 $chain->github_prefix = $repo->github_prefix;
         }
-        $chain->stats = $chain->stats()->where("range", 0)->get();
+        $chain->stats = $chain->stats()->where("range", "all")->first();
         return $response->setData($chain);
     }
 
@@ -99,8 +86,7 @@ class StatisticController extends BaseController
                 "total_star" => Repository::where("chain", $chain->id)->sum("total_star"),
                 "total_fork" => Repository::where("chain", $chain->id)->sum("total_fork")
             ];
-        }
-        else{
+        } else {
             $data = [
                 "total_commit" => Commit::sum("total_commit"),
                 "total_issue" => Issue::count(),
@@ -109,14 +95,14 @@ class StatisticController extends BaseController
                 "total_fork" => Repository::sum("total_fork")
             ];
         }
-            return $response->setData($data);
+        return $response->setData($data);
     }
 
     public function summaryInfo(Request $request, BaseHttpResponse $response)
     {
         if ($chain = Chain::find($request->input("chain"))) {
             // Devs
-            $info = $chain->info()->where("range", 0)->first();
+            $info = $chain->info()->where("range", "all")->first();
 
             $data = [
                 "total_commit" => Commit::where("chain", $chain->id)->sum("total_commit"),
@@ -128,8 +114,7 @@ class StatisticController extends BaseController
                 "issue_performance" => number_format($info->issue_performance, 2),
                 "community_attribute" => number_format($info->community_attribute, 2),
             ];
-        }
-        else{
+        } else {
             $info = ChainInfo::where("range", "24_hours")
                 ->select("full_time_developer", "part_time_developer")->get()->toArray();
 
@@ -147,38 +132,54 @@ class StatisticController extends BaseController
         return $response->setData($data);
     }
 
+    // unused
     public function getCommitChart(Request $request, BaseHttpResponse $response)
     {
-        if ($chain = Chain::find($request->input("chain"))){
+        $validator = Validator::make($request->all(), [
+            'filter' => "nullable|in:7,30",
+        ]);
+
+        if ($validator->fails())
+            return $response->setError()->setMessage(processValidators($validator->errors()->toArray()));
+
+        if ($chain = Chain::find($request->input("chain"))) {
             $data = CommitChart::where("chain", $chain->id)
                 ->orderBy("year", "DESC")->orderBy("month", "DESC")->orderBy("week", "DESC")
-                ->select("week", "month", "year", "total_commit", "total_additions", "total_deletions")
-                ->take(62)->get()->toArray();
-        }
-        else {
+                ->select("week", "month", "year", "total_commit", "total_additions", "total_deletions");
+        } else {
             $data = CommitChart::groupByRaw("week, month, year")
                 ->selectRaw("week, month, year, SUM(total_commit) as total_commit, SUM(total_additions) as total_additions, SUM(total_deletions) as total_deletions")
-                ->orderBy("year", "DESC")->orderBy("month", "DESC")->orderBy("week", "DESC")
-                ->take(62)->get()->toArray();
+                ->orderBy("year", "DESC")->orderBy("month", "DESC")->orderBy("week", "DESC");
         }
-        $data = array_reverse($data);
+
+        $data = array_reverse($data->take(62)->get()->toArray());
         return $response->setData($data);
     }
 
     public function getDeveloperChart(Request $request, BaseHttpResponse $response)
     {
-        if ($chain = Chain::find($request->input("chain"))){
-            $data = Commit::where("chain", $chain->id)
-                ->selectRaw("exact_date, (total_full_time + total_part_time) as active_developer")
-                ->orderBy("exact_date", "DESC")->limit(500)->get();
-        }
-        else {
-            $data = Commit::groupBy("exact_date")
-                ->selectRaw("exact_date, (SUM(total_full_time) + SUM(total_part_time)) as active_developer")
-                ->orderBy("exact_date", "DESC")->limit(500)->get();
-        }
+        $validator = Validator::make($request->all(), [
+            'filter' => "nullable|in:7,30",
+        ]);
 
-        $data = array_reverse($data->toArray());
+        if ($validator->fails())
+            return $response->setError()->setMessage(processValidators($validator->errors()->toArray()));
+
+        if ($chain = Chain::find($request->input("chain"))) {
+            $data = Commit::where("chain", $chain->id);
+        } else
+            $data = Commit::query();
+
+        $data->groupBy("exact_date")
+            ->selectRaw("exact_date, (SUM(total_full_time) + SUM(total_part_time)) as active_developer, SUM(total_commit) as total_commit,
+             SUM(additions) as additions, SUM(deletions) as deletions")
+            ->orderBy("exact_date", "DESC");
+
+        $filter = $request->input("filter", false);
+        if ($filter)
+            $data->where("exact_date", ">=", now()->addDays(-1 * $filter));
+
+        $data = array_reverse($data->limit(500)->get()->toArray());
 
         return $response->setData($data);
     }
@@ -190,7 +191,7 @@ class StatisticController extends BaseController
         sort($data);
         $additionalData = $request->has("with_data");
         $z = [];
-        foreach ($data as $item){
+        foreach ($data as $item) {
             $chains = Chain::where("categories", "like", "%$item%")
                 ->selectRaw("id, name, slug as github_prefix, avatar")->get();
             $row = [
@@ -216,16 +217,16 @@ class StatisticController extends BaseController
         $type = $request->input("type");
         $data = Chain::orderBy($type, "DESC")->take(100)->get();
         $total_chain = Chain::count();
-        foreach ($data as $chain){
-            $now = $chain->info()->where("range", 0)->first();
+        foreach ($data as $chain) {
+            $now = $chain->info()->where("range", "all")->first();
             $info = $chain->info()->where("range", "7_days")->first();
-            $chain->total_commit = $now->total_commits - $info->total_commits;
-            $chain->total_pull_merged = $now->total_pull_merged - $info->total_pull_merged;
+            $chain->total_commit = $info->total_commits;
+            $chain->total_pull_merged = $info->total_pull_merged;
             $chain->total_developer = ($info->full_time_developer) + ($info->part_time_developer);
-            $chain->total_issue = $now->total_issue_solved - $info->total_issue_solved;
-            $chain->total_star = $now->total_star;
-            $chain->total_fork = $now->total_fork;
-            $chain->total_pull_request = $now->total_pull_request - $info->total_pull_request;
+            $chain->total_issue = $info->total_issue_solved;
+            $chain->total_star = $info->total_star;
+            $chain->total_fork = $info->total_fork;
+            $chain->total_pull_request = $info->total_pull_request;
             $chain->commit_score = 101 - $chain->commit_rank;
             $chain->pulls_score = 101 - $chain->pull_rank;
             $chain->dev_score = 101 - $chain->dev_rank;
@@ -239,43 +240,48 @@ class StatisticController extends BaseController
         return $response->setData($data);
     }
 
-    public function getChainRepository($chain_id, BaseHttpResponse $response)
+    public function getChainRepository($chain_id, Request $request, BaseHttpResponse $response)
     {
         if (!$chain = Chain::find($chain_id))
             return $response->setError()->setMessage("Chain not found!");
 
         $repos = Repository::where("chain", $chain->id)
-            ->selectRaw("id, name, github_prefix, description, contributors, total_star, total_commit")
-            ->orderBy("total_commit", "DESC")->orderBy("total_star", "DESC")->orderBy("contributors", "DESC")
-            ->get();
+            ->selectRaw("id, name, github_prefix, description, contributors, total_star, total_commit, is_fork")
+            ->orderBy("total_commit", "DESC")->orderBy("total_star", "DESC")->orderBy("contributors", "DESC");
 
-        return $response->setData($repos);
+        if ($request->input("hide_fork", false))
+            $repos->where("is_fork", false);
+
+        return $response->setData($repos->get());
     }
 
-    public function getTopDeveloper($chain_id, BaseHttpResponse $response)
+    public function getTopDeveloper($chain_id, Request $request, BaseHttpResponse $response)
     {
         if (!$chain = Chain::find($chain_id))
             return $response->setError()->setMessage("Chain not found!");
 
         $repos = Repository::where("chain", $chain->id)->select("name", "total_contributor")->get()->toArray();
         $contributors = unique_name(array_column($repos, "total_contributor"));
+        $found = array_search("dependabot[bot]", $contributors);
+        if ($found)
+            unset($contributors[$found]);
 
         $pullDevelopers = Pull::where("chain", $chain->id)->whereIn("author", $contributors)
             ->select("author", "status")->get()->toArray();
 
         $calculate = Pull::where("chain", $chain->id)->whereIn("author", $contributors)
             ->groupBy("author")
-            ->selectRaw("author, COUNT(*) as total")->orderBy("total", "DESC")->get();
+            ->selectRaw("author, COUNT(*) as total")->orderBy("total", $request->input("sort", "DESC"))->get();
 
         $commits = explode(",", implode(",", Commit::where("chain", $chain->id)->pluck("author_list")->toArray()));
         $commits = array_count_values($commits);
 
-        foreach ($calculate as $item){
+        foreach ($calculate as $item) {
             $author = $item->author;
-            $item->closed = count(array_filter($pullDevelopers, function ($row) use ($author){
+            $item->closed = count(array_filter($pullDevelopers, function ($row) use ($author) {
                 return $row["author"] == $author && $row["status"] == "closed";
             }));
-            $item->repos = array_column(array_filter($repos, function ($row) use ($author){
+            $item->repos = array_column(array_filter($repos, function ($row) use ($author) {
                 return strpos($row["total_contributor"], $author);
             }), "name");
             $item->commits = isset($commits[$author]) ? $commits[$author] : 0;

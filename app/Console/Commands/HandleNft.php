@@ -2,7 +2,10 @@
 
 namespace App\Console\Commands;
 
+use Botble\Statistic\Models\Commit;
+use Botble\Statistic\Models\CommitChart;
 use Botble\Statistic\Models\CommitSHA;
+use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
 
@@ -59,13 +62,17 @@ class HandleNft extends Command
 ////            "is_end_stake" => false
 //        ]);
 
-        $commitSHA = CommitSHA::distinct("sha")->get();
-        foreach ($commitSHA as $item){
-            CommitSHA::where([
-                ["commit_id", $item->commit_id],
-                ["sha", $item->sha],
-                ["id", $item->id],
-            ])->delete();
+        ini_set("memory_limit", -1);
+        $oldCommit = DB::table("commits_backup")->where("id", "<=", setting("last_commit"))->get()->toArray();
+        $newCommit = Commit::where("id", "<=", setting("last_commit"))->where("id", ">=", 12570)->get();
+        foreach ($newCommit as $commit){
+            echo "Commit ID: " . $commit->id . PHP_EOL;
+            $index = array_search($commit->id, array_column($oldCommit, "id"));
+            if ($index !== false){
+                $commit->additions = $oldCommit[$index]->additions;
+                $commit->deletions = $oldCommit[$index]->deletions;
+                $commit->save();
+            }
         }
 
 
