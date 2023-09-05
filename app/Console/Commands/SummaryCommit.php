@@ -61,7 +61,7 @@ class SummaryCommit extends Command
                 $detail = json_decode(get_github_data($detailUrl, "body"));
                 if (isset($detail->message)){
                     Log::error($detail->message);
-                    return 0;
+                    continue;
                 }
                 $total_addition += $detail->stats->additions;
                 $total_deletion += $detail->stats->deletions;
