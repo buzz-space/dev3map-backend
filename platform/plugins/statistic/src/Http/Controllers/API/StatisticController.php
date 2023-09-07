@@ -79,6 +79,7 @@ class StatisticController extends BaseController
     public function commitInfo(Request $request, BaseHttpResponse $response)
     {
         if ($chain = Chain::find($request->input("chain"))) {
+
             $data = [
                 "total_commit" => Commit::where("chain", $chain->id)->sum("total_commit"),
                 "total_issue" => Issue::where("chain", $chain->id)->count(),
@@ -88,11 +89,17 @@ class StatisticController extends BaseController
             ];
         } else {
             $data = [
-                "total_commit" => Commit::sum("total_commit"),
-                "total_issue" => Issue::count(),
-                "total_pull_request" => Pull::count(),
-                "total_star" => Repository::sum("total_star"),
-                "total_fork" => Repository::sum("total_fork")
+                "total_commit" => setting("total_commit", 0),
+                "total_issue" => setting("total_issue", 0),
+                "total_pull_request" => setting("total_pull", 0),
+                "total_star" => setting("total_star", 0),
+                "total_fork" => setting("total_fork", 0),
+//                "total_commit" => Commit::sum("total_commit"),
+//                "total_issue" => Issue::count(),
+//                "total_pull_request" => Pull::count(),
+//                "total_star" => Repository::sum("total_star"),
+//                "total_fork" => Repository::sum("total_fork"),
+//
             ];
         }
         return $response->setData($data);
@@ -105,26 +112,26 @@ class StatisticController extends BaseController
             $info = $chain->info()->where("range", "all")->first();
 
             $data = [
-                "total_commit" => Commit::where("chain", $chain->id)->sum("total_commit"),
-                "total_issue" => Issue::where("chain", $chain->id)->count(),
-                "total_pull_request" => Pull::where("chain", $chain->id)->count(),
-                "total_star" => Repository::where("chain", $chain->id)->sum("total_star"),
-                "total_fork" => Repository::where("chain", $chain->id)->sum("total_fork"),
+                "total_commit" => $info->total_commits,
+                "total_issue" => $info->total_issue_solved,
+                "total_pull_request" => $info->total_pull_request,
+                "total_star" => $info->total_star,
+                "total_fork" => $info->total_fork,
                 "total_developer" => $info->full_time_developer + $info->part_time_developer,
                 "issue_performance" => number_format($info->issue_performance, 2),
                 "community_attribute" => number_format($info->community_attribute, 2),
             ];
         } else {
-            $info = ChainInfo::where("range", "24_hours")
-                ->select("full_time_developer", "part_time_developer")->get()->toArray();
+            $info = ChainInfo::where("range", "all")->get()->toArray();
+            $info7Days = ChainInfo::where("range", "7_days")->get()->toArray();
 
             $data = [
-                "total_commit" => Commit::sum("total_commit"),
-                "total_issue" => Issue::count(),
-                "total_pull_request" => Pull::count(),
-                "total_star" => Repository::sum("total_star"),
-                "total_fork" => Repository::sum("total_fork"),
-                "total_developer" => array_sum(array_column($info, "full_time_developer")) + array_sum(array_column($info, "part_time_developer")),
+                "total_commit" => array_sum(array_column($info, "total_commits")),
+                "total_issue" => array_sum(array_column($info, "total_issue_solved")),
+                "total_pull_request" => array_sum(array_column($info, "total_pull_request")),
+                "total_star" => array_sum(array_column($info, "total_star")),
+                "total_fork" => array_sum(array_column($info, "total_fork")),
+                "total_developer" => array_sum(array_column($info7Days, "full_time_developer")) + array_sum(array_column($info7Days, "part_time_developer")),
                 "issue_performance" => setting("issue_performance", 0),
                 "community_attribute" => setting("community_attribute", 0),
             ];

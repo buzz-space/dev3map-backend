@@ -53,14 +53,12 @@ class GetCommits extends Command
         ini_set("memory_limit", -1);
         set_time_limit(0);
         $lastExactDate = null;
-        $begin = "2018-01-01";
+        $last = "2018-01-01";
         $lastRepo = setting("last_repo", 0);
         $start = now();
-        $chainId = 113;
-        $repoId = 4483;
-        $page = 129;
+        $chainId = 11;
         foreach (Chain::orderBy("id", "ASC")->get() as $chain) {
-//            if ($chain->id < $chainId) continue;
+            if ($chain->id < $chainId) continue;
             echo "Chain: " . $chain->name . PHP_EOL;
             $repositories = Repository::where("chain", $chain->id)->orderBy("id", "ASC")->get();
             echo "With " . count($repositories) . PHP_EOL;
@@ -73,8 +71,8 @@ class GetCommits extends Command
                     echo ($j + 1) . " (" . $chain->id . "): " . $repository->id . "-" . $repository->name . PHP_EOL;
                     $contributors = unique_name(explode(",", $repository->total_contributor));
                     $prefix = $repository->github_prefix;
-                    if ($lastCommit = Commit::where("repo", $repository->id)->orderBy("exact_date", "ASC")->first())
-                        $last = "2023-08-02 00:00:00";
+                    if ($lastCommit = Commit::where("repo", $repository->id)->orderBy("exact_date", "DESC")->first())
+                        $last = "2023-09-01";
                     else {
                         echo "Repository has no commit!" . PHP_EOL;
                         continue;
@@ -160,7 +158,7 @@ class GetCommits extends Command
                      */
                     $cms = Commit::where("chain", $chain->id)
                         ->where("repo", $repository->id)
-//                        ->where("exact_date", ">=", $last)
+                        ->where("exact_date", ">=", $last)
                         ->orderBy("exact_date", "ASC")
                         ->get();
                     foreach ($cms as $item) {
@@ -240,95 +238,12 @@ class GetCommits extends Command
                         $exist->week = $week;
                         $exist->save();
                     }
-//                        "total_commit" => $total_commit,
-//                            "total_additions" => $total_additions,
-//                            "total_deletions" => $total_deletions,
-//                            "total_fork_commit" => 0,
+
                     $toChart = (clone $cms)->toArray();
                     $exist->total_commit += array_sum(array_column($toChart, "total_commit"));
                     $exist->total_additions += array_sum(array_column($toChart, "additions"));
                     $exist->total_deletions += array_sum(array_column($toChart, "deletions"));
                     $exist->save();
-
-                    /**
-                     * Summarize chain
-                     */
-//
-                    $range = [
-                        0 => "0",
-                        24 => "24_hours",
-                        (24 * 7) => "7_days",
-                        (24 * 30) => "30_days"
-                    ];
-                    foreach ($range as $filter => $range_name){
-                        echo "Range: $filter-$range_name" . PHP_EOL;
-                        $info = ChainInfo::where([
-                            ["chain", $chain->id],
-                            ["range", $range_name]
-                        ])->first();
-                        if (!$info){
-                            $info = new ChainInfo();
-                            $info->chain = $chain->id;
-                            $info->range = $range_name;
-                            $info->save();
-                        }
-                        $commits = Commit::where([
-                            ["chain", $chain->id],
-                            ["exact_date", "<", (clone $until)->addHours(-1 * $filter)]
-                        ])->get()->toArray();
-                        //commit
-                        $info->total_commits = array_sum(array_column($commits, "total_commit"));
-                        //developer (6 month range)
-                        $developers = Commit::where([
-                            ["chain", $chain->id],
-                            ["exact_date", "<", (clone $until)->addHours(-1 * $filter)],
-                            ["exact_date", ">=", (clone $until)->addHours(-1 * $filter)->addMonths(-6)]
-                        ])->get()->toArray();
-                        $contributors = unique_name(Repository::where("chain", $chain->id)->pluck("total_contributor")->toArray());
-                        $fullTime = unique_name(array_column($developers, "full_time"));
-                        $fullTime = array_filter($fullTime, function ($c) use ($contributors){
-                            return !empty($c) && in_array($c, $contributors);
-                        });
-                        $partTime = unique_name(array_column($developers, "part_time"));
-                        $partTime = array_filter($partTime, function ($c) use ($contributors, $fullTime){
-                            return !empty($c) && in_array($c, $contributors) && !in_array($c, $fullTime);
-                        });
-                        $info->full_time = implode(",", $fullTime);
-                        $info->part_time = implode(",", $partTime);
-                        $info->full_time_developer = count($fullTime);
-                        $info->part_time_developer = count($partTime);
-                        //repos
-                        $info->total_repository = Repository::where("chain", $chain->id)
-                            ->where("created_date", "<", (clone $until)->addHours(-1 * $filter))->count();
-
-                        //Issue
-                        $info->total_issue_solved = Issue::where("chain", $chain->id)
-                            ->where("open_date", "<", (clone $until)->addHours(-1 * $filter))->count();
-                        $total = Issue::where("chain", $chain->id)->groupBy("chain")
-                            ->selectRaw("chain, COUNT(*) as count, SUM(total_minute) as total")->first();
-                        if ($total)
-                            $total = $total->toArray();
-                        else
-                            $total = ["total" => 0, "count" => 1];
-                        $issuePerform = $total["total"] / $total["count"] / 60 / 24;
-                        $info->issue_performance = $issuePerform;
-                        //Pull
-                        $pullCreator = unique_name(Pull::where("chain", $chain->id)->pluck("author")->toArray());
-                        $outbound = array_filter($pullCreator, function ($row) use ($contributors){
-                            return !in_array($row, $contributors);
-                        });
-                        $outboundPulls = Pull::whereNotIn("author", $outbound)->where("chain", $chain->id)->count();
-                        $communityAttribute = $outboundPulls / (count($outbound) == 0 ? 1 : count($outbound));
-                        $info->community_attribute = $communityAttribute;
-                        $info->total_star = Repository::where("chain", $chain->id)->sum("total_star");
-                        $info->total_fork = Repository::where("chain", $chain->id)->sum("total_fork");
-                        $info->total_pull_merged = Pull::where([
-                            ["chain", $chain->id],
-                            ["status", "closed"],
-                            ["created_date", "<", (clone $until)->addHours(-1 * $filter)]
-                        ])->count();
-                        $info->save();
-                    }
                 }
             } catch (\Exception $exception) {
                 Log::error("Chain " . $chain->id . "-" . $chain->name . " have exception: " . $exception->getMessage());
