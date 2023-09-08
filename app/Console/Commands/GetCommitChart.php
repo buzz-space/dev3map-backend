@@ -52,7 +52,7 @@ class GetCommitChart extends Command
             $firstCommit = Commit::where("chain", $chain->id)->orderBy("exact_date", "ASC")->first();
             $lastCommit = Commit::where("chain", $chain->id)->orderBy("exact_date", "DESC")->first();
             if ($firstCommit && $lastCommit) {
-                $dateFirstCommit = Carbon::createFromTimestamp(strtotime($firstCommit->exact_date));
+                $dateFirstCommit = Carbon::createFromTimestamp(strtotime("2023-09-01"));
                 $dateLastCommit = Carbon::createFromTimestamp(strtotime($lastCommit->exact_date));
                 if ($dateFirstCommit->gt($dateLastCommit)) continue;
                 echo "From " . $dateFirstCommit->toDateTimeString() . " to " . $dateLastCommit->toDateTimeString() . PHP_EOL;
