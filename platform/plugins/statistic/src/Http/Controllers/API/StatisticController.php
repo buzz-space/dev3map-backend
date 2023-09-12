@@ -42,8 +42,8 @@ class StatisticController extends BaseController
                 $stat->repository_percent = number_format(check_percent($stat->total_repository / ($before[$stat->range]->total_repository > 0 ? $before[$stat->range]->total_repository : 1) * 100), 2);
                 $stat->issue_percent = number_format(check_percent($stat->total_issue_solved / ($before[$stat->range]->total_issue_solved > 0 ? $before[$stat->range]->total_issue_solved : 1) * 100), 2);
                 $stat->pull_percent = number_format(check_percent($stat->total_pull_merged / ($before[$stat->range]->total_pull_merged > 0 ? $before[$stat->range]->total_pull_merged : 1) * 100), 2);
-                $stat->star_percent = number_format(check_percent($stat->total_star / ($before['all']->total_star > 0 ? $before['all']->total_star : 1) * 100), 2);
-                $stat->fork_percent = number_format(check_percent($stat->total_fork / ($before['all']->total_fork > 0 ? $before['all']->total_fork : 1) * 100), 2);
+                $stat->star_percent = number_format(check_percent($stat->total_star / ($before[$stat->range]->total_star > 0 ? $before[$stat->range]->total_star : 1) * 100), 2);
+                $stat->fork_percent = number_format(check_percent($stat->total_fork / ($before[$stat->range]->total_fork > 0 ? $before[$stat->range]->total_fork : 1) * 100), 2);
             }
 
             $item->stats = $stats;
