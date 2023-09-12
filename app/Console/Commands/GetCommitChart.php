@@ -42,6 +42,7 @@ class GetCommitChart extends Command
      */
     public function handle()
     {
+        $date = $this->ask("From?");
         foreach (Chain::orderBy("id", "ASC")->get() as $chain) {
 //            if ($chain->id != 113) continue;
             echo "Chain " . $chain->name . PHP_EOL;
@@ -52,7 +53,7 @@ class GetCommitChart extends Command
             $firstCommit = Commit::where("chain", $chain->id)->orderBy("exact_date", "ASC")->first();
             $lastCommit = Commit::where("chain", $chain->id)->orderBy("exact_date", "DESC")->first();
             if ($firstCommit && $lastCommit) {
-                $dateFirstCommit = Carbon::createFromTimestamp(strtotime("2023-09-01"));
+                $dateFirstCommit = Carbon::createFromTimestamp(strtotime($date));
                 $dateLastCommit = Carbon::createFromTimestamp(strtotime($lastCommit->exact_date));
                 if ($dateFirstCommit->gt($dateLastCommit)) continue;
                 echo "From " . $dateFirstCommit->toDateTimeString() . " to " . $dateLastCommit->toDateTimeString() . PHP_EOL;

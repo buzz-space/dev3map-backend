@@ -34,15 +34,16 @@ class StatisticController extends BaseController
             $stats = $item->stats()->whereNotIn("range", ["before_7_days", "before_30_days", "24_hours"])->get();
             $before['7_days'] = $item->stats()->where("range", "before_7_days")->first();
             $before['30_days'] = $item->stats()->where("range", "before_30_days")->first();
+            $before['all'] = $item->stats()->where("range", "all")->first();
             foreach ($stats as $stat) {
                 if ($stat->range == "all") continue;
                 $stat->commit_percent = number_format(check_percent($stat->total_commits / ($before[$stat->range]->total_commits > 0 ? $before[$stat->range]->total_commits : 1) * 100), 2);
                 $stat->developer_percent = number_format(check_percent(($stat->total_developer) / ($before[$stat->range]->total_developer > 0 ? $before[$stat->range]->total_developer : 1) * 100), 2);
                 $stat->repository_percent = number_format(check_percent($stat->total_repository / ($before[$stat->range]->total_repository > 0 ? $before[$stat->range]->total_repository : 1) * 100), 2);
-//                $stat->star_percent = number_format(check_percent($stat->total_star / ($before[$stat->range]->total_star > 0 ? $before[$stat->range]->total_star : 1) * 100), 2);
-//                $stat->fork_percent = number_format(check_percent($stat->total_fork / ($before[$stat->range]->total_fork > 0 ? $before[$stat->range]->total_fork : 1) * 100), 2);
                 $stat->issue_percent = number_format(check_percent($stat->total_issue_solved / ($before[$stat->range]->total_issue_solved > 0 ? $before[$stat->range]->total_issue_solved : 1) * 100), 2);
                 $stat->pull_percent = number_format(check_percent($stat->total_pull_merged / ($before[$stat->range]->total_pull_merged > 0 ? $before[$stat->range]->total_pull_merged : 1) * 100), 2);
+                $stat->star_percent = number_format(check_percent($stat->total_star / ($before[$stat->range]->total_star > 0 ? $before[$stat->range]->total_star : 1) * 100), 2);
+                $stat->fork_percent = number_format(check_percent($stat->total_fork / ($before[$stat->range]->total_fork > 0 ? $before[$stat->range]->total_fork : 1) * 100), 2);
             }
 
             $item->stats = $stats;
