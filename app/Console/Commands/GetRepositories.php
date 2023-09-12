@@ -47,9 +47,10 @@ class GetRepositories extends Command
     public function handle()
     {
         set_time_limit(0);
+        $chainId = $this->ask("From chain ID?");
+        $repoId = $this->ask("From repo ID?");
         $chains = Chain::orderBy("id", "ASC")->get();
-        $chainId = 81;
-        $repoId = 4458;
+
         foreach ($chains as $i => $chain) {
             if ($chain->id < $chainId) continue;
             echo "Chain " . $chain->name . PHP_EOL;
@@ -164,38 +165,38 @@ class GetRepositories extends Command
                     $repo->total_issue_solved = $total_issue;
 
                     // Pull
-//                    $url = "https://api.github.com/repos/$repoPrefix/pulls?per_page=100&state=all&sort=created&direction=asc";
-//                    $lastPage = get_last_page(get_github_data($url, "header", 2));
-//
-//                    $pulls = Pull::where("repo", $repo->id)->count();
-//                    $firstPage = (int) floor($pulls / 100);
-//                    echo "Get pull request with $lastPage page!" . PHP_EOL;
-//                    $total_pulls = 0;
-//                    for ($i = $firstPage; $i <= $lastPage; $i++) {
-//                        $pageUrl = $url . "&page=$i";
-//                        $data = json_decode(get_github_data($pageUrl, "body", 2));
-//                        if (isset($data->message))
-//                            throw new \Exception($data->message);
-//
-//                        foreach ($data as $pull) {
-//                            if ($pull->state == "closed")
-//                                $total_pulls += 1;
-//                            if (!$exist = Pull::where("pull_id", $pull->id)->first()) {
-//                                Pull::create([
-//                                    "pull_id" => $pull->id,
-//                                    "author" => $pull->user->login,
-//                                    "status" => $pull->state,
-//                                    "repo" => $repo->id,
-//                                    "chain" => $repo->chain,
-//                                    "created_date" => date("Y-m-d H:i:s", strtotime($pull->created_at)),
-//                                ]);
-//                            } else {
-//                                $exist->created_date = date("Y-m-d H:i:s", strtotime($pull->created_at));
-//                                $exist->save();
-//                            }
-//                        }
-//                    }
-//                    $repo->pull_request_closed = $total_pulls;
+                    $url = "https://api.github.com/repos/$repoPrefix/pulls?per_page=100&state=all&sort=created&direction=asc";
+                    $lastPage = get_last_page(get_github_data($url, "header", 2));
+
+                    $pulls = Pull::where("repo", $repo->id)->count();
+                    $firstPage = (int) floor($pulls / 100);
+                    echo "Get pull request with $lastPage page!" . PHP_EOL;
+                    $total_pulls = 0;
+                    for ($i = $firstPage; $i <= $lastPage; $i++) {
+                        $pageUrl = $url . "&page=$i";
+                        $data = json_decode(get_github_data($pageUrl, "body", 2));
+                        if (isset($data->message))
+                            throw new \Exception($data->message);
+
+                        foreach ($data as $pull) {
+                            if ($pull->state == "closed")
+                                $total_pulls += 1;
+                            if (!$exist = Pull::where("pull_id", $pull->id)->first()) {
+                                Pull::create([
+                                    "pull_id" => $pull->id,
+                                    "author" => $pull->user->login,
+                                    "status" => $pull->state,
+                                    "repo" => $repo->id,
+                                    "chain" => $repo->chain,
+                                    "created_date" => date("Y-m-d H:i:s", strtotime($pull->created_at)),
+                                ]);
+                            } else {
+                                $exist->created_date = date("Y-m-d H:i:s", strtotime($pull->created_at));
+                                $exist->save();
+                            }
+                        }
+                    }
+                    $repo->pull_request_closed = $total_pulls;
 
                     $repo->created_date = date("Y-m-d H:i:s", strtotime($repoInfo->created_at));
                     $repo->is_fork = $repoInfo->fork;

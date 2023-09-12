@@ -197,20 +197,20 @@ class SummaryInfo extends Command
             }
         }
 
-//        //Issue
-//        $total = Issue::groupBy("chain")->selectRaw("chain, COUNT(*) as count, SUM(total_minute) as total")->get()->toArray();
-//        $issuePerform = array_sum(array_column($total, "total")) / array_sum(array_column($total, "count")) / 60 / 24;
-//        setting()->set("issue_performance", number_format(floor($issuePerform), 2));
-//        //Pull
-//        $contributors = unique_name(Repository::pluck("total_contributor")->toArray());
-//        $pullCreator = unique_name(Pull::pluck("author")->toArray());
-//        $outbound = array_filter($pullCreator, function ($row) use ($contributors){
-//            return !in_array($row, $contributors);
-//        });
-//        $outboundPulls = Pull::whereNotIn("author", $outbound)->count();
-//        $communityAttribute = $outboundPulls / count($outbound);
-//        setting()->set("community_attribute", number_format($communityAttribute, 2));
-//        setting()->save();
+        //Issue
+        $total = Issue::groupBy("chain")->selectRaw("chain, COUNT(*) as count, SUM(total_minute) as total")->get()->toArray();
+        $issuePerform = array_sum(array_column($total, "total")) / array_sum(array_column($total, "count")) / 60 / 24;
+        setting()->set("issue_performance", number_format(floor($issuePerform), 2));
+        //Pull
+        $contributors = unique_name(Repository::pluck("total_contributor")->toArray());
+        $pullCreator = unique_name(Pull::pluck("author")->toArray());
+        $outbound = array_filter($pullCreator, function ($row) use ($contributors){
+            return !in_array($row, $contributors);
+        });
+        $outboundPulls = Pull::whereNotIn("author", $outbound)->count();
+        $communityAttribute = $outboundPulls / count($outbound);
+        setting()->set("community_attribute", number_format($communityAttribute, 2));
+        setting()->save();
 
     }
 }

@@ -52,11 +52,9 @@ class GetCommits extends Command
     {
         ini_set("memory_limit", -1);
         set_time_limit(0);
-        $lastExactDate = null;
-        $last = "2018-01-01";
-        $lastRepo = setting("last_repo", 0);
+        $date = $this->ask("From?");
+        $chainId = $this->ask("From chain ID?");
         $start = now();
-        $chainId = 11;
         foreach (Chain::orderBy("id", "ASC")->get() as $chain) {
             if ($chain->id < $chainId) continue;
             echo "Chain: " . $chain->name . PHP_EOL;
@@ -72,10 +70,12 @@ class GetCommits extends Command
                     $contributors = unique_name(explode(",", $repository->total_contributor));
                     $prefix = $repository->github_prefix;
                     if ($lastCommit = Commit::where("repo", $repository->id)->orderBy("exact_date", "DESC")->first())
-                        $last = "2023-09-01";
+                        $last = $date;
                     else {
-                        echo "Repository has no commit!" . PHP_EOL;
-                        continue;
+                        if ($repository->id <= 4674) {
+                            echo "Repository has no commit!" . PHP_EOL;
+                            continue;
+                        }
                     }
                     $until = now()->toDateString();
                     $url = "https://api.github.com/repos/$prefix/commits?per_page=100";
@@ -143,7 +143,6 @@ class GetCommits extends Command
                                 $save->author_list = [];
 
                                 $date = $commitDate;
-                                $lastExactDate = $commitDate;
                             }
                             $sha[] = $commit->sha;
                             $save->additions += 0;
@@ -208,52 +207,11 @@ class GetCommits extends Command
                         $item->total_part_time = count($saving["part_time"]);
                         $item->save();
                     }
-
-                    /**
-                     * Apply to chart
-                     */
-
-                    $until = Carbon::createFromTimestamp(strtotime($until));
-                    $week = 1;
-                    $from = Carbon::create($until->year, $until->month, 1);
-                    $to = Carbon::create($until->year, $until->month, 15);
-                    if ($until->day > 15) {
-                        $week = 2;
-                        $from = Carbon::create($until->year, $until->month, 16);
-                        $to = Carbon::create($until->year, $until->month, $until->daysInMonth);
-                    }
-                    if (!$exist = CommitChart::where([
-                        ["week", $week],
-                        ["month", $until->month],
-                        ["year", $until->year],
-                        ["chain", $repository->chain]
-                    ])->first()) {
-                        $exist = new CommitChart();
-                        $exist->week = $week;
-                        $exist->month = $until->month;
-                        $exist->year = $until->year;
-                        $exist->chain = $repository->chain;
-                        $exist->from = $from->toDateString();
-                        $exist->to = $to->toDateString();
-                        $exist->week = $week;
-                        $exist->save();
-                    }
-
-                    $toChart = (clone $cms)->toArray();
-                    $exist->total_commit += array_sum(array_column($toChart, "total_commit"));
-                    $exist->total_additions += array_sum(array_column($toChart, "additions"));
-                    $exist->total_deletions += array_sum(array_column($toChart, "deletions"));
-                    $exist->save();
                 }
             } catch (\Exception $exception) {
                 Log::error("Chain " . $chain->id . "-" . $chain->name . " have exception: " . $exception->getMessage());
-//                    setting()->set("last_repo", $repository->id);
-//                    setting()->save();
-//                Commit::where("repo", $repository->id)->where("exact_date", $lastExactDate)->delete();
                 break;
             }
-//                setting()->set("last_repo", $repository->id);
-//                setting()->save();
         }
 
         echo "It's take " . now()->diffInMinutes($start) . " minutes!" . PHP_EOL;
