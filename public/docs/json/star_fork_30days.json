@@ -1,0 +1,656 @@
+[
+    {
+        "id": "319",
+        "chain": "2",
+        "total_star": "1421",
+        "total_fork": "990"
+    },
+    {
+        "id": "320",
+        "chain": "3",
+        "total_star": "180",
+        "total_fork": "197"
+    },
+    {
+        "id": "321",
+        "chain": "4",
+        "total_star": "113",
+        "total_fork": "347"
+    },
+    {
+        "id": "322",
+        "chain": "5",
+        "total_star": "509",
+        "total_fork": "469"
+    },
+    {
+        "id": "323",
+        "chain": "6",
+        "total_star": "757",
+        "total_fork": "278"
+    },
+    {
+        "id": "324",
+        "chain": "7",
+        "total_star": "97",
+        "total_fork": "104"
+    },
+    {
+        "id": "325",
+        "chain": "8",
+        "total_star": "138",
+        "total_fork": "251"
+    },
+    {
+        "id": "326",
+        "chain": "9",
+        "total_star": "110",
+        "total_fork": "99"
+    },
+    {
+        "id": "327",
+        "chain": "10",
+        "total_star": "45",
+        "total_fork": "55"
+    },
+    {
+        "id": "328",
+        "chain": "11",
+        "total_star": "88",
+        "total_fork": "182"
+    },
+    {
+        "id": "329",
+        "chain": "12",
+        "total_star": "30",
+        "total_fork": "23"
+    },
+    {
+        "id": "330",
+        "chain": "13",
+        "total_star": "78",
+        "total_fork": "90"
+    },
+    {
+        "id": "331",
+        "chain": "14",
+        "total_star": "976",
+        "total_fork": "996"
+    },
+    {
+        "id": "332",
+        "chain": "15",
+        "total_star": "166",
+        "total_fork": "72"
+    },
+    {
+        "id": "333",
+        "chain": "16",
+        "total_star": "237",
+        "total_fork": "715"
+    },
+    {
+        "id": "334",
+        "chain": "17",
+        "total_star": "71",
+        "total_fork": "153"
+    },
+    {
+        "id": "335",
+        "chain": "18",
+        "total_star": "3517",
+        "total_fork": "1657"
+    },
+    {
+        "id": "336",
+        "chain": "19",
+        "total_star": "772",
+        "total_fork": "417"
+    },
+    {
+        "id": "337",
+        "chain": "20",
+        "total_star": "193",
+        "total_fork": "250"
+    },
+    {
+        "id": "338",
+        "chain": "21",
+        "total_star": "389",
+        "total_fork": "354"
+    },
+    {
+        "id": "339",
+        "chain": "22",
+        "total_star": "718",
+        "total_fork": "941"
+    },
+    {
+        "id": "340",
+        "chain": "23",
+        "total_star": "169",
+        "total_fork": "125"
+    },
+    {
+        "id": "341",
+        "chain": "24",
+        "total_star": "698",
+        "total_fork": "739"
+    },
+    {
+        "id": "342",
+        "chain": "25",
+        "total_star": "697",
+        "total_fork": "847"
+    },
+    {
+        "id": "343",
+        "chain": "26",
+        "total_star": "103",
+        "total_fork": "990"
+    },
+    {
+        "id": "344",
+        "chain": "27",
+        "total_star": "12",
+        "total_fork": "11"
+    },
+    {
+        "id": "345",
+        "chain": "28",
+        "total_star": "123",
+        "total_fork": "256"
+    },
+    {
+        "id": "346",
+        "chain": "29",
+        "total_star": "144",
+        "total_fork": "210"
+    },
+    {
+        "id": "347",
+        "chain": "30",
+        "total_star": "553",
+        "total_fork": "345"
+    },
+    {
+        "id": "348",
+        "chain": "31",
+        "total_star": "90",
+        "total_fork": "157"
+    },
+    {
+        "id": "349",
+        "chain": "32",
+        "total_star": "195",
+        "total_fork": "347"
+    },
+    {
+        "id": "350",
+        "chain": "33",
+        "total_star": "162",
+        "total_fork": "406"
+    },
+    {
+        "id": "351",
+        "chain": "34",
+        "total_star": "267",
+        "total_fork": "118"
+    },
+    {
+        "id": "352",
+        "chain": "35",
+        "total_star": "57",
+        "total_fork": "15"
+    },
+    {
+        "id": "353",
+        "chain": "36",
+        "total_star": "1141",
+        "total_fork": "432"
+    },
+    {
+        "id": "354",
+        "chain": "37",
+        "total_star": "210",
+        "total_fork": "1571"
+    },
+    {
+        "id": "355",
+        "chain": "38",
+        "total_star": "48",
+        "total_fork": "88"
+    },
+    {
+        "id": "356",
+        "chain": "41",
+        "total_star": "125",
+        "total_fork": "207"
+    },
+    {
+        "id": "357",
+        "chain": "42",
+        "total_star": "183",
+        "total_fork": "137"
+    },
+    {
+        "id": "358",
+        "chain": "43",
+        "total_star": "35",
+        "total_fork": "34"
+    },
+    {
+        "id": "359",
+        "chain": "44",
+        "total_star": "49",
+        "total_fork": "43"
+    },
+    {
+        "id": "360",
+        "chain": "45",
+        "total_star": "409",
+        "total_fork": "592"
+    },
+    {
+        "id": "361",
+        "chain": "46",
+        "total_star": "42",
+        "total_fork": "137"
+    },
+    {
+        "id": "362",
+        "chain": "47",
+        "total_star": "618",
+        "total_fork": "399"
+    },
+    {
+        "id": "363",
+        "chain": "48",
+        "total_star": "335",
+        "total_fork": "153"
+    },
+    {
+        "id": "364",
+        "chain": "49",
+        "total_star": "1183",
+        "total_fork": "319"
+    },
+    {
+        "id": "365",
+        "chain": "50",
+        "total_star": "158",
+        "total_fork": "289"
+    },
+    {
+        "id": "366",
+        "chain": "51",
+        "total_star": "258",
+        "total_fork": "237"
+    },
+    {
+        "id": "367",
+        "chain": "52",
+        "total_star": "49",
+        "total_fork": "85"
+    },
+    {
+        "id": "368",
+        "chain": "53",
+        "total_star": "575",
+        "total_fork": "557"
+    },
+    {
+        "id": "369",
+        "chain": "54",
+        "total_star": "1376",
+        "total_fork": "154"
+    },
+    {
+        "id": "370",
+        "chain": "55",
+        "total_star": "131",
+        "total_fork": "167"
+    },
+    {
+        "id": "371",
+        "chain": "56",
+        "total_star": "68",
+        "total_fork": "214"
+    },
+    {
+        "id": "372",
+        "chain": "58",
+        "total_star": "294",
+        "total_fork": "635"
+    },
+    {
+        "id": "373",
+        "chain": "59",
+        "total_star": "26",
+        "total_fork": "13"
+    },
+    {
+        "id": "374",
+        "chain": "61",
+        "total_star": "283",
+        "total_fork": "143"
+    },
+    {
+        "id": "375",
+        "chain": "62",
+        "total_star": "445",
+        "total_fork": "292"
+    },
+    {
+        "id": "376",
+        "chain": "63",
+        "total_star": "3300",
+        "total_fork": "1800"
+    },
+    {
+        "id": "377",
+        "chain": "64",
+        "total_star": "36",
+        "total_fork": "18"
+    },
+    {
+        "id": "378",
+        "chain": "65",
+        "total_star": "1208",
+        "total_fork": "549"
+    },
+    {
+        "id": "379",
+        "chain": "66",
+        "total_star": "434",
+        "total_fork": "13889"
+    },
+    {
+        "id": "380",
+        "chain": "67",
+        "total_star": "37",
+        "total_fork": "26"
+    },
+    {
+        "id": "381",
+        "chain": "68",
+        "total_star": "258",
+        "total_fork": "140"
+    },
+    {
+        "id": "382",
+        "chain": "69",
+        "total_star": "13",
+        "total_fork": "24"
+    },
+    {
+        "id": "383",
+        "chain": "70",
+        "total_star": "3917",
+        "total_fork": "3940"
+    },
+    {
+        "id": "384",
+        "chain": "71",
+        "total_star": "257",
+        "total_fork": "126"
+    },
+    {
+        "id": "385",
+        "chain": "72",
+        "total_star": "248",
+        "total_fork": "295"
+    },
+    {
+        "id": "386",
+        "chain": "73",
+        "total_star": "1816",
+        "total_fork": "1353"
+    },
+    {
+        "id": "387",
+        "chain": "74",
+        "total_star": "4",
+        "total_fork": "3"
+    },
+    {
+        "id": "388",
+        "chain": "75",
+        "total_star": "136",
+        "total_fork": "81"
+    },
+    {
+        "id": "389",
+        "chain": "76",
+        "total_star": "90",
+        "total_fork": "93"
+    },
+    {
+        "id": "390",
+        "chain": "77",
+        "total_star": "82",
+        "total_fork": "54"
+    },
+    {
+        "id": "391",
+        "chain": "78",
+        "total_star": "1442",
+        "total_fork": "451"
+    },
+    {
+        "id": "392",
+        "chain": "79",
+        "total_star": "215",
+        "total_fork": "117"
+    },
+    {
+        "id": "393",
+        "chain": "80",
+        "total_star": "238",
+        "total_fork": "291"
+    },
+    {
+        "id": "394",
+        "chain": "81",
+        "total_star": "81",
+        "total_fork": "27"
+    },
+    {
+        "id": "395",
+        "chain": "83",
+        "total_star": "107",
+        "total_fork": "38"
+    },
+    {
+        "id": "396",
+        "chain": "84",
+        "total_star": "33",
+        "total_fork": "10"
+    },
+    {
+        "id": "397",
+        "chain": "85",
+        "total_star": "63",
+        "total_fork": "82"
+    },
+    {
+        "id": "398",
+        "chain": "86",
+        "total_star": "177",
+        "total_fork": "73"
+    },
+    {
+        "id": "399",
+        "chain": "87",
+        "total_star": "73",
+        "total_fork": "437"
+    },
+    {
+        "id": "400",
+        "chain": "88",
+        "total_star": "56",
+        "total_fork": "8"
+    },
+    {
+        "id": "401",
+        "chain": "89",
+        "total_star": "642",
+        "total_fork": "194"
+    },
+    {
+        "id": "402",
+        "chain": "90",
+        "total_star": "0",
+        "total_fork": "0"
+    },
+    {
+        "id": "403",
+        "chain": "91",
+        "total_star": "757",
+        "total_fork": "300"
+    },
+    {
+        "id": "404",
+        "chain": "92",
+        "total_star": "2",
+        "total_fork": "0"
+    },
+    {
+        "id": "405",
+        "chain": "93",
+        "total_star": "300",
+        "total_fork": "346"
+    },
+    {
+        "id": "406",
+        "chain": "94",
+        "total_star": "329",
+        "total_fork": "216"
+    },
+    {
+        "id": "407",
+        "chain": "95",
+        "total_star": "36",
+        "total_fork": "179"
+    },
+    {
+        "id": "408",
+        "chain": "96",
+        "total_star": "75",
+        "total_fork": "103"
+    },
+    {
+        "id": "409",
+        "chain": "97",
+        "total_star": "21",
+        "total_fork": "5"
+    },
+    {
+        "id": "410",
+        "chain": "98",
+        "total_star": "77",
+        "total_fork": "83"
+    },
+    {
+        "id": "411",
+        "chain": "99",
+        "total_star": "64",
+        "total_fork": "84"
+    },
+    {
+        "id": "412",
+        "chain": "100",
+        "total_star": "13",
+        "total_fork": "7"
+    },
+    {
+        "id": "413",
+        "chain": "101",
+        "total_star": "54",
+        "total_fork": "113"
+    },
+    {
+        "id": "414",
+        "chain": "102",
+        "total_star": "93",
+        "total_fork": "41"
+    },
+    {
+        "id": "415",
+        "chain": "103",
+        "total_star": "15",
+        "total_fork": "73"
+    },
+    {
+        "id": "416",
+        "chain": "104",
+        "total_star": "941",
+        "total_fork": "459"
+    },
+    {
+        "id": "417",
+        "chain": "105",
+        "total_star": "267",
+        "total_fork": "74"
+    },
+    {
+        "id": "418",
+        "chain": "106",
+        "total_star": "26",
+        "total_fork": "124"
+    },
+    {
+        "id": "419",
+        "chain": "107",
+        "total_star": "5",
+        "total_fork": "1"
+    },
+    {
+        "id": "420",
+        "chain": "108",
+        "total_star": "44",
+        "total_fork": "249"
+    },
+    {
+        "id": "421",
+        "chain": "109",
+        "total_star": "1",
+        "total_fork": "0"
+    },
+    {
+        "id": "422",
+        "chain": "110",
+        "total_star": "303",
+        "total_fork": "179"
+    },
+    {
+        "id": "423",
+        "chain": "111",
+        "total_star": "38",
+        "total_fork": "148"
+    },
+    {
+        "id": "424",
+        "chain": "112",
+        "total_star": "1507",
+        "total_fork": "1397"
+    },
+    {
+        "id": "425",
+        "chain": "113",
+        "total_star": "2961",
+        "total_fork": "2596"
+    },
+    {
+        "id": "429",
+        "chain": "114",
+        "total_star": "78",
+        "total_fork": "186"
+    },
+    {
+        "id": "433",
+        "chain": "115",
+        "total_star": "2168",
+        "total_fork": "1680"
+    }
+]
