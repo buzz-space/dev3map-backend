@@ -42,9 +42,10 @@ class GetCommitChart extends Command
      */
     public function handle()
     {
-        $date = $this->ask("From?");
+        $date = $this->ask("From?", "2020-01-01");
+        $chainId = $this->ask("From chain:");
         foreach (Chain::orderBy("id", "ASC")->get() as $chain) {
-//            if ($chain->id != 113) continue;
+            if ($chain->id < $chainId) continue;
             echo "Chain " . $chain->name . PHP_EOL;
 
 //            if ($chain->total_commit <= 0)
@@ -72,20 +73,14 @@ class GetCommitChart extends Command
 
                         echo "Week $j, start: " . $startWeek->toDateTimeString() . ", end: " . $endWeek->toDateTimeString() . PHP_EOL;
 
-                        $total_commit = Commit::where("chain", $chain->id)
+                        $data = Commit::where("chain", $chain->id)
                             ->where("exact_date", ">=", $startWeek->toDateTimeString())
                             ->where("exact_date", "<", $endWeek->toDateTimeString())
-                            ->sum("total_commit");
+                            ->select("total_commit", "additions", "deletions")->get()->toArray();
 
-                        $total_additions = Commit::where("chain", $chain->id)
-                            ->where("exact_date", ">=", $startWeek->toDateTimeString())
-                            ->where("exact_date", "<", $endWeek->toDateTimeString())
-                            ->sum("additions");
-
-                        $total_deletions = Commit::where("chain", $chain->id)
-                            ->where("exact_date", ">=", $startWeek->toDateTimeString())
-                            ->where("exact_date", "<", $endWeek->toDateTimeString())
-                            ->sum("deletions");
+                        $total_commit = array_sum(array_column($data, "total_commit"));
+                        $total_additions = array_sum(array_column($data, "additions"));
+                        $total_deletions = array_sum(array_column($data, "deletions"));
 
                         if (!$exist = CommitChart::where([
                             ["chain", $chain->id],

@@ -79,7 +79,7 @@ class GetRepositories extends Command
 
                 echo "With " . count($repository) . PHP_EOL;
                 foreach ($repository as $name => $repoPrefix) {
-                    if (strpos($repoPrefix, "chromium") !== false) continue;
+                    if (strpos($repoPrefix, "chromium") !== false || strpos($repoPrefix, "linux") !== false ) continue;
                     $repoUrl = "https://api.github.com/repos/$repoPrefix";
                     echo "Repo " . $repoUrl . " of chain " . $chain->name . PHP_EOL;
                     $repoInfo = json_decode(get_github_data($repoUrl));

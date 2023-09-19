@@ -52,7 +52,7 @@ class GetCommits extends Command
     {
         ini_set("memory_limit", -1);
         set_time_limit(0);
-        $date = $this->ask("From?");
+        $from = $this->ask("From?");
         $chainId = $this->ask("From chain ID?");
         $start = now();
         foreach (Chain::orderBy("id", "ASC")->get() as $chain) {
@@ -67,10 +67,11 @@ class GetCommits extends Command
                      * Get commits
                      */
                     echo ($j + 1) . " (" . $chain->id . "): " . $repository->id . "-" . $repository->name . PHP_EOL;
+                    $last = "2020-01-01";
                     $contributors = unique_name(explode(",", $repository->total_contributor));
                     $prefix = $repository->github_prefix;
                     if ($lastCommit = Commit::where("repo", $repository->id)->orderBy("exact_date", "DESC")->first())
-                        $last = $date;
+                        $last = $from;
                     else {
                         if ($repository->id <= 4674) {
                             echo "Repository has no commit!" . PHP_EOL;
@@ -96,7 +97,7 @@ class GetCommits extends Command
                         $date = null;
                         $save = null;
                         $sha = [];
-                        foreach ($data as $commit) {
+                        foreach ($data as $z => $commit) {
                             if (strpos($commit->commit->message, "Merge pull request") === 0)
                                 continue;
                             if (isset($commit->author))
@@ -106,7 +107,7 @@ class GetCommits extends Command
                             if (!in_array($author, $contributors))
                                 continue;
                             $commitDate = date("Y-m-d", strtotime($commit->commit->author->date));
-                            if ($date != $commitDate) {
+                            if ($date != $commitDate || $z == (count($data) - 1)) {
                                 if ($save) {
                                     $save->author_list = implode(",", $save->author_list);
                                     $save->save();
@@ -209,7 +210,7 @@ class GetCommits extends Command
                     }
                 }
             } catch (\Exception $exception) {
-                Log::error("Chain " . $chain->id . "-" . $chain->name . " have exception: " . $exception->getMessage());
+                Log::error("Chain " . $chain->id . "-" . $chain->name . " have exception: " . implode(". ", [$exception->getMessage(), $exception->getTraceAsString(), $exception->getCode(), $exception->getLine()]));
                 break;
             }
         }
