@@ -215,7 +215,7 @@ class StatisticController extends BaseController
              SUM(additions) as additions, SUM(deletions) as deletions")
             ->orderBy("exact_date", "ASC");
 
-        $filter = $request->input("filter", false);
+//        $filter = $request->input("filter", false);
 //        if ($filter)
 //            $data->where("exact_date", ">=", now()->addDays(-1 * $filter));
         $data->where("exact_date", ">=", now()->startOfYear());
