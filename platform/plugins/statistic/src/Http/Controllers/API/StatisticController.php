@@ -31,19 +31,23 @@ class StatisticController extends BaseController
         }
         $data = $query->selectRaw("id, name, slug as github_prefix, symbol, avatar")->get();
         foreach ($data as $item) {
-            $stats = $item->stats()->whereNotIn("range", ["before_7_days", "before_30_days", "24_hours"])->get();
+            $stats = $item->stats()->whereIn("range", ["7_days", "30_days", "all"])->get();
             $before['7_days'] = $item->stats()->where("range", "before_7_days")->first();
             $before['30_days'] = $item->stats()->where("range", "before_30_days")->first();
             $before['all'] = $item->stats()->where("range", "all")->first();
             foreach ($stats as $stat) {
                 if ($stat->range == "all") continue;
+                $star = $before['all']->total_star - $stat->total_star; $starLast = (($minus = $stat->total_star - $before[$stat->range]->total_star) > 0) ? $minus : 1;
+                $fork = $before['all']->total_fork - $stat->total_fork; $forkLast = (($minus = $stat->total_fork - $before[$stat->range]->total_fork) > 0) ? $minus : 1;
                 $stat->commit_percent = number_format(check_percent($stat->total_commits / ($before[$stat->range]->total_commits > 0 ? $before[$stat->range]->total_commits : 1) * 100), 2);
                 $stat->developer_percent = number_format(check_percent(($stat->total_developer) / ($before[$stat->range]->total_developer > 0 ? $before[$stat->range]->total_developer : 1) * 100), 2);
                 $stat->repository_percent = number_format(check_percent($stat->total_repository / ($before[$stat->range]->total_repository > 0 ? $before[$stat->range]->total_repository : 1) * 100), 2);
                 $stat->issue_percent = number_format(check_percent($stat->total_issue_solved / ($before[$stat->range]->total_issue_solved > 0 ? $before[$stat->range]->total_issue_solved : 1) * 100), 2);
                 $stat->pull_percent = number_format(check_percent($stat->total_pull_merged / ($before[$stat->range]->total_pull_merged > 0 ? $before[$stat->range]->total_pull_merged : 1) * 100), 2);
-                $stat->star_percent = number_format(check_percent($stat->total_star / ($before[$stat->range]->total_star > 0 ? $before[$stat->range]->total_star : 1) * 100), 2);
-                $stat->fork_percent = number_format(check_percent($stat->total_fork / ($before[$stat->range]->total_fork > 0 ? $before[$stat->range]->total_fork : 1) * 100), 2);
+                $stat->star_percent = number_format(check_percent($star / $starLast * 100), 2);
+                $stat->fork_percent = number_format(check_percent($fork / $forkLast * 100), 2);
+                $stat->total_star = $star;
+                $stat->total_fork = $fork;
             }
 
             $item->stats = $stats;

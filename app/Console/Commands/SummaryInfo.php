@@ -46,18 +46,35 @@ class SummaryInfo extends Command
      */
     public function handle()
     {
-        $day = Carbon::createFromTimestamp(strtotime("2023-09-01"));
-        foreach (Chain::orderBy("id", "ASC")->get() as $chain){
+        $day = Carbon::createFromTimestamp(strtotime($this->ask("Date?", now()->toDateString())));
+        foreach (Chain::orderBy("id", "ASC")->where("id", ">=", "116")->get() as $chain){
             echo "Chain name: " . $chain->name . PHP_EOL;
+            // Before update, change star fork
+            $now = ChainInfo::where("chain", $chain->id)->where("range", "all")->first();
+            $last7Days = ChainInfo::where("chain", $chain->id)->where("range", "7_days")->first();
+            $last14Days = ChainInfo::where("chain", $chain->id)->where("range", "before_7_days")->first();
+            $last21Days = ChainInfo::where("chain", $chain->id)->where("range", "21_days")->first();
+            $last30Days = ChainInfo::where("chain", $chain->id)->where("range", "30_days")->first();
+
+            $last30Days->total_star = $last21Days->total_star ?? $last30Days->total_star;
+            $last30Days->total_fork = $last21Days->total_fork ?? $last30Days->total_fork;
+            $last30Days->save();
+            if ($last21Days){
+                $last21Days->total_star = $last14Days->total_star;
+                $last21Days->total_fork = $last14Days->total_fork;
+                $last21Days->save();
+            }
+            $last14Days->total_star = $last7Days->total_star;
+            $last14Days->total_fork = $last7Days->total_fork;
+            $last14Days->save();
+            $last7Days->total_star = $now->total_star;
+            $last7Days->total_fork = $now->total_fork;
+            $last7Days->save();
+
             $range = [
                 [
                     "name" => "all",
                     "value" => 0,
-                    "skip" => false
-                ],
-                [
-                    "name" => "24_hours",
-                    "value" => 24,
                     "skip" => false
                 ],
                 [
@@ -69,6 +86,11 @@ class SummaryInfo extends Command
                     "name" => "before_7_days",
                     "value" => 24 * 7,
                     "skip" => true
+                ],
+                [
+                    "name" => "21_days",
+                    "value" => 24 * 21,
+                    "skip" => false
                 ],
                 [
                     "name" => "30_days",
