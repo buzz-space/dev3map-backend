@@ -22,6 +22,7 @@ class Chain extends BaseModel
     protected $fillable = [
         'name',
         'description',
+        'refer_ici',
         'last_updated',
         'github_prefix',
         'symbol',
@@ -56,4 +57,11 @@ class Chain extends BaseModel
     {
         return $this->hasMany(ChainInfo::class, "chain");
     }
+
+    public function resources()
+    {
+        return $this->hasMany(ChainResource::class, "chain");
+    }
+
+
 }

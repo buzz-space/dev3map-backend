@@ -69,7 +69,7 @@ class StatisticController extends BaseController
             "ibc_astronaut",
             "seriousness",
             "is_repo"
-        )->first())
+        )->with("resources")->first())
             return $response->setError()->setMessage("Chain not found!");
 
         if ($chain->is_repo) {

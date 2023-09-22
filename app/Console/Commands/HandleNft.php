@@ -62,18 +62,18 @@ class HandleNft extends Command
 ////            "is_end_stake" => false
 //        ]);
 
-        ini_set("memory_limit", -1);
-        $oldCommit = DB::table("commits_backup")->where("id", "<=", setting("last_commit"))->get()->toArray();
-        $newCommit = Commit::where("id", "<=", setting("last_commit"))->where("id", ">=", 12570)->get();
-        foreach ($newCommit as $commit){
-            echo "Commit ID: " . $commit->id . PHP_EOL;
-            $index = array_search($commit->id, array_column($oldCommit, "id"));
-            if ($index !== false){
-                $commit->additions = $oldCommit[$index]->additions;
-                $commit->deletions = $oldCommit[$index]->deletions;
-                $commit->save();
-            }
-        }
+//        ini_set("memory_limit", -1);
+//        $oldCommit = DB::table("commits_backup")->where("id", "<=", setting("last_commit"))->get()->toArray();
+//        $newCommit = Commit::where("id", "<=", setting("last_commit"))->where("id", ">=", 12570)->get();
+//        foreach ($newCommit as $commit){
+//            echo "Commit ID: " . $commit->id . PHP_EOL;
+//            $index = array_search($commit->id, array_column($oldCommit, "id"));
+//            if ($index !== false){
+//                $commit->additions = $oldCommit[$index]->additions;
+//                $commit->deletions = $oldCommit[$index]->deletions;
+//                $commit->save();
+//            }
+//        }
 
 
     }
