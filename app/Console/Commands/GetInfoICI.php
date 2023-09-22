@@ -93,6 +93,8 @@ class GetInfoICI extends Command
             }
             $exist->name = $resource->title;
             $exist->image = $resource->image;
+            $exist->category = $resource->type;
+            $exist->created_date = date("Y-m-d", strtotime($resource->publishDate));
             $exist->save();
         }
     }
