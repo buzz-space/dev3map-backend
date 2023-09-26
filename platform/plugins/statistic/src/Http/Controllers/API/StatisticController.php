@@ -170,7 +170,7 @@ class StatisticController extends BaseController
         return $response->setData($data);
     }
 
-    public function getDeveloperChartBackup(Request $request, BaseHttpResponse $response)
+    public function getDeveloperChart(Request $request, BaseHttpResponse $response)
     {
         $validator = Validator::make($request->all(), [
             'filter' => "nullable|in:7,30",
@@ -198,7 +198,7 @@ class StatisticController extends BaseController
         return $response->setData($data);
     }
 
-    public function getDeveloperChart(Request $request, BaseHttpResponse $response)
+    public function getDeveloperChartBackup(Request $request, BaseHttpResponse $response)
     {
         $validator = Validator::make($request->all(), [
             'filter' => "nullable|in:7,30",
