@@ -1,0 +1,2398 @@
+[
+    {
+        "title": "Aleo",
+        "summary": "<p>Aleo is a decentralized platform harnessing zero-knowledge cryptography to enhance online privacy. With its Leo programming language, Aleo enables private app development. Backed by significant funding, it aims to integrate with the current internet, promoting data ownership and security.</p>",
+        "excerpt": "Aleo utilizes zero-knowledge cryptography for a private, secure internet experience, championing user data ownership and decentralized apps.\n",
+        "url": "https://interchaininfo.zone/indexes/aleo",
+        "resources": [
+            {
+                "title": "Tendermint Core EXPLAINED (Algorithm & History)",
+                "url": "https://interchaininfo.zone/resources/tendermint-core-explained-algorithm-history",
+                "image": "https://img.youtube.com/vi/kTczTT9DlP8/hqdefault.jpg",
+                "readTime": "2 min read",
+                "publishDate": "July 15",
+                "type": "video"
+            },
+            {
+                "title": "Crypto Governance Optimized ~ Wynd DAO ~ Gauges allow for sustainable APRs for LPers on Wynd DEX",
+                "url": "https://interchaininfo.zone/resources/crypto-governance-optimized-wynd-dao-gauges-allow-for-sustainable-aprs-for-lpers-on-wynd-dex",
+                "image": "https://img.youtube.com/vi/dwGB2Oczj9Q/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Jan 31",
+                "type": "video"
+            },
+            {
+                "title": "How to set up auto-restake for your delegation",
+                "url": "https://interchaininfo.zone/resources/how-to-set-up-auto-restake-for-your-delegation",
+                "image": "https://img.youtube.com/vi/VTdORCaLt88/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Jan 31",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Enjin",
+        "summary": "<p>Enjin is a leading ecosystem for creating, distributing, and integrating NFTs. Originating as a gaming platform, it now offers tools for businesses, artists, and developers, emphasizing true ownership and utility. Its migration to Efinity enhances transaction speed and NFT functionalities.</p>",
+        "excerpt": "Enjin facilitates NFT creation and integration, transitioning from gaming to a comprehensive blockchain platform with its Efinity migration.\n",
+        "url": "https://interchaininfo.zone/indexes/enjin",
+        "resources": [
+            {
+                "title": "How exactly does ICS-20 work",
+                "url": "https://interchaininfo.zone/resources/how-exactly-does-ics-20-work",
+                "image": "https://img.youtube.com/vi/omdhqhgI1Fg/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "July 12",
+                "type": "video"
+            },
+            {
+                "title": "Tendermint Core EXPLAINED (Algorithm & History)",
+                "url": "https://interchaininfo.zone/resources/tendermint-core-explained-algorithm-history",
+                "image": "https://img.youtube.com/vi/kTczTT9DlP8/hqdefault.jpg",
+                "readTime": "2 min read",
+                "publishDate": "July 15",
+                "type": "video"
+            },
+            {
+                "title": "Celestia EXPLAINED (Modular Blockchains Animated)",
+                "url": "https://interchaininfo.zone/resources/celestia-explained-modular-blockchains-animated",
+                "image": "https://img.youtube.com/vi/ToHbt8pYBfA/hqdefault.jpg",
+                "readTime": "2 min read",
+                "publishDate": "July 15",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Fantom",
+        "summary": "<p>Fantom is a high-performance, scalable, and secure blockchain platform that aims to address the limitations of traditional blockchain networks. With its unique Lachesis consensus mechanism, Fantom offers rapid transaction speeds and robust security features. The platform is also known for its smart contract capabilities, interoperability, and a native token, FTM, which plays a pivotal role in governance and network incentivization.</p>",
+        "excerpt": "Fantom is revolutionizing the blockchain landscape with its high-speed transactions, robust security, and seamless interoperability.\n",
+        "url": "https://interchaininfo.zone/indexes/fantom",
+        "resources": []
+    },
+    {
+        "title": "Elys Network",
+        "summary": "<p id=\"5344\" class=\"pw-post-body-paragraph vr vs rj kk b vt vu vv vw vx vy vz wa ju wb wc wd jz we wf wg ke wh wi wj wk em bj\" data-selectable-paragraph=\"\">Elys Network is a Cosmos Ecosystem layer-1 blockchain and decentralized exchange (DEX) with a complete suite of applications and features, including:</p>\r\n<p id=\"02fa\" class=\"pw-post-body-paragraph vr vs rj kk b vt vu vv vw vx vy vz wa ju wb wc wd jz we wf wg ke wh wi wj wk em bj\" data-selectable-paragraph=\"\">• Cutting edge integration for a seamless onboarding experience for non crypto-native users<br />\r\n• A non-custodial Automated Market Maker (AMM) style Decentralized Exchange (DEX) powered by liquidity providers and liquidity pools<br />\r\n• Oracle based multi-asset Index pools to increase diversification and reduce volatility<br />\r\n• Liquidity providers earn passive yield paid in USDC<br />\r\n• Leverage yield farming to maximize rewards<br />\r\n• Native margin trading capabilities including a universal cross collateral vault<br />\r\n• Native bridging capabilities to EVM chains and IBC enabled blockchains<br />\r\n• On/Off ramps for major fiat currencies.</p>",
+        "excerpt": "Cosmos Ecosystem DEX featuring native USDC and ETF-style index pools, seamless onboarding for non-crypto users, margin, and more.\n",
+        "url": "https://interchaininfo.zone/indexes/elys-network",
+        "resources": [
+            {
+                "title": "Elys Network",
+                "url": "https://interchaininfo.zone/resources/elys-network",
+                "image": "https://interchaininfo.zone/uploads/2023/08/Logo5_solo_logo.png",
+                "readTime": "1 min read",
+                "publishDate": "Aug 29",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Gitopia",
+        "summary": "<p>Gitopia is a platform for developers and web3 communities to collaborate on open-source projects in a decentralized and censorship-free environment. By using permanent storage through Filecoin, Arweave, and IPFS, Gitopia ensures that your code is always accessible and safe. Additionally, it offers web3-specific features such as Bounties and Proposals, as well as familiar collaboration tools like Issues and Pull-Requests. To encourage open-source development, Gitopia also offers interchain bounties and incentives through its native LORE token.</p>",
+        "excerpt": "Code Collaboration for Web3\n",
+        "url": "https://interchaininfo.zone/indexes/gitopia",
+        "resources": [
+            {
+                "title": "COSMOS NEWS: Neutron, INJECTIVE, PaaS by Secret Network, IBC v.7.1, KEPLR 2.0, ICF, Stride & MORE!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-neutron-injective-paas-by-secret-network-ibc-v-7-1-keplr-2-0-icf-stride-more",
+                "image": "https://img.youtube.com/vi/tGfb2LJMHq4/hqdefault.jpg",
+                "readTime": "44 min read",
+                "publishDate": "July 12",
+                "type": "video"
+            },
+            {
+                "title": "COSMOS ahead of ETHEREUM with Fraud votes? NATIVE USDT, OSMO 2.0, Mito Finance, AKASH, STRIDE & MORE",
+                "url": "https://interchaininfo.zone/resources/cosmos-ahead-of-ethereum-with-fraud-votes-native-usdt-osmo-2-0-mito-finance-akash-stride-more",
+                "image": "https://img.youtube.com/vi/M6W-EjfXicg/hqdefault.jpg",
+                "readTime": "41 min read",
+                "publishDate": "July 12",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "BASE",
+        "summary": "<p>Base, an Ethereum Layer 2 solution introduced by Coinbase, addresses the scalability and fee challenges inherent in the Ethereum network. Offering Ethereum compatibility, Base provides a platform for faster, more cost-effective transactions, making it ideal for a wide range of decentralized applications. With Coinbase's backing, Base is poised to play a pivotal role in the future of blockchain applications.</p>",
+        "excerpt": "Coinbase’s Ethereum L2 solution, revolutionizing transaction speed and cost while maintaining Ethereum compatibility.\n",
+        "url": "https://interchaininfo.zone/indexes/base",
+        "resources": [
+            {
+                "title": "Sei Network lets you build high throughput DEXs on its base layer",
+                "url": "https://interchaininfo.zone/resources/sei-network-lets-you-build-high-throughput-dexs-on-its-base-layer",
+                "image": "https://img.youtube.com/vi/WGizshbtU-Y/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Jan 31",
+                "type": "video"
+            },
+            {
+                "title": "– SIGNAL – NFT and CW20-based alternate reality game",
+                "url": "https://interchaininfo.zone/resources/signal-nft-and-cw20-based-alternate-reality-game",
+                "image": "https://img.youtube.com/vi/az8f6L5QgXo/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Dec 1",
+                "type": "video"
+            },
+            {
+                "title": "Load balancer for APIs (RCP & LCD) on Cosmos-based networks",
+                "url": "https://interchaininfo.zone/resources/load-balancer-for-apis-rcp-lcd-on-cosmos-based-networks",
+                "image": "https://interchaininfo.zone/uploads/2022/11/Load-balancer-for-APIs-RCP-LCD-on-Cosmos-based-networks.jpg",
+                "readTime": "1 min read",
+                "publishDate": "Nov 30",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Polkadot",
+        "summary": "<p>Polkadot, established in 2016 by Ethereum co-founder Dr. Gavin Wood, is a multi-chain interoperability platform aiming to create a decentralized web. With its unique architecture comprising the Relay Chain, Parachains, and Bridges, Polkadot facilitates seamless communication between blockchains. Its native token, DOT, plays a crucial role in governance, staking, and bonding, ensuring network security and evolution.</p>",
+        "excerpt": "Polkadot: A groundbreaking multi-chain platform, redefining blockchain interoperability and decentralized web visions.\n",
+        "url": "https://interchaininfo.zone/indexes/polkadot",
+        "resources": [
+            {
+                "title": "USDC Updates: 6 New Blockchains vs. A Falling Market Cap",
+                "url": "https://interchaininfo.zone/resources/usdc-updates-6-new-blockchains-vs-a-falling-market-cap",
+                "image": "https://interchaininfo.zone/uploads/2023/08/Frame-1321316941.png",
+                "readTime": "2 min read",
+                "publishDate": "Aug 29",
+                "type": "article"
+            },
+            {
+                "title": "DeFi Bridging Explored: Centauri — IBC Beyond the Cosmos",
+                "url": "https://interchaininfo.zone/resources/defi-bridging-explored-centauri-ibc-beyond-the-cosmos",
+                "image": "https://interchaininfo.zone/uploads/2023/01/Screenshot-2023-01-30-173356.png",
+                "readTime": "5 min read",
+                "publishDate": "Jan 31",
+                "type": "article"
+            },
+            {
+                "title": "IBC: A roadmap for the interchain future",
+                "url": "https://interchaininfo.zone/resources/ibc-a-roadmap-for-the-interchain-future",
+                "image": "https://interchaininfo.zone/uploads/2023/08/Frame-1321316942.png",
+                "readTime": "8 min read",
+                "publishDate": "Aug 29",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Neutron",
+        "summary": "<p>Neutron is a blockchain platform designed for decentralized applications, with a focus on tokenomics and transaction fees. It handles both local and cross-chain transactions through its IBC fee model. Neutron’s financial ecosystem is managed through three contracts: The Reserve, Distribution Contract, and the Neutron DAO Core Module.</p>",
+        "excerpt": "Neutron blockchain offers decentralized applications, unique tokenomics, and a robust fund management system.\n",
+        "url": "https://interchaininfo.zone/indexes/neutron",
+        "resources": [
+            {
+                "title": "COSMOS NEWS: Neutron, INJECTIVE, PaaS by Secret Network, IBC v.7.1, KEPLR 2.0, ICF, Stride & MORE!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-neutron-injective-paas-by-secret-network-ibc-v-7-1-keplr-2-0-icf-stride-more",
+                "image": "https://img.youtube.com/vi/tGfb2LJMHq4/hqdefault.jpg",
+                "readTime": "44 min read",
+                "publishDate": "July 12",
+                "type": "video"
+            },
+            {
+                "title": "COSMOS NEWS: NEW US BILL & DEFI?!!, ATOM, AIRDROPS, INJ & MORE!!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-new-us-bill-defi-atom-airdrops-inj-more",
+                "image": "https://img.youtube.com/vi/1Lim2PHx3-M/hqdefault.jpg",
+                "readTime": "2 min read",
+                "publishDate": "Aug 3",
+                "type": "video"
+            },
+            {
+                "title": "BREAKING: NATIVE TETHER USDT IS COMING TO COSMOS!!",
+                "url": "https://interchaininfo.zone/resources/breaking-native-tether-usdt-is-coming-to-cosmos",
+                "image": "https://img.youtube.com/vi/lpFm8Npnxuw/hqdefault.jpg",
+                "readTime": "1 min read",
+                "publishDate": "July 12",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Coreum",
+        "summary": "<p>Coreum is an enterprise-grade Layer 1 blockchain network that provides a scalable infrastructure for decentralized applications. It offers fast, low-cost transactions with cross-chain support and smart contract capabilities. Coreum's unique feature is the concept of Smart Tokens, which combine natively issued tokens with smart contracts for increased customization, speed, security, and reliability.</p>",
+        "excerpt": "Coreum is a scalable, enterprise-grade Layer 1 blockchain network with unique Smart Tokens and cross-chain support.\n",
+        "url": "https://interchaininfo.zone/indexes/coreum",
+        "resources": [
+            {
+                "title": "Cosmos & IBC enterprise adoption ✨ Keplr wallet better option for Coreum",
+                "url": "https://interchaininfo.zone/resources/cosmos-ibc-enterprise-adoption-%e2%9c%a8-keplr-wallet-better-option-for-coreum",
+                "image": "https://img.youtube.com/vi/ru52H8um0Pc/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "July 12",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Avalanche",
+        "summary": "<p>Avalanche is a decentralized platform that supports the creation of smart contracts and DApps with high throughput and low latency. Its unique architecture includes a primary network and subnets, each with its own rules and token economics. The platform's native token, AVAX, is used for fees, staking, and as a basic unit of account.</p>",
+        "excerpt": "Avalanche – a high-speed, decentralized platform for DApps and smart contracts.\n",
+        "url": "https://interchaininfo.zone/indexes/avalanche",
+        "resources": [
+            {
+                "title": "Tendermint Core EXPLAINED (Algorithm & History)",
+                "url": "https://interchaininfo.zone/resources/tendermint-core-explained-algorithm-history",
+                "image": "https://img.youtube.com/vi/kTczTT9DlP8/hqdefault.jpg",
+                "readTime": "2 min read",
+                "publishDate": "July 15",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Arbitrum",
+        "summary": "<p>Arbitrum is a Layer 2 solution for Ethereum that increases transaction speed and reduces cost by moving most computational work off the Ethereum mainnet. It uses Optimistic Rollup technology to maintain the security of the Ethereum network while executing transactions off-chain.</p>",
+        "excerpt": "Arbitrum enhances Ethereum’s scalability and efficiency by executing transactions off-chain while maintaining network security.\n",
+        "url": "https://interchaininfo.zone/indexes/arbitrum",
+        "resources": [
+            {
+                "title": "Weekly Roundup by Team Kujira: Ep.33",
+                "url": "https://interchaininfo.zone/resources/weekly-roundup-by-team-kujira-ep-33",
+                "image": "https://interchaininfo.zone/uploads/2023/06/Frame-62.png",
+                "readTime": "11 min read",
+                "publishDate": "June 29",
+                "type": "article"
+            },
+            {
+                "title": "Axelar Deep Dive: Cross-Chain Pioneers",
+                "url": "https://interchaininfo.zone/resources/axelar-deep-dive-cross-chain-pioneers",
+                "image": "https://interchaininfo.zone/uploads/2023/09/Twitter-post-19.png",
+                "readTime": "3 min read",
+                "publishDate": "Sept 8",
+                "type": "article"
+            },
+            {
+                "title": "COSMOS NEWS: dYdX v4 public testnet in COSMOS, MME CRYPTO REGULATIONS updates, INJECTIVE, SECRET Network & MORE!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-dydx-v4-public-testnet-in-cosmos-mme-crypto-regulations-updates-injective-secret-network-more",
+                "image": "https://img.youtube.com/vi/dtouedxEwSk/hqdefault.jpg",
+                "readTime": "54 min read",
+                "publishDate": "July 24",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Solana",
+        "summary": "<p>Solana is a high-performance blockchain platform supporting builders around the world creating crypto apps that scale. It uses a unique timestamp system to increase speed and efficiency.</p>",
+        "excerpt": "Solana is a scalable blockchain platform for dApps with a unique timestamp system for increased efficiency.\n",
+        "url": "https://interchaininfo.zone/indexes/solana",
+        "resources": [
+            {
+                "title": "Tendermint Core EXPLAINED (Algorithm & History)",
+                "url": "https://interchaininfo.zone/resources/tendermint-core-explained-algorithm-history",
+                "image": "https://img.youtube.com/vi/kTczTT9DlP8/hqdefault.jpg",
+                "readTime": "2 min read",
+                "publishDate": "July 15",
+                "type": "video"
+            },
+            {
+                "title": "Introducing Dexter – Interchain DEX for Yield-Generating Assets",
+                "url": "https://interchaininfo.zone/resources/introducing-dexter-interchain-dex-for-yield-generating-assets",
+                "image": "https://interchaininfo.zone/uploads/2023/04/1_4EEafQlO0_pzSG7hJ9WCpQ-1.webp",
+                "readTime": "9 min read",
+                "publishDate": "April 28",
+                "type": "article"
+            },
+            {
+                "title": "The Biggest Launch in COSMOS in 2023! Celestia Deep Dive",
+                "url": "https://interchaininfo.zone/resources/the-biggest-launch-in-cosmos-in-2023-celestia-deep-dive",
+                "image": "https://img.youtube.com/vi/NrRQkrA-b4c/hqdefault.jpg",
+                "readTime": "3 min read",
+                "publishDate": "Jan 31",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Tezos",
+        "summary": "<p>Tezos is a blockchain platform for smart contracts and decentralized applications (dApps). Unlike other similar projects, Tezos does not involve mining but offers a process called \"baking\" where stakeholders participate in the network's consensus mechanism.</p>",
+        "excerpt": "Tezos is a self-amending blockchain platform that supports smart contracts and dApps, and uses a unique “baking” consensus mechanism.\n",
+        "url": "https://interchaininfo.zone/indexes/tezos",
+        "resources": []
+    },
+    {
+        "title": "Algorand",
+        "summary": "<p>Algorand is a scalable, secure, and decentralized digital currency and transactions platform. It was founded by Silvio Micali, a Turing Award-winning cryptographer and MIT professor. Algorand aims to solve the three main challenges faced by blockchains today, also known as the blockchain trilemma: security, scalability, and decentralization.</p>",
+        "excerpt": "Algorand is a high-performance blockchain platform founded by MIT professor Silvio Micali aiming to solve the blockchain trilemma.\n",
+        "url": "https://interchaininfo.zone/indexes/algorand",
+        "resources": []
+    },
+    {
+        "title": "Ethereum",
+        "summary": "<p>Ethereum is a decentralized, open-source blockchain system that introduced the concept of smart contracts into the blockchain space. It's currently transitioning to Ethereum 2.0, which will see the platform move from a proof-of-work to a proof-of-stake consensus mechanism, promising increased speed, efficiency, and scalability.</p>",
+        "excerpt": "Ethereum is a decentralized platform that runs smart contracts, enabling applications to run as programmed without downtime, censorship, fraud, or third-party interference.\n",
+        "url": "https://interchaininfo.zone/indexes/ethereum",
+        "resources": [
+            {
+                "title": "COSMOS ATOM Long Term Price Prediction $1000 + !! Cosmos Will Likely Eclipse Ethereum Over Time !!!!",
+                "url": "https://interchaininfo.zone/resources/cosmos-atom-long-term-price-prediction-1000-cosmos-will-likely-eclipse-ethereum-over-time",
+                "image": "https://img.youtube.com/vi/Ehe6suuV_WY/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Jan 31",
+                "type": "video"
+            },
+            {
+                "title": "Tendermint Core EXPLAINED (Algorithm & History)",
+                "url": "https://interchaininfo.zone/resources/tendermint-core-explained-algorithm-history",
+                "image": "https://img.youtube.com/vi/kTczTT9DlP8/hqdefault.jpg",
+                "readTime": "2 min read",
+                "publishDate": "July 15",
+                "type": "video"
+            },
+            {
+                "title": "IBC Explained (InterBlockchain Communication Animated)",
+                "url": "https://interchaininfo.zone/resources/ibc-explained",
+                "image": "https://img.youtube.com/vi/-jWWrHL1miM/hqdefault.jpg",
+                "readTime": "2 min read",
+                "publishDate": "July 15",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Bitcoin (BTC)",
+        "summary": "<p>Bitcoin, the first decentralized digital currency, was invented in 2008 by an unknown entity named Satoshi Nakamoto. It operates independently of a central bank, with transactions verified by network nodes through cryptography and recorded on a public ledger called a blockchain.</p>",
+        "excerpt": "Bitcoin, a digital currency independent of central banks, uses encryption for currency generation and fund transfers, and has been scrutinized for potential illegal usage.\n",
+        "url": "https://interchaininfo.zone/indexes/bitcoin-btc",
+        "resources": [
+            {
+                "title": "COSMOS NEWS: dYdX v4 UPDATES, ATOM, INJ, OSMO & MORE!!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-dydx-v4-updates-atom-inj-osmo-more",
+                "image": "https://interchaininfo.zone/uploads/2023/08/Cosmos_news_August.jpeg",
+                "readTime": "14 min read",
+                "publishDate": "Aug 22",
+                "type": "video"
+            },
+            {
+                "title": "COSMOS NEWS: dYdX v4 public testnet in COSMOS, MME CRYPTO REGULATIONS updates, INJECTIVE, SECRET Network & MORE!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-dydx-v4-public-testnet-in-cosmos-mme-crypto-regulations-updates-injective-secret-network-more",
+                "image": "https://img.youtube.com/vi/dtouedxEwSk/hqdefault.jpg",
+                "readTime": "54 min read",
+                "publishDate": "July 24",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "BNB Chain",
+        "summary": "<p>BNB Chain is a community-driven, open-sourced, and decentralized ecosystem. It comprises the BNB Beacon Chain and BNB Smart Chain, each serving unique purposes in governance and smart contract functionality, respectively.</p>",
+        "excerpt": "A dual-architecture blockchain ecosystem with separate chains for governance and smart contract functionality.\n",
+        "url": "https://interchaininfo.zone/indexes/bnb-chain",
+        "resources": [
+            {
+                "title": "Unlocking the Potential of Decentralized Finance with Kava",
+                "url": "https://interchaininfo.zone/resources/unlocking-the-potential-of-decentralized-finance-with-kava",
+                "image": "https://interchaininfo.zone/uploads/2023/07/kava.png",
+                "readTime": "3 min read",
+                "publishDate": "July 12",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Binance Chain (BC)",
+        "summary": "<p>Binance Chain is a high-speed blockchain platform focused on asset trading and transfers. It supports Binance Coin (BNB) and uses a Tendermint BFT consensus mechanism for fast transactions.</p>",
+        "excerpt": "A fast, decentralized trading-focused blockchain platform that supports Binance Coin (BNB).\n",
+        "url": "https://interchaininfo.zone/indexes/binance-chain-bc",
+        "resources": []
+    },
+    {
+        "title": "PlanqNetwork",
+        "summary": null,
+        "excerpt": "Planq is the very first cryptocurrency project to keep mobile platform usability at heart, taking away dependency on desktop services. The Planq blockchain is powered by the $PLQ token and The ecosystem is expanding every day.The first application that Planq launched is Castrum, A mobile wallet that can receive and send crypto to other users, has a fully encrypted chat, and all features the Planq blockchain offers.\n",
+        "url": "https://interchaininfo.zone/indexes/planqnetwork",
+        "resources": []
+    },
+    {
+        "title": "Babylon Chain",
+        "summary": "<p>Babylon Chain, a Web3 project, enhances blockchain security by leveraging Bitcoin's robustness. It introduces Bitcoin staking, allowing Bitcoin holders to stake idle bitcoins, boosting PoS chains' security and earning yield. Babylon Chain also features fast stake unbonding, enabling quick network exit in emergencies. By using Bitcoin as a backing mechanism, Babylon Chain ensures PoS network security isn't compromised, even under attack. The recent lite paper release details this innovative Bitcoin staking concept.</p>",
+        "excerpt": "Babylon Chain revolutionizes blockchain security with Bitcoin staking. Stake idle bitcoins, boost PoS chains’ security, and earn yield!\n",
+        "url": "https://interchaininfo.zone/indexes/babylon-chain",
+        "resources": [
+            {
+                "title": "BITCOIN SECURITY WITHIN THE COSMOS ECOSYSTEM – BabylonChain",
+                "url": "https://interchaininfo.zone/resources/bitcoin-security-within-the-cosmos-ecosystem-babylonchain",
+                "image": "https://img.youtube.com/vi/J1emdp-rcfc/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Jan 31",
+                "type": "video"
+            },
+            {
+                "title": "Unleashing the Power of Bitcoin Staking: A Revolutionary Leap for the Proof-of-Stake Ecosystem",
+                "url": "https://interchaininfo.zone/resources/unleashing-the-power-of-bitcoin-staking-a-revolutionary-leap-for-the-proof-of-stake-ecosystem",
+                "image": "https://interchaininfo.zone/uploads/2023/07/babylon-1.png",
+                "readTime": "3 min read",
+                "publishDate": "July 14",
+                "type": "article"
+            },
+            {
+                "title": "COSMOS NEWS: dYdX v4 UPDATES, ATOM, INJ, OSMO & MORE!!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-dydx-v4-updates-atom-inj-osmo-more",
+                "image": "https://interchaininfo.zone/uploads/2023/08/Cosmos_news_August.jpeg",
+                "readTime": "14 min read",
+                "publishDate": "Aug 22",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Lava Network",
+        "summary": "<p><span style=\"font-weight: 400;\">Lava protocol optimally routes RPC relays through a decentralized network of top providers. Providers are rewarded according to their quality of service. This results in lower costs to developers, faster response times, enhanced reliability and greater privacy for user queries. Lava coordinates nodes and apps to create the open standard for blockchain access, already supporting 15+ chains and helped by a community of open-source contributors.</span></p>",
+        "excerpt": "A decentralized network that optimizes RPC relay routing and rewards quality service, boosting speed, reliability, and privacy in the Interchain.\n",
+        "url": "https://interchaininfo.zone/indexes/lava-network",
+        "resources": [
+            {
+                "title": "COSMOS NEWS: dYdX v4 public testnet in COSMOS, MME CRYPTO REGULATIONS updates, INJECTIVE, SECRET Network & MORE!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-dydx-v4-public-testnet-in-cosmos-mme-crypto-regulations-updates-injective-secret-network-more",
+                "image": "https://img.youtube.com/vi/dtouedxEwSk/hqdefault.jpg",
+                "readTime": "54 min read",
+                "publishDate": "July 24",
+                "type": "video"
+            },
+            {
+                "title": "Unlocking the Potential of Decentralized Finance with Kava",
+                "url": "https://interchaininfo.zone/resources/unlocking-the-potential-of-decentralized-finance-with-kava",
+                "image": "https://interchaininfo.zone/uploads/2023/07/kava.png",
+                "readTime": "3 min read",
+                "publishDate": "July 12",
+                "type": "article"
+            },
+            {
+                "title": "COSMOS ahead of ETHEREUM with Fraud votes? NATIVE USDT, OSMO 2.0, Mito Finance, AKASH, STRIDE & MORE",
+                "url": "https://interchaininfo.zone/resources/cosmos-ahead-of-ethereum-with-fraud-votes-native-usdt-osmo-2-0-mito-finance-akash-stride-more",
+                "image": "https://img.youtube.com/vi/M6W-EjfXicg/hqdefault.jpg",
+                "readTime": "41 min read",
+                "publishDate": "July 12",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Nolus",
+        "summary": "<p>The Nolus Protocol is a decentralized financial suite &amp; Cosmos-based blockchain by the same name. It offers an innovative approach to money markets with a novel DeFi Lease solution, aiming to further develop the DeFi space. The Nolus Protocol utilizes a lightning-fast Layer-1 blockchain built with Cosmos SDK, providing a decentralized, censorship-resistant medium with minimal transaction costs and no custody over the user's funds.</p>",
+        "excerpt": "A Cosmos-based DeFi suite offering innovative money markets through a unique DeFi Lease solution, fostering efficient, secure, and decentralized finance.\n",
+        "url": "https://interchaininfo.zone/indexes/nolus",
+        "resources": [
+            {
+                "title": "COSMOS NEWS: Neutron, INJECTIVE, PaaS by Secret Network, IBC v.7.1, KEPLR 2.0, ICF, Stride & MORE!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-neutron-injective-paas-by-secret-network-ibc-v-7-1-keplr-2-0-icf-stride-more",
+                "image": "https://img.youtube.com/vi/tGfb2LJMHq4/hqdefault.jpg",
+                "readTime": "44 min read",
+                "publishDate": "July 12",
+                "type": "video"
+            },
+            {
+                "title": "COSMOS ahead of ETHEREUM with Fraud votes? NATIVE USDT, OSMO 2.0, Mito Finance, AKASH, STRIDE & MORE",
+                "url": "https://interchaininfo.zone/resources/cosmos-ahead-of-ethereum-with-fraud-votes-native-usdt-osmo-2-0-mito-finance-akash-stride-more",
+                "image": "https://img.youtube.com/vi/M6W-EjfXicg/hqdefault.jpg",
+                "readTime": "41 min read",
+                "publishDate": "July 12",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Noble",
+        "summary": "<p>Noble is a new blockchain platform that is specifically designed for the issuance of native digital assets in the Cosmos ecosystem. The platform's main mission is to become the world's leading issuance center for digital assets that can easily link to other blockchains. Noble makes use of the Cosmos-SDK, a versatile toolset that enables developers to leverage existing modules and build their custom applications.</p>",
+        "excerpt": "A blockchain specifically designed for the issuance of native digital assets in the Cosmos ecosystem.\n",
+        "url": "https://interchaininfo.zone/indexes/noble",
+        "resources": [
+            {
+                "title": "BREAKING: NATIVE TETHER USDT IS COMING TO COSMOS!!",
+                "url": "https://interchaininfo.zone/resources/breaking-native-tether-usdt-is-coming-to-cosmos",
+                "image": "https://img.youtube.com/vi/lpFm8Npnxuw/hqdefault.jpg",
+                "readTime": "1 min read",
+                "publishDate": "July 12",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Migaloo",
+        "summary": "<p>Migaloo is a decentralized blockchain designed to be the central liquidity hub of the IBC Ecosystem. It connects various blockchain networks for efficient asset transfers. Its flagship dApp, the White Whale Protocol, generates real yield through trading and flash loan activity, which is then distributed to WHALE stakers on Migaloo.</p>",
+        "excerpt": "Migaloo, the central liquidity hub of the IBC Ecosystem, connects blockchain networks for efficient asset transfers and generates real yield through its White Whale Protocol.\n",
+        "url": "https://interchaininfo.zone/indexes/migaloo-ecosystem",
+        "resources": []
+    },
+    {
+        "title": "Loyal",
+        "summary": null,
+        "excerpt": "Universal Blockchain Rewards Platform\n",
+        "url": "https://interchaininfo.zone/indexes/loyal",
+        "resources": [
+            {
+                "title": "Cosmos’ legal fight against strategy exec poised to turn nastier",
+                "url": "https://interchaininfo.zone/resources/cosmos-legal-fight-against-strategy-exec-poised-to-turn-nastier",
+                "image": "https://interchaininfo.zone/uploads/2023/05/image-1170.png",
+                "readTime": "5 min read",
+                "publishDate": "May 23",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Terra",
+        "summary": "<p>Terra 2 is the successor to the Terra Luna blockchain, developed in response to the UST stablecoin collapse. It hosts various DApps and introduces the Alliance module for enhanced security. The primary token is $LUNA, separate from the original $LUNA. Terra 2 does not feature a stablecoin or a mint-burn mechanism.</p>",
+        "excerpt": "Terra 2, the successor to Terra Luna, hosts various DApps and introduces the Alliance module for security. The primary token is $LUNA.\n",
+        "url": "https://interchaininfo.zone/indexes/terra",
+        "resources": [
+            {
+                "title": "Conversation with Coinhall – Juno, Terra, Near, Osmosis",
+                "url": "https://interchaininfo.zone/resources/conversation-with-coinhall-juno-terra-near-osmosis",
+                "image": "https://img.youtube.com/vi/RnMCLp3A9io/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Dec 1",
+                "type": "video"
+            },
+            {
+                "title": "Ingenius! Stake Luna for More?! COINHALL | CHARTS, SWAPS & MORE FOR TERRA (& SOON IBC!?)",
+                "url": "https://interchaininfo.zone/resources/ingenius-stake-luna-for-more-coinhall-charts-swaps-more-for-terra-soon-ibc",
+                "image": "https://img.youtube.com/vi/XsvfoktqtJE/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Dec 1",
+                "type": "video"
+            },
+            {
+                "title": "The Gate Contract",
+                "url": "https://interchaininfo.zone/resources/the-gate-contract",
+                "image": "https://interchaininfo.zone/uploads/2023/07/gate.png",
+                "readTime": "14 min read",
+                "publishDate": "July 12",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Terra Luna Classic",
+        "summary": null,
+        "excerpt": "The original Terra Luna chain.\n",
+        "url": "https://interchaininfo.zone/indexes/terralunaclassic",
+        "resources": []
+    },
+    {
+        "title": "Stargaze",
+        "summary": "<p>Stargaze is a decentralized NFT marketplace, with full suite of tools to support the collections launched on it. It emphasizes community ownership and offers features like minting, live auctions, and detailed analytics. Stargaze is both the name of the the actual NFT marketplace, and the Appchain on which it runs. The platform's commitment to community-driven development and its growing ecosystem makes it a significant player in the NFT space, especially within cosmos.</p>",
+        "excerpt": "An NFT marketplace & Appchain, offering minting, live auctions, and deep analytics.\n",
+        "url": "https://interchaininfo.zone/indexes/stargaze",
+        "resources": [
+            {
+                "title": "Stargaze NFTs: Are there any blue chips? Use analytics tools to hunt down BLUE CHIP #NFTs !",
+                "url": "https://interchaininfo.zone/resources/stargaze-nfts-are-there-any-blue-chips-use-analytics-tools-to-hunt-down-blue-chip-nfts",
+                "image": "https://interchaininfo.zone/uploads/2023/03/sddefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "March 1",
+                "type": "video"
+            },
+            {
+                "title": "Live Chat with Nik – Stargaze Dev",
+                "url": "https://interchaininfo.zone/resources/live-chat-with-nik-stargaze-dev",
+                "image": "https://img.youtube.com/vi/eIMkeQoeng0/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Dec 1",
+                "type": "video"
+            },
+            {
+                "title": "Top Lending Protocol in Cosmos – Earn Yield on Your Bitcoin",
+                "url": "https://interchaininfo.zone/resources/top-lending-protocol-in-cosmos-earn-yield-on-your-bitcoin",
+                "image": "https://img.youtube.com/vi/UdkLO3TYBjE/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "July 12",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Saga",
+        "summary": "<p>Saga Network is an open-source protocol for automatically provisioning application-specific blockchains in the multichain metaverse. It offers no upfront cost to launch a chain, predictable developer pricing for provisioning block space, and automated deployment of a single tenant application onto its own chain. Saga's unique token mechanism design enables flexible developer business models and end-user experiences.</p>",
+        "excerpt": "Saga Network is a protocol for provisioning application-specific blockchains in the multichain metaverse. It offers no upfront cost to launch a chain, predictable developer pricing, and automated deployment of applications onto their own chains.\n",
+        "url": "https://interchaininfo.zone/indexes/saga",
+        "resources": [
+            {
+                "title": "Osmosis V16.0 | The Magnesium Upgrade",
+                "url": "https://interchaininfo.zone/resources/osmosis-v16-0-the-magnesium-upgrade",
+                "image": "https://interchaininfo.zone/uploads/2023/07/Frame-1321316872.png",
+                "readTime": "2 min read",
+                "publishDate": "July 18",
+                "type": "article"
+            },
+            {
+                "title": "Cosmos ATOM Airdrop MEGA GUIDE for 2023!",
+                "url": "https://interchaininfo.zone/resources/cosmos-atom-airdrop-mega-guide-for-2023",
+                "image": "https://img.youtube.com/vi/bsu8MtxBm94/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Jan 31",
+                "type": "video"
+            },
+            {
+                "title": "Lum Network presentation @ Cosmoverse 2022 w/ Sarah-Diane Eck",
+                "url": "https://interchaininfo.zone/resources/lum-network-presentation-cosmoverse-2022-w-sarah-diane-eck",
+                "image": "https://img.youtube.com/vi/3ZoJLL2tbH8/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Dec 1",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Secret Network",
+        "summary": "<p>The Secret Network is an open-source, privacy-focused blockchain protocol designed to provide privacy-preserving smart contracts and data security on public blockchains. Built with the Cosmos Software Development Kit (SDK), Secret Network brings interoperable privacy to the entire Cosmos ecosystem.</p>",
+        "excerpt": "The privacy platform for web3\n",
+        "url": "https://interchaininfo.zone/indexes/secretnetwork",
+        "resources": [
+            {
+                "title": "COSMOS NEWS: dYdX v4 public testnet in COSMOS, MME CRYPTO REGULATIONS updates, INJECTIVE, SECRET Network & MORE!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-dydx-v4-public-testnet-in-cosmos-mme-crypto-regulations-updates-injective-secret-network-more",
+                "image": "https://img.youtube.com/vi/dtouedxEwSk/hqdefault.jpg",
+                "readTime": "54 min read",
+                "publishDate": "July 24",
+                "type": "video"
+            },
+            {
+                "title": "COSMOS NEWS: Neutron, INJECTIVE, PaaS by Secret Network, IBC v.7.1, KEPLR 2.0, ICF, Stride & MORE!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-neutron-injective-paas-by-secret-network-ibc-v-7-1-keplr-2-0-icf-stride-more",
+                "image": "https://img.youtube.com/vi/tGfb2LJMHq4/hqdefault.jpg",
+                "readTime": "44 min read",
+                "publishDate": "July 12",
+                "type": "video"
+            },
+            {
+                "title": "COSMOS NEWS: dYdX v4 UPDATES, ATOM, INJ, OSMO & MORE!!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-dydx-v4-updates-atom-inj-osmo-more",
+                "image": "https://interchaininfo.zone/uploads/2023/08/Cosmos_news_August.jpeg",
+                "readTime": "14 min read",
+                "publishDate": "Aug 22",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Polygon",
+        "summary": "<p>Polygon (previously known as Matic Network) is a Layer 2 scaling solution for Ethereum, aiming to provide major scalability improvements for decentralized applications by utilizing a novel sidechain solution. The native cryptocurrency of the Polygon network is MATIC, which is used for transaction fees, staking, and governance.</p>",
+        "excerpt": "Polygon is a scalable blockchain platform, acting as a “sidechain” to the Ethereum network to enable fast transactions and low fees.\n",
+        "url": "https://interchaininfo.zone/indexes/polygon",
+        "resources": [
+            {
+                "title": "Polygon 2.0: A Leap Towards the Value Layer of the Internet",
+                "url": "https://interchaininfo.zone/resources/polygon-2-0-a-leap-towards-the-value-layer-of-the-internet",
+                "image": "https://interchaininfo.zone/uploads/2023/07/polygon-2.png",
+                "readTime": "3 min read",
+                "publishDate": "July 15",
+                "type": "article"
+            },
+            {
+                "title": "USDC Updates: 6 New Blockchains vs. A Falling Market Cap",
+                "url": "https://interchaininfo.zone/resources/usdc-updates-6-new-blockchains-vs-a-falling-market-cap",
+                "image": "https://interchaininfo.zone/uploads/2023/08/Frame-1321316941.png",
+                "readTime": "2 min read",
+                "publishDate": "Aug 29",
+                "type": "article"
+            },
+            {
+                "title": "Web3 News Recap: The State of Web3 Going Into September, 2023",
+                "url": "https://interchaininfo.zone/resources/web3-news-recap-the-state-of-web3-going-into-september-2023",
+                "image": "https://interchaininfo.zone/uploads/2023/09/Twitter-post-14.png",
+                "readTime": "3 min read",
+                "publishDate": "Sept 4",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Nym",
+        "summary": null,
+        "excerpt": "Building the next generation of privacy infrastructure.\n",
+        "url": "https://interchaininfo.zone/indexes/nym",
+        "resources": []
+    },
+    {
+        "title": "Moonbeam Network",
+        "summary": "<p>Moonbeam is an Ethereum-compatible smart contract platform on the Polkadot network that allows developers to deploy existing Solidity smart contracts and dApps. It operates as a Layer 1 chain linked to the Polkadot Relay Chain and is built on the interoperable Substrate blockchain.</p>",
+        "excerpt": "An Ethereum-compatible smart contract platform on the Polkadot network, enabling the deployment of existing Solidity smart contracts and dApps.\n",
+        "url": "https://interchaininfo.zone/indexes/moonbeamnetwork",
+        "resources": []
+    },
+    {
+        "title": "Kadena",
+        "summary": null,
+        "excerpt": "Our mission is to make information more accessible by providing an overview of all projects and dApps building on Kadena.\n",
+        "url": "https://interchaininfo.zone/indexes/kadena",
+        "resources": []
+    },
+    {
+        "title": "Konstellation Network",
+        "summary": null,
+        "excerpt": "Award-winning interoperability layer for the DeFi capital markets. Powered by DARC, built on Cosmos and bridging to all.\n",
+        "url": "https://interchaininfo.zone/indexes/konstellationnetwork",
+        "resources": []
+    },
+    {
+        "title": "IRIS Network/Iris Hub",
+        "summary": null,
+        "excerpt": "Interchain NFT Hub for new-gen DApps. IRIS Hub enables cross-chain interoperability while providing modules to support distributed business systems.\n",
+        "url": "https://interchaininfo.zone/indexes/irisnetworkirishub",
+        "resources": []
+    },
+    {
+        "title": "Juno Network",
+        "summary": "<p>The Juno Network is a sovereign, open-source, permissionless Layer-1 public blockchain operating within the Cosmos ecosystem, focused on providing a cross-chain hub for deploying interoperable smart contracts. It aims to create a decentralized, permissionless, and censorship-resistant environment for developers to efficiently and securely launch application-specific smart contracts.</p>",
+        "excerpt": "Cutting-edge, permissionless CosmWasm blockchain.\n",
+        "url": "https://interchaininfo.zone/indexes/junonetwork",
+        "resources": [
+            {
+                "title": "JUNO NETWORK DRAFT PROPOSAL – DEX INCENTIVES",
+                "url": "https://interchaininfo.zone/resources/juno-network-draft-proposal-dex-incentives",
+                "image": "https://img.youtube.com/vi/CD5JOIpBLgU/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Jan 31",
+                "type": "video"
+            },
+            {
+                "title": "Juno Weekly News update 22/04/23",
+                "url": "https://interchaininfo.zone/resources/juno-weekly-news-update-22-04-23",
+                "image": "https://img.youtube.com/vi/3pFiguI6lR0/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "April 29",
+                "type": "video"
+            },
+            {
+                "title": "PORTFOLIO UPDATE + NEW COSMOS AIRDROP $STRD",
+                "url": "https://interchaininfo.zone/resources/portfolio-update-new-cosmos-airdrop-strd",
+                "image": "https://img.youtube.com/vi/UXGqlsKbQxs/hqdefault.jpg",
+                "readTime": "1 min read",
+                "publishDate": "Nov 30",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "GNØ Land",
+        "summary": null,
+        "excerpt": "Scalabale Golang Smart-Contracs.\n",
+        "url": "https://interchaininfo.zone/indexes/gnland",
+        "resources": [
+            {
+                "title": "Cosmos ATOM Airdrop MEGA GUIDE for 2023!",
+                "url": "https://interchaininfo.zone/resources/cosmos-atom-airdrop-mega-guide-for-2023",
+                "image": "https://img.youtube.com/vi/bsu8MtxBm94/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Jan 31",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Evmos",
+        "summary": "<p>Developers can seamlessly leverage Evmos to run Ethereum smart contracts on app-specific Cosmos networks. In addition, the Cosmos Inter-Blockchain Communication (IBC) protocol empowers Evmos to link decentralized applications (dApps) on various blockchains and benefit from joint liquidity and value transfer.</p>",
+        "excerpt": "Crosschain-compatible EVM.\n",
+        "url": "https://interchaininfo.zone/indexes/evmos",
+        "resources": [
+            {
+                "title": "COSMOS ECOSYSTEM NEWS 21/1/22: GoC, Interchain Dev. Academy, Juno Comm. SubDAO, Namada, ICF’s TAB & MORE!",
+                "url": "https://interchaininfo.zone/resources/cosmos-ecosystem-news-21-1-22-goc-interchain-dev-academy-juno-comm-subdao-namada-icfs-tab-more",
+                "image": "https://img.youtube.com/vi/TxV6RL71mOk/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "April 16",
+                "type": "video"
+            },
+            {
+                "title": "Load balancer for APIs (RCP & LCD) on Cosmos-based networks",
+                "url": "https://interchaininfo.zone/resources/load-balancer-for-apis-rcp-lcd-on-cosmos-based-networks",
+                "image": "https://interchaininfo.zone/uploads/2022/11/Load-balancer-for-APIs-RCP-LCD-on-Cosmos-based-networks.jpg",
+                "readTime": "1 min read",
+                "publishDate": "Nov 30",
+                "type": "article"
+            },
+            {
+                "title": "Introducing: Lava SDK Alpha 🧑‍💻🌋",
+                "url": "https://interchaininfo.zone/resources/introducing-lava-sdk-alpha-%f0%9f%a7%91%f0%9f%92%bb%f0%9f%8c%8b",
+                "image": "https://interchaininfo.zone/uploads/2023/07/Lava-SDK-Alpha-11.png",
+                "readTime": "1 min read",
+                "publishDate": "July 16",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Fetch AI Network",
+        "summary": "<p>Our mission is to build the infrastructure required for developing modern, decentralized and peer-to-peer (P2P) applications free from centralized rent-seeking.We achieve this by providing open-source software tools which you can use together with our interoperable decentralized network, to harness the power of AI and automation, and carry out complex tasks in the <em>digital economy</em>. Fetch AI is built on the Cosmos SDK as a Proof-of-stake chain that utilizes other core Cosmos elements like IBC &amp; the Tendermint BFT consensus mechanism.</p>",
+        "excerpt": "Power peer-to-peer applications with automation and AI capabilities, with or without direct access to a blockchain.\n",
+        "url": "https://interchaininfo.zone/indexes/fetchnetwork",
+        "resources": [
+            {
+                "title": "Fetch.ai Simply Explained | Blockchain AI",
+                "url": "https://interchaininfo.zone/resources/fetch-ai-simply-explained-blockchain-ai",
+                "image": "https://img.youtube.com/vi/fhkPCRA8WRc/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "March 2",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Cronos",
+        "summary": "<p>Cronos is a high-speed, low-cost blockchain ecosystem that facilitates the development of DeFi applications. It was developed by Crypto.com, originally known as Monaco, and is fully compatible with Ethereum and other EVM chains.</p>",
+        "excerpt": "A decentralized blockchain ecosystem, Cronos facilitates the rapid development of DeFi applications. It’s fully compatible with Ethereum and other EVM chains.\n",
+        "url": "https://interchaininfo.zone/indexes/cronos",
+        "resources": [
+            {
+                "title": "Tendermint Core EXPLAINED (Algorithm & History)",
+                "url": "https://interchaininfo.zone/resources/tendermint-core-explained-algorithm-history",
+                "image": "https://img.youtube.com/vi/kTczTT9DlP8/hqdefault.jpg",
+                "readTime": "2 min read",
+                "publishDate": "July 15",
+                "type": "video"
+            },
+            {
+                "title": "Weekly Roundup by Team Kujira: Ep.33",
+                "url": "https://interchaininfo.zone/resources/weekly-roundup-by-team-kujira-ep-33",
+                "image": "https://interchaininfo.zone/uploads/2023/06/Frame-62.png",
+                "readTime": "11 min read",
+                "publishDate": "June 29",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Chihuahua",
+        "summary": "<p>Chihuahua is a unique, eco-friendly Proof-of-Stake (PoS) blockchain built on the Cosmos SDK, featuring an interoperable meme coin ($HUAHUA) and other elements, such as CosmWasm-based smart contracts, NFTs, gaming, and an upcoming Metaverse. Launched in January 2021, Chihuahua Blockchain aims to provide a decentralized infrastructure for building and running applications while being fast, secure, and scalable. As part of the Cosmos ecosystem, Chihuahua is interoperable with over 30 Cosmos chains, leveraging the IBC protocol for seamless asset transfers.</p>",
+        "excerpt": "The entertainment HUB of Cosmos/ Smart Contract Meme Coin Ecosystem.\n",
+        "url": "https://interchaininfo.zone/indexes/chihuahua",
+        "resources": []
+    },
+    {
+        "title": "Binance Smart Chain (BSC)",
+        "summary": "<p>Binance Smart Chain is a high-performance blockchain network designed for running smart contract-based applications. It operates in parallel with Binance's native Binance Chain, allowing users to leverage the high transaction capacity of BC and the smart contract functionality of BSC. BSC supports Ethereum-compatible smart contracts and operates on a proof-of-stake consensus model.</p>",
+        "excerpt": "Binance Smart Chain is a blockchain network built for running smart contract-based applications, offering high transaction capacity and smart contract functionality.\n",
+        "url": "https://interchaininfo.zone/indexes/bnbchain",
+        "resources": []
+    },
+    {
+        "title": "Archway",
+        "summary": "<p>The Archway Network is a decentralized ecosystem designed to support developers and projects by providing a sustainable growth environment for decentralized applications (dapps). By utilizing a unique distribution model and Archway’s native token, the Archway Network creates a virtuous feedback loop that incentivizes developers to build and maintain dapps, ultimately driving value and adoption within the ecosystem. Built using the Cosmos SDK, Tendermint, IBC, and CosmWasm, Archway provides a flexible and secure platform for smart contracts and decentralized governance.</p>",
+        "excerpt": "A layer-1 blockchain that’s handcrafted specifically for dapp developers who create value.\n",
+        "url": "https://interchaininfo.zone/indexes/archway",
+        "resources": [
+            {
+                "title": "COSMOS NEWS: dYdX v4 public testnet in COSMOS, MME CRYPTO REGULATIONS updates, INJECTIVE, SECRET Network & MORE!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-dydx-v4-public-testnet-in-cosmos-mme-crypto-regulations-updates-injective-secret-network-more",
+                "image": "https://img.youtube.com/vi/dtouedxEwSk/hqdefault.jpg",
+                "readTime": "54 min read",
+                "publishDate": "July 24",
+                "type": "video"
+            },
+            {
+                "title": "Citizen Cosmos: Eric Waisanen, game theory, inflation & token value",
+                "url": "https://interchaininfo.zone/resources/citizen-cosmos-eric-waisanen-game-theory-inflation-token-value",
+                "image": "https://img.youtube.com/vi/qVQwWZLheRQ/hqdefault.jpg",
+                "readTime": "1 min read",
+                "publishDate": "Feb 24",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Agoric",
+        "summary": "<p>Agoric is an open-source development company that has launched a layer 1, proof-of-stake public blockchain designed to enable JavaScript developers to rapidly build safe smart contracts. The Agoric chain features two native tokens: BLD and IST. The Agoric public blockchain is part of the interchain ecosystem and is designed to mitigate novel risks posed by decentralized financial systems built upon Proof of Stake (PoS) consensus.</p>",
+        "excerpt": "Agoric is a layer 1, proof-of-stake public blockchain designed to enable JavaScript developers to rapidly build safe smart contracts. It features two native tokens: BLD and IST.\n",
+        "url": "https://interchaininfo.zone/indexes/agoric",
+        "resources": [
+            {
+                "title": "Load balancer for APIs (RCP & LCD) on Cosmos-based networks",
+                "url": "https://interchaininfo.zone/resources/load-balancer-for-apis-rcp-lcd-on-cosmos-based-networks",
+                "image": "https://interchaininfo.zone/uploads/2022/11/Load-balancer-for-APIs-RCP-LCD-on-Cosmos-based-networks.jpg",
+                "readTime": "1 min read",
+                "publishDate": "Nov 30",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Meme Network",
+        "summary": "<p>Meme Network is a MEME-friendly ecosystem based on Web 3.0 feature “High Transparency”, “Irreversible Data” and “Collective Consensus”. Our tools assist user freely read and write information, as well as rewarding contributor. Traditional MEME encounters obstacles of idea transmission. The service providers in web 2.0 manipulates information that stopping MEME development. MEME desires an information-free channel to continuously spreading idea. </p>",
+        "excerpt": "The First Blockchain Network Built to Facilitate Memes. We Make Memes Seriously Fun.\n",
+        "url": "https://interchaininfo.zone/indexes/memenetwork",
+        "resources": [
+            {
+                "title": "COSMOS NEWS: dYdX v4 public testnet in COSMOS, MME CRYPTO REGULATIONS updates, INJECTIVE, SECRET Network & MORE!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-dydx-v4-public-testnet-in-cosmos-mme-crypto-regulations-updates-injective-secret-network-more",
+                "image": "https://img.youtube.com/vi/dtouedxEwSk/hqdefault.jpg",
+                "readTime": "54 min read",
+                "publishDate": "July 24",
+                "type": "video"
+            },
+            {
+                "title": "COSMOS NEWS: dYdX v4 UPDATES, ATOM, INJ, OSMO & MORE!!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-dydx-v4-updates-atom-inj-osmo-more",
+                "image": "https://interchaininfo.zone/uploads/2023/08/Cosmos_news_August.jpeg",
+                "readTime": "14 min read",
+                "publishDate": "Aug 22",
+                "type": "video"
+            },
+            {
+                "title": "COSMOS NEWS: NEW US BILL & DEFI?!!, ATOM, AIRDROPS, INJ & MORE!!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-new-us-bill-defi-atom-airdrops-inj-more",
+                "image": "https://img.youtube.com/vi/1Lim2PHx3-M/hqdefault.jpg",
+                "readTime": "2 min read",
+                "publishDate": "Aug 3",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Lum Network",
+        "summary": null,
+        "excerpt": "Web3 Applications for Mass Adoption\n",
+        "url": "https://interchaininfo.zone/indexes/lumnetwork",
+        "resources": [
+            {
+                "title": "Lum Network presentation @ Cosmoverse 2022 w/ Sarah-Diane Eck",
+                "url": "https://interchaininfo.zone/resources/lum-network-presentation-cosmoverse-2022-w-sarah-diane-eck",
+                "image": "https://img.youtube.com/vi/3ZoJLL2tbH8/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Dec 1",
+                "type": "video"
+            },
+            {
+                "title": "Indexes are the future of crypto",
+                "url": "https://interchaininfo.zone/resources/indexes-are-the-future-of-crypto",
+                "image": "https://interchaininfo.zone/uploads/2022/12/Indexes-are-the-future.jpg",
+                "readTime": "4 min read",
+                "publishDate": "Dec 1",
+                "type": "article"
+            },
+            {
+                "title": "Tutorial — How to get $DFR (Beta Version)",
+                "url": "https://interchaininfo.zone/resources/tutorial-how-to-get-dfr-beta-version",
+                "image": "https://interchaininfo.zone/uploads/2022/11/Tutorial-—-How-to-get-DFR.jpg",
+                "readTime": "4 min read",
+                "publishDate": "Dec 1",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Jackal Protocol",
+        "summary": null,
+        "excerpt": "Blockchain and data storage network for the interchain. \n",
+        "url": "https://interchaininfo.zone/indexes/jackalprotocol",
+        "resources": []
+    },
+    {
+        "title": "Hypersign",
+        "summary": null,
+        "excerpt": "Decentralized identity & verifiable credentials infrastructure\n",
+        "url": "https://interchaininfo.zone/indexes/hypersign",
+        "resources": []
+    },
+    {
+        "title": "DeFund Finance",
+        "summary": null,
+        "excerpt": "The first blockchain built for quantitative developers, asset managers, financial advisors, and financial institutions\n",
+        "url": "https://interchaininfo.zone/indexes/defundfinance",
+        "resources": []
+    },
+    {
+        "title": "cheqd",
+        "summary": null,
+        "excerpt": "Building the infrastructure for Trusted Data marketplaces. Your Data verified, portable, and private.\n",
+        "url": "https://interchaininfo.zone/indexes/cheqd",
+        "resources": []
+    },
+    {
+        "title": "Carbon Network",
+        "summary": "<p>Carbon Network is a decentralized financial protocol built on the Cosmos-SDK. It supports the secure and scalable trading of sophisticated financial instruments and acts as a building block for cross-chain DeFi. Carbon offers financial sophistication, high performance, low fees, and a truly decentralized and permissionless trading experience.</p>",
+        "excerpt": "Carbon Network is a high-performance, low-fee, and truly decentralized financial protocol that supports secure and scalable trading of sophisticated financial instruments.\n",
+        "url": "https://interchaininfo.zone/indexes/carbonnetwork",
+        "resources": []
+    },
+    {
+        "title": "Quasar Finance",
+        "summary": "<p><strong>Quasar Finance</strong> is an innovative protocol that operates as an application-specific proof-of-stake blockchain for decentralized asset management. It integrates both expert and community-led decision-making and is designed to interoperate with a broad network of independent blockchains. Quasar has ushered in a new era for the Interchain and multi-chain future, with an emphasis on Inter-Blockchain Communication (IBC), interconnected DeFi, and global access to DeFi strategies.</p>",
+        "excerpt": "The gateway to IBC enabled yield.\n",
+        "url": "https://interchaininfo.zone/indexes/quasar",
+        "resources": [
+            {
+                "title": "COSMOS ahead of ETHEREUM with Fraud votes? NATIVE USDT, OSMO 2.0, Mito Finance, AKASH, STRIDE & MORE",
+                "url": "https://interchaininfo.zone/resources/cosmos-ahead-of-ethereum-with-fraud-votes-native-usdt-osmo-2-0-mito-finance-akash-stride-more",
+                "image": "https://img.youtube.com/vi/M6W-EjfXicg/hqdefault.jpg",
+                "readTime": "41 min read",
+                "publishDate": "July 12",
+                "type": "video"
+            },
+            {
+                "title": "IBC: A roadmap for the interchain future",
+                "url": "https://interchaininfo.zone/resources/ibc-a-roadmap-for-the-interchain-future",
+                "image": "https://interchaininfo.zone/uploads/2023/08/Frame-1321316942.png",
+                "readTime": "8 min read",
+                "publishDate": "Aug 29",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Decentr",
+        "summary": null,
+        "excerpt": "A secure browser that gives you access to the blockchain. #BrowseToEarn and be part of Decentr’s data-as-value revolution.\n",
+        "url": "https://interchaininfo.zone/indexes/decentr",
+        "resources": [
+            {
+                "title": "Unlocking the Potential of Decentralized Finance with Kava",
+                "url": "https://interchaininfo.zone/resources/unlocking-the-potential-of-decentralized-finance-with-kava",
+                "image": "https://interchaininfo.zone/uploads/2023/07/kava.png",
+                "readTime": "3 min read",
+                "publishDate": "July 12",
+                "type": "article"
+            },
+            {
+                "title": "Citizen Cosmos: Boris Mann, storage, web applications & decentralization of web3 #82",
+                "url": "https://interchaininfo.zone/resources/citizen-cosmos-boris-mann-storage-web-applications-decentralization-of-web3-82",
+                "image": "https://img.youtube.com/vi/dJ2bsBMgelI/hqdefault.jpg",
+                "readTime": "1 min read",
+                "publishDate": "Jan 31",
+                "type": "video"
+            },
+            {
+                "title": "Welcome to the Cosmos: Your Interchain Onboarding Guide",
+                "url": "https://interchaininfo.zone/resources/welcome-to-the-cosmos-your-interchain-onboarding-guide",
+                "image": "https://interchaininfo.zone/uploads/2023/07/Frame-1321316908.png",
+                "readTime": "3 min read",
+                "publishDate": "July 20",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Oraichain",
+        "summary": null,
+        "excerpt": "AI Layer 1 for Data Economy & Oracle Services.\n",
+        "url": "https://interchaininfo.zone/indexes/oraichain",
+        "resources": []
+    },
+    {
+        "title": "RIZON Official",
+        "summary": null,
+        "excerpt": "Hdac Technology’s RIZON Blockchain is a Tendermint-based digital currency and asset hub blockchain.\n",
+        "url": "https://interchaininfo.zone/indexes/rizonofficial",
+        "resources": []
+    },
+    {
+        "title": "GenesisL1 blockchain",
+        "summary": null,
+        "excerpt": "Layer1 EVM blockchain powered by Cosmos SDK and Users Renaissance, above money & beyond crypto Experimental, enthusiastic, Art & Science Valueless data, NFT.\n",
+        "url": "https://interchaininfo.zone/indexes/genesisl1blockchain",
+        "resources": [
+            {
+                "title": "Osmosis V16.0 | The Magnesium Upgrade",
+                "url": "https://interchaininfo.zone/resources/osmosis-v16-0-the-magnesium-upgrade",
+                "image": "https://interchaininfo.zone/uploads/2023/07/Frame-1321316872.png",
+                "readTime": "2 min read",
+                "publishDate": "July 18",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Klever Exchange",
+        "summary": null,
+        "excerpt": "Klever is the easiest place to buy, sell and store your crypto.\n",
+        "url": "https://interchaininfo.zone/indexes/kleverexchange",
+        "resources": []
+    },
+    {
+        "title": "QuarkChain",
+        "summary": null,
+        "excerpt": "A flexible, scalable, and user-oriented\nblockchain infrastructure by using\nblockchain sharding technology.\n",
+        "url": "https://interchaininfo.zone/indexes/quarkchain",
+        "resources": []
+    },
+    {
+        "title": "EmpowerChain",
+        "summary": null,
+        "excerpt": "Cosmos chain for the Circular Economy\n",
+        "url": "https://interchaininfo.zone/indexes/empowerchain",
+        "resources": []
+    },
+    {
+        "title": "e-Money",
+        "summary": null,
+        "excerpt": "Leading issuer of fully collateralised, interest-bearing, compliant stablecoins 🇪🇺  eEUR eCHF eDKK & more.\n",
+        "url": "https://interchaininfo.zone/indexes/emoney",
+        "resources": []
+    },
+    {
+        "title": "Astar Network",
+        "summary": null,
+        "excerpt": "Astar Network supports the building of dApps with EVM and WASM smart contracts and offers developers true interoperability with cross-consensus messaging XCM.\n",
+        "url": "https://interchaininfo.zone/indexes/astarnetwork",
+        "resources": []
+    },
+    {
+        "title": "Quicksilver Protocol",
+        "summary": "<p>Quicksilver Protocol is a liquid staking platform built on the Cosmos SDK, enabling users to stake their tokens on various Cosmos-based chains while maintaining liquidity, earning rewards, and participating in network governance. The protocol introduces a novel tokenization approach to staking by issuing qAssets, which represent the user’s delegated assets and earned rewards.</p>",
+        "excerpt": "Quicksilver is the liquid staking zone custom built for decentralization. Choose any validator, earn rewards, and vote with LSTs.\n",
+        "url": "https://interchaininfo.zone/indexes/quicksilverprotocol",
+        "resources": [
+            {
+                "title": "Introducing Dexter – Interchain DEX for Yield-Generating Assets",
+                "url": "https://interchaininfo.zone/resources/introducing-dexter-interchain-dex-for-yield-generating-assets",
+                "image": "https://interchaininfo.zone/uploads/2023/04/1_4EEafQlO0_pzSG7hJ9WCpQ-1.webp",
+                "readTime": "9 min read",
+                "publishDate": "April 28",
+                "type": "article"
+            },
+            {
+                "title": "COSMOS NEWS: dYdX v4 public testnet in COSMOS, MME CRYPTO REGULATIONS updates, INJECTIVE, SECRET Network & MORE!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-dydx-v4-public-testnet-in-cosmos-mme-crypto-regulations-updates-injective-secret-network-more",
+                "image": "https://img.youtube.com/vi/dtouedxEwSk/hqdefault.jpg",
+                "readTime": "54 min read",
+                "publishDate": "July 24",
+                "type": "video"
+            },
+            {
+                "title": "COSMOS NEWS: Neutron, INJECTIVE, PaaS by Secret Network, IBC v.7.1, KEPLR 2.0, ICF, Stride & MORE!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-neutron-injective-paas-by-secret-network-ibc-v-7-1-keplr-2-0-icf-stride-more",
+                "image": "https://img.youtube.com/vi/tGfb2LJMHq4/hqdefault.jpg",
+                "readTime": "44 min read",
+                "publishDate": "July 12",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Aleph.im Network",
+        "summary": null,
+        "excerpt": "Open-source cross-chain decentralized cloud project: Database (inc. file storage), Computation (microVMs), SOL indexing, dID.\n",
+        "url": "https://interchaininfo.zone/indexes/alephimnetwork",
+        "resources": []
+    },
+    {
+        "title": "CUDOS",
+        "summary": null,
+        "excerpt": "Cudos is powering AI and the Metaverse by uniting blockchain and cloudcomputing to realise the vision of a sustainable, equitable, and decentralised Web3.\n",
+        "url": "https://interchaininfo.zone/indexes/cudos",
+        "resources": []
+    },
+    {
+        "title": "THORchain",
+        "summary": "<p>A decentralized liquidity protocol that enables non-custodial exchange of assets across various blockchains. It uses a unique architecture and a native token to secure the network and facilitate transactions. The protocol also features liquidity pools, swaps, and an innovative platform built on its technology that offers native asset swaps and seamless integration with multiple blockchains.</p>",
+        "excerpt": "A true cross-chain liquidity protocol enabling non-custodial asset exchange between a number of chains.\n",
+        "url": "https://interchaininfo.zone/indexes/thorchain",
+        "resources": []
+    },
+    {
+        "title": "Cosmos Hub",
+        "summary": "<p>Cosmos is a decentralized network of independent parallel blockchains that aims to make it easy for teams to custom-build new blockchains that are highly interoperable with others that share Tendermint consensus. The Cosmos Hub Blockchain, also known as the Cosmos Network, is the main blockchain in the Cosmos ecosystem, serving as the center of the network and recording all activities on it. Several other blockchains are also part of Cosmos, and they are called \"Zones,\" attached to the main blockchain Hub. This article will provide a comprehensive write-up about the Cosmos Hub Blockchain, covering its technical and historical facts, tokenomics, and wallets that support it.</p>",
+        "excerpt": "Interchain service provider in Cosmos and home of ATOM.\n",
+        "url": "https://interchaininfo.zone/indexes/cosmoshub",
+        "resources": [
+            {
+                "title": "The Evolution of Cosmos Hub: Liquid Staking and Beyond",
+                "url": "https://interchaininfo.zone/resources/the-evolution-of-cosmos-hub-liquid-staking-and-beyond",
+                "image": "https://interchaininfo.zone/uploads/2023/08/Frame-1321316944.png",
+                "readTime": "2 min read",
+                "publishDate": "Aug 31",
+                "type": "article"
+            },
+            {
+                "title": "The ATOM Economic Zone – A New Era for the Cosmos Hub ATOM!",
+                "url": "https://interchaininfo.zone/resources/the-atom-economic-zone-a-new-era-for-the-cosmos-hub-atom",
+                "image": "https://img.youtube.com/vi/jAHcOZb9eXw/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "April 29",
+                "type": "video"
+            },
+            {
+                "title": "Cosmos Hub Proposal 95 – Why I am Voting NO",
+                "url": "https://interchaininfo.zone/resources/cosmos-hub-proposal-95-why-i-am-voting-no",
+                "image": "https://img.youtube.com/vi/zr16X6gmQC4/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Jan 31",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Crypto.org Chain",
+        "summary": null,
+        "excerpt": "The native chain of $CRO, built by crypto.com.\n",
+        "url": "https://interchaininfo.zone/indexes/cryptoorgchain",
+        "resources": []
+    },
+    {
+        "title": "medibloc",
+        "summary": null,
+        "excerpt": "Personal Healthcare Information Ecosystem, built on blockchain.\n",
+        "url": "https://interchaininfo.zone/indexes/medibloc",
+        "resources": []
+    },
+    {
+        "title": "Sei",
+        "summary": "<p>Sei is a Layer 1 blockchain optimized for digital asset exchange across DeFi, NFTs, and gaming. It boasts the fastest transaction finality in the industry, robust security measures, and interoperability with other protocols. Sei aims to provide the best infrastructure for trading applications, blending centralized finance (CeFi) trading experiences with decentralized finance tools.</p>",
+        "excerpt": "A Layer 1 blockchain optimized for digital asset exchange, offering industry-leading transaction finality, robust security, and interoperability. Designed for trading applications across DeFi, NFTs, and gaming.\n",
+        "url": "https://interchaininfo.zone/indexes/sei",
+        "resources": [
+            {
+                "title": "Sei Network lets you build high throughput DEXs on its base layer",
+                "url": "https://interchaininfo.zone/resources/sei-network-lets-you-build-high-throughput-dexs-on-its-base-layer",
+                "image": "https://img.youtube.com/vi/WGizshbtU-Y/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Jan 31",
+                "type": "video"
+            },
+            {
+                "title": "Nov 21–27 Weekly Newsletter: What happened on the Cosmos ecosystem this week?",
+                "url": "https://interchaininfo.zone/resources/nov-21-27-weekly-newsletter-what-happened-on-the-cosmos-ecosystem-this-week",
+                "image": "https://interchaininfo.zone/uploads/2022/12/Nov-21–27-Weekly-Newsletter.jpg",
+                "readTime": "4 min read",
+                "publishDate": "Dec 3",
+                "type": "article"
+            },
+            {
+                "title": "USDT’s Cosmic Journey: Tether Expands Through Kava and Stargate",
+                "url": "https://interchaininfo.zone/resources/usdts-cosmic-journey-tether-expands-through-kava-and-stargate",
+                "image": "https://interchaininfo.zone/uploads/2023/08/Frame-1321316943.png",
+                "readTime": "1 min read",
+                "publishDate": "Aug 29",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Tgrade",
+        "summary": null,
+        "excerpt": "Tgrade a regulatory friendly blockchain: built for business!\n",
+        "url": "https://interchaininfo.zone/indexes/tgrade",
+        "resources": [
+            {
+                "title": "Osmosis V16.0 | The Magnesium Upgrade",
+                "url": "https://interchaininfo.zone/resources/osmosis-v16-0-the-magnesium-upgrade",
+                "image": "https://interchaininfo.zone/uploads/2023/07/Frame-1321316872.png",
+                "readTime": "2 min read",
+                "publishDate": "July 18",
+                "type": "article"
+            },
+            {
+                "title": "Osmosis Connector for Hummingbot — Project O-Nexum",
+                "url": "https://interchaininfo.zone/resources/osmosis-connector-for-hummingbot-project-o-nexum",
+                "image": "https://interchaininfo.zone/uploads/2023/07/32323.png",
+                "readTime": "10 min read",
+                "publishDate": "July 12",
+                "type": "article"
+            },
+            {
+                "title": "Cosmos’ legal fight against strategy exec poised to turn nastier",
+                "url": "https://interchaininfo.zone/resources/cosmos-legal-fight-against-strategy-exec-poised-to-turn-nastier",
+                "image": "https://interchaininfo.zone/uploads/2023/05/image-1170.png",
+                "readTime": "5 min read",
+                "publishDate": "May 23",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Unagii",
+        "summary": null,
+        "excerpt": "The automated DeFi yield platform with staking services. Yield smarter – all the convenience and none of the hassles.\n",
+        "url": "https://interchaininfo.zone/indexes/unagii",
+        "resources": []
+    },
+    {
+        "title": "Stride",
+        "summary": "<p>Stride is a liquid staking protocol built on the Cosmos blockchain ecosystem that enables users to unlock liquidity and earn yield on their staked assets. By utilizing the Cosmos SDK and Tendermint, Stride provides a secure and minimalist blockchain solution, with its primary focus on the core liquid staking protocol. The protocol has gained significant market share in the Cosmos ecosystem, with a number of integrations and support for various Cosmos Zones through the Inter-Blockchain Communication (IBC) protocol.</p>",
+        "excerpt": "Multichain liquid staking for the #Cosmos ecosystem.\n",
+        "url": "https://interchaininfo.zone/indexes/stride",
+        "resources": [
+            {
+                "title": "Nov 21–27 Weekly Newsletter: What happened on the Cosmos ecosystem this week?",
+                "url": "https://interchaininfo.zone/resources/nov-21-27-weekly-newsletter-what-happened-on-the-cosmos-ecosystem-this-week",
+                "image": "https://interchaininfo.zone/uploads/2022/12/Nov-21–27-Weekly-Newsletter.jpg",
+                "readTime": "4 min read",
+                "publishDate": "Dec 3",
+                "type": "article"
+            },
+            {
+                "title": "Unleashing the Power of Bitcoin Staking: A Revolutionary Leap for the Proof-of-Stake Ecosystem",
+                "url": "https://interchaininfo.zone/resources/unleashing-the-power-of-bitcoin-staking-a-revolutionary-leap-for-the-proof-of-stake-ecosystem",
+                "image": "https://interchaininfo.zone/uploads/2023/07/babylon-1.png",
+                "readTime": "3 min read",
+                "publishDate": "July 14",
+                "type": "article"
+            },
+            {
+                "title": "Navigating the Fragmented Cosmos: Charting a Path for the Interchain",
+                "url": "https://interchaininfo.zone/resources/navigating-the-fragmented-cosmos-charting-a-path-for-the-interchain",
+                "image": "https://interchaininfo.zone/uploads/2023/07/Frame-1321316853.png",
+                "readTime": "2 min read",
+                "publishDate": "July 9",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Rebus 🔗",
+        "summary": null,
+        "excerpt": "Taking DeFi Mainstream. Bringing DeFi Investments to TradFi Investors. Builder of Cosmos.\n",
+        "url": "https://interchaininfo.zone/indexes/rebus",
+        "resources": []
+    },
+    {
+        "title": "SHENTU CHAIN",
+        "summary": null,
+        "excerpt": "Security-oriented blockchain that enables provable trust for all.\n",
+        "url": "https://interchaininfo.zone/indexes/shentuchain",
+        "resources": []
+    },
+    {
+        "title": "Pylons",
+        "summary": null,
+        "excerpt": "The NFT engine for Cosmos.\n",
+        "url": "https://interchaininfo.zone/indexes/pylons",
+        "resources": [
+            {
+                "title": "Cosmos’ legal fight against strategy exec poised to turn nastier",
+                "url": "https://interchaininfo.zone/resources/cosmos-legal-fight-against-strategy-exec-poised-to-turn-nastier",
+                "image": "https://interchaininfo.zone/uploads/2023/05/image-1170.png",
+                "readTime": "5 min read",
+                "publishDate": "May 23",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "BYTOM",
+        "summary": null,
+        "excerpt": "Create diverse assets and a programmable economy.\n",
+        "url": "https://interchaininfo.zone/indexes/bytom",
+        "resources": []
+    },
+    {
+        "title": "CoinEx Smart Chain",
+        "summary": null,
+        "excerpt": "Based on PoS consensus protocol, CoinEx Smart Chain is decentralized and energy efficient.\n",
+        "url": "https://interchaininfo.zone/indexes/coinexsmartchain",
+        "resources": []
+    },
+    {
+        "title": "commercio.network",
+        "summary": null,
+        "excerpt": "Commercio.network The Documents Blockchain™.\n",
+        "url": "https://interchaininfo.zone/indexes/commercionetwork",
+        "resources": []
+    },
+    {
+        "title": "CyberMiles",
+        "summary": null,
+        "excerpt": "EVM compatible L1 blockchain.\n",
+        "url": "https://interchaininfo.zone/indexes/cybermiles",
+        "resources": []
+    },
+    {
+        "title": "Dash",
+        "summary": null,
+        "excerpt": "Ready to start making everyday purchases with digital cash? DashDirect makes it fast & easy with savings every time you spend!\n",
+        "url": "https://interchaininfo.zone/indexes/dash",
+        "resources": [
+            {
+                "title": "Osmosis Connector for Hummingbot — Project O-Nexum",
+                "url": "https://interchaininfo.zone/resources/osmosis-connector-for-hummingbot-project-o-nexum",
+                "image": "https://interchaininfo.zone/uploads/2023/07/32323.png",
+                "readTime": "10 min read",
+                "publishDate": "July 12",
+                "type": "article"
+            },
+            {
+                "title": "Navigating the Fragmented Cosmos: Charting a Path for the Interchain",
+                "url": "https://interchaininfo.zone/resources/navigating-the-fragmented-cosmos-charting-a-path-for-the-interchain",
+                "image": "https://interchaininfo.zone/uploads/2023/07/Frame-1321316853.png",
+                "readTime": "2 min read",
+                "publishDate": "July 9",
+                "type": "article"
+            },
+            {
+                "title": "Weekly Roundup by Team Kujira: Ep.33",
+                "url": "https://interchaininfo.zone/resources/weekly-roundup-by-team-kujira-ep-33",
+                "image": "https://interchaininfo.zone/uploads/2023/06/Frame-62.png",
+                "readTime": "11 min read",
+                "publishDate": "June 29",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Dfinance",
+        "summary": null,
+        "excerpt": "The Financial Instrument Protocol. Dfinance enables you to create and trade your own blockchain-based financial instruments with no-code.\n",
+        "url": "https://interchaininfo.zone/indexes/dfinance",
+        "resources": [
+            {
+                "title": "Unlocking the Potential of Decentralized Finance with Kava",
+                "url": "https://interchaininfo.zone/resources/unlocking-the-potential-of-decentralized-finance-with-kava",
+                "image": "https://interchaininfo.zone/uploads/2023/07/kava.png",
+                "readTime": "3 min read",
+                "publishDate": "July 12",
+                "type": "article"
+            },
+            {
+                "title": "Osmosis V16.0 | The Magnesium Upgrade",
+                "url": "https://interchaininfo.zone/resources/osmosis-v16-0-the-magnesium-upgrade",
+                "image": "https://interchaininfo.zone/uploads/2023/07/Frame-1321316872.png",
+                "readTime": "2 min read",
+                "publishDate": "July 18",
+                "type": "article"
+            },
+            {
+                "title": "Osmosis Connector for Hummingbot — Project O-Nexum",
+                "url": "https://interchaininfo.zone/resources/osmosis-connector-for-hummingbot-project-o-nexum",
+                "image": "https://interchaininfo.zone/uploads/2023/07/32323.png",
+                "readTime": "10 min read",
+                "publishDate": "July 12",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "FirmaChain",
+        "summary": null,
+        "excerpt": "A blockchain based E-Document platform.\n",
+        "url": "https://interchaininfo.zone/indexes/firmachain",
+        "resources": []
+    },
+    {
+        "title": "FOAM",
+        "summary": null,
+        "excerpt": "Proof of Location.\n",
+        "url": "https://interchaininfo.zone/indexes/foam",
+        "resources": [
+            {
+                "title": "TOKI and Noble to Bring Japanese Stablecoins to the Cosmos Ecosystem, in Partnership with MUFG",
+                "url": "https://interchaininfo.zone/resources/toki-and-noble-to-bring-japanese-stablecoins-to-the-cosmos-ecosystem-in-partnership-with-mufg",
+                "image": "https://interchaininfo.zone/uploads/2023/07/1231.png",
+                "readTime": "14 min read",
+                "publishDate": "July 12",
+                "type": "article"
+            },
+            {
+                "title": "A Beginner’s Guide to Cosmos Governance",
+                "url": "https://interchaininfo.zone/resources/a-beginners-guide-to-cosmos-governance",
+                "image": "https://interchaininfo.zone/uploads/2023/07/12222.png",
+                "readTime": "22 min read",
+                "publishDate": "July 12",
+                "type": "article"
+            },
+            {
+                "title": "Cosmos Is Going To Have A Serious Chaotic Legal Battle",
+                "url": "https://interchaininfo.zone/resources/cosmos-is-going-to-have-a-serious-chaotic-legal-battle",
+                "image": "https://interchaininfo.zone/uploads/2023/05/image-1171-min.png",
+                "readTime": "2 min read",
+                "publishDate": "May 23",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "IDENA",
+        "summary": null,
+        "excerpt": "The first Proof-of-Person blockchain. Claim your personhood. \n",
+        "url": "https://interchaininfo.zone/indexes/idena",
+        "resources": [
+            {
+                "title": "Ingenius! Stake Luna for More?! COINHALL | CHARTS, SWAPS & MORE FOR TERRA (& SOON IBC!?)",
+                "url": "https://interchaininfo.zone/resources/ingenius-stake-luna-for-more-coinhall-charts-swaps-more-for-terra-soon-ibc",
+                "image": "https://img.youtube.com/vi/XsvfoktqtJE/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Dec 1",
+                "type": "video"
+            },
+            {
+                "title": "Tendermint Core EXPLAINED (Algorithm & History)",
+                "url": "https://interchaininfo.zone/resources/tendermint-core-explained-algorithm-history",
+                "image": "https://img.youtube.com/vi/kTczTT9DlP8/hqdefault.jpg",
+                "readTime": "2 min read",
+                "publishDate": "July 15",
+                "type": "video"
+            },
+            {
+                "title": "Unleashing the Power of Bitcoin Staking: A Revolutionary Leap for the Proof-of-Stake Ecosystem",
+                "url": "https://interchaininfo.zone/resources/unleashing-the-power-of-bitcoin-staking-a-revolutionary-leap-for-the-proof-of-stake-ecosystem",
+                "image": "https://interchaininfo.zone/uploads/2023/07/babylon-1.png",
+                "readTime": "3 min read",
+                "publishDate": "July 14",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Stateset",
+        "summary": null,
+        "excerpt": "Stateset is the single source of truth for #DTC eCommerce merchants and warehouses. Automate your business on the layer 1 for Commerce.\n",
+        "url": "https://interchaininfo.zone/indexes/stateset",
+        "resources": [
+            {
+                "title": "USDC Updates: 6 New Blockchains vs. A Falling Market Cap",
+                "url": "https://interchaininfo.zone/resources/usdc-updates-6-new-blockchains-vs-a-falling-market-cap",
+                "image": "https://interchaininfo.zone/uploads/2023/08/Frame-1321316941.png",
+                "readTime": "2 min read",
+                "publishDate": "Aug 29",
+                "type": "article"
+            },
+            {
+                "title": "IBC Explained (InterBlockchain Communication Animated)",
+                "url": "https://interchaininfo.zone/resources/ibc-explained",
+                "image": "https://img.youtube.com/vi/-jWWrHL1miM/hqdefault.jpg",
+                "readTime": "2 min read",
+                "publishDate": "July 15",
+                "type": "video"
+            },
+            {
+                "title": "COSMOS NEWS: dYdX v4 public testnet in COSMOS, MME CRYPTO REGULATIONS updates, INJECTIVE, SECRET Network & MORE!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-dydx-v4-public-testnet-in-cosmos-mme-crypto-regulations-updates-injective-secret-network-more",
+                "image": "https://img.youtube.com/vi/dtouedxEwSk/hqdefault.jpg",
+                "readTime": "54 min read",
+                "publishDate": "July 24",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Ankr",
+        "summary": null,
+        "excerpt": "Decentralized Web 3 Infrastructure for a better Web 3 World. Nodes, Validators, and Staking solutions. Build, Earn, and Stake.\n",
+        "url": "https://interchaininfo.zone/indexes/ankr",
+        "resources": [
+            {
+                "title": "How to set up a Cosmostation wallet",
+                "url": "https://interchaininfo.zone/resources/how-to-set-up-a-cosmostation-wallet",
+                "image": "https://interchaininfo.zone/uploads/2023/01/Screenshot-2023-01-25-095816.png",
+                "readTime": "0 min read",
+                "publishDate": "Jan 25",
+                "type": "video"
+            },
+            {
+                "title": "Weekly Roundup by Team Kujira: Ep.33",
+                "url": "https://interchaininfo.zone/resources/weekly-roundup-by-team-kujira-ep-33",
+                "image": "https://interchaininfo.zone/uploads/2023/06/Frame-62.png",
+                "readTime": "11 min read",
+                "publishDate": "June 29",
+                "type": "article"
+            },
+            {
+                "title": "Web3 News Recap: The State of Web3 Going Into September, 2023",
+                "url": "https://interchaininfo.zone/resources/web3-news-recap-the-state-of-web3-going-into-september-2023",
+                "image": "https://interchaininfo.zone/uploads/2023/09/Twitter-post-14.png",
+                "readTime": "3 min read",
+                "publishDate": "Sept 4",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Nomic",
+        "summary": "<p>Bitcoin on Cosmos.</p>",
+        "excerpt": "Bringing native BTC to the Cosmos Ecosystem.\n",
+        "url": "https://interchaininfo.zone/indexes/nomic",
+        "resources": [
+            {
+                "title": "Tabu: A Wallet Built for the Interchain 🚀",
+                "url": "https://interchaininfo.zone/resources/tabu-a-wallet-built-for-the-interchain",
+                "image": "https://img.youtube.com/vi/Dr9rp58DhdM/hqdefault.jpg",
+                "readTime": "2 min read",
+                "publishDate": "May 23",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Teritori",
+        "summary": null,
+        "excerpt": "Connecting Tribes on Cosmos SDK & GNØ Land.\n",
+        "url": "https://interchaininfo.zone/indexes/teritori",
+        "resources": []
+    },
+    {
+        "title": "Kava",
+        "summary": "<p>Kava is a cross-chain DeFi platform that connects the Cosmos ecosystem to Ethereum, enabling seamless interaction between dapps on both networks. Kava's focus on security and reliability aims to bring DeFi to a broader community, with the ambition of becoming the Coinbase of DeFi.</p>",
+        "excerpt": "DeFi focused on institutional adoption.\n",
+        "url": "https://interchaininfo.zone/indexes/kava",
+        "resources": [
+            {
+                "title": "Unlocking the Potential of Decentralized Finance with Kava",
+                "url": "https://interchaininfo.zone/resources/unlocking-the-potential-of-decentralized-finance-with-kava",
+                "image": "https://interchaininfo.zone/uploads/2023/07/kava.png",
+                "readTime": "3 min read",
+                "publishDate": "July 12",
+                "type": "article"
+            },
+            {
+                "title": "BREAKING: NATIVE TETHER USDT IS COMING TO COSMOS!!",
+                "url": "https://interchaininfo.zone/resources/breaking-native-tether-usdt-is-coming-to-cosmos",
+                "image": "https://img.youtube.com/vi/lpFm8Npnxuw/hqdefault.jpg",
+                "readTime": "1 min read",
+                "publishDate": "July 12",
+                "type": "video"
+            },
+            {
+                "title": "Cosmos Is Going To Have A Serious Chaotic Legal Battle",
+                "url": "https://interchaininfo.zone/resources/cosmos-is-going-to-have-a-serious-chaotic-legal-battle",
+                "image": "https://interchaininfo.zone/uploads/2023/05/image-1171-min.png",
+                "readTime": "2 min read",
+                "publishDate": "May 23",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Kujira",
+        "summary": "<p>A Layer 1 blockchain aiming to democratize DeFi, Kujira offers a liquidation market and a decentralized order book. Its core features include semi-permissioned contracts, on-chain scheduling, and native token generation. Kujira's dApps include ORCA, BLUE, and FIN, each serving unique functions within the ecosystem.</p>",
+        "excerpt": "A novel blockchain platform, Kujira democratizes DeFi with unique features and dApps, offering real, sustainable yield to users.\n",
+        "url": "https://interchaininfo.zone/indexes/kujira",
+        "resources": [
+            {
+                "title": "Minting USK on Kujira Blue | Joining LP on Kujira Bow | Cosmos IBC DeFi",
+                "url": "https://interchaininfo.zone/resources/minting-usk-on-kujira-blue-joining-lp-on-kujira-bow-cosmos-ibc-defi",
+                "image": "https://img.youtube.com/vi/Jv-iGgWFWms/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "July 12",
+                "type": "video"
+            },
+            {
+                "title": "Weekly Roundup by Team Kujira: Ep.33",
+                "url": "https://interchaininfo.zone/resources/weekly-roundup-by-team-kujira-ep-33",
+                "image": "https://interchaininfo.zone/uploads/2023/06/Frame-62.png",
+                "readTime": "11 min read",
+                "publishDate": "June 29",
+                "type": "article"
+            },
+            {
+                "title": "Citizen Cosmos: Eric Waisanen, game theory, inflation & token value",
+                "url": "https://interchaininfo.zone/resources/citizen-cosmos-eric-waisanen-game-theory-inflation-token-value",
+                "image": "https://img.youtube.com/vi/qVQwWZLheRQ/hqdefault.jpg",
+                "readTime": "1 min read",
+                "publishDate": "Feb 24",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Anoma",
+        "summary": null,
+        "excerpt": "An intent-centric, privacy-preserving protocol for decentralized counterparty discovery, solving, & multi-chain atomic settlement.\n",
+        "url": "https://interchaininfo.zone/indexes/anoma",
+        "resources": [
+            {
+                "title": "COSMOS NEWS: Neutron, INJECTIVE, PaaS by Secret Network, IBC v.7.1, KEPLR 2.0, ICF, Stride & MORE!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-neutron-injective-paas-by-secret-network-ibc-v-7-1-keplr-2-0-icf-stride-more",
+                "image": "https://img.youtube.com/vi/tGfb2LJMHq4/hqdefault.jpg",
+                "readTime": "44 min read",
+                "publishDate": "July 12",
+                "type": "video"
+            },
+            {
+                "title": "Introducing the ICF Technical Advisory Board",
+                "url": "https://interchaininfo.zone/resources/introducing-the-icf-technical-advisory-board",
+                "image": "https://interchaininfo.zone/uploads/2022/12/Introducing-the-ICF-Technical-Advisory-Board.jpg",
+                "readTime": "3 min read",
+                "publishDate": "Dec 3",
+                "type": "article"
+            },
+            {
+                "title": "Celestia EXPLAINED (Modular Blockchains Animated)",
+                "url": "https://interchaininfo.zone/resources/celestia-explained-modular-blockchains-animated",
+                "image": "https://img.youtube.com/vi/ToHbt8pYBfA/hqdefault.jpg",
+                "readTime": "2 min read",
+                "publishDate": "July 15",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "OKC",
+        "summary": null,
+        "excerpt": "EVM compatible & IBC interoperable • Blazingly fast • Insanely low gas fee .\n",
+        "url": "https://interchaininfo.zone/indexes/okc",
+        "resources": []
+    },
+    {
+        "title": "Passage",
+        "summary": null,
+        "excerpt": "NFT Marketplace and frontier, connected virtual worlds for work & play.\n",
+        "url": "https://interchaininfo.zone/indexes/passage",
+        "resources": []
+    },
+    {
+        "title": "LikeCoin",
+        "summary": null,
+        "excerpt": "A inter-chain protocol and framework for decentrali.zed publishing\n",
+        "url": "https://interchaininfo.zone/indexes/likecoin",
+        "resources": [
+            {
+                "title": "Citizen Cosmos: Boris Mann, storage, web applications & decentralization of web3 #82",
+                "url": "https://interchaininfo.zone/resources/citizen-cosmos-boris-mann-storage-web-applications-decentralization-of-web3-82",
+                "image": "https://img.youtube.com/vi/dJ2bsBMgelI/hqdefault.jpg",
+                "readTime": "1 min read",
+                "publishDate": "Jan 31",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Starname",
+        "summary": null,
+        "excerpt": "Reserve your crypto *name.\n",
+        "url": "https://interchaininfo.zone/indexes/starname",
+        "resources": [
+            {
+                "title": "Stargaze NFTs: Are there any blue chips? Use analytics tools to hunt down BLUE CHIP #NFTs !",
+                "url": "https://interchaininfo.zone/resources/stargaze-nfts-are-there-any-blue-chips-use-analytics-tools-to-hunt-down-blue-chip-nfts",
+                "image": "https://interchaininfo.zone/uploads/2023/03/sddefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "March 1",
+                "type": "video"
+            },
+            {
+                "title": "Live Chat with Nik – Stargaze Dev",
+                "url": "https://interchaininfo.zone/resources/live-chat-with-nik-stargaze-dev",
+                "image": "https://img.youtube.com/vi/eIMkeQoeng0/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Dec 1",
+                "type": "video"
+            },
+            {
+                "title": "IBC Swap — simplifying swaps and transfers across the interchain",
+                "url": "https://interchaininfo.zone/resources/ibc-swap-simplifying-swaps-and-transfers-across-the-interchain",
+                "image": "https://interchaininfo.zone/uploads/2023/07/Frame-1321316852.png",
+                "readTime": "11 min read",
+                "publishDate": "July 12",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Crescent Network",
+        "summary": null,
+        "excerpt": "Expanding DeFi capabilities through InterBlockchain Technology.\n",
+        "url": "https://interchaininfo.zone/indexes/crescentnetwork",
+        "resources": [
+            {
+                "title": "Crescent Network – No Fee Cosmos DEX",
+                "url": "https://interchaininfo.zone/resources/crescent-network-no-fee-cosmos-dex",
+                "image": "https://img.youtube.com/vi/73aPLg8msvc/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Jan 31",
+                "type": "video"
+            },
+            {
+                "title": "DFract, the first Interchain yield earning index",
+                "url": "https://interchaininfo.zone/resources/dfract-the-first-interchain-yield-earning-index",
+                "image": "https://interchaininfo.zone/uploads/2022/11/DFract-the-first-Interchain-yield-earning-index.jpg",
+                "readTime": "7 min read",
+                "publishDate": "Dec 1",
+                "type": "article"
+            },
+            {
+                "title": "Cosmos’ legal fight against strategy exec poised to turn nastier",
+                "url": "https://interchaininfo.zone/resources/cosmos-legal-fight-against-strategy-exec-poised-to-turn-nastier",
+                "image": "https://interchaininfo.zone/uploads/2023/05/image-1170.png",
+                "readTime": "5 min read",
+                "publishDate": "May 23",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Osmosis",
+        "summary": "<p>Osmosis, a leading decentralized exchange (DEX) in the Cosmos ecosystem, has recently undergone a significant upgrade known as the Magnesium upgrade. This upgrade introduces a suite of new features and enhancements, further solidifying Osmosis's position as a premier cross-chain DeFi hub.</p>",
+        "excerpt": "Osmosis’s Magnesium upgrade revolutionizes the DeFi landscape with supercharged liquidity, a CosmWasm pool module, and more.\n",
+        "url": "https://interchaininfo.zone/indexes/osmosis",
+        "resources": [
+            {
+                "title": "How to Buy and Stake Akash $AKT Token using Osmosis and Keplr Wallet IN 3 MINUTES!",
+                "url": "https://interchaininfo.zone/resources/how-to-buy-and-stake-akash-akt-token-using-osmosis-and-keplr-wallet-in-3-minutes",
+                "image": "https://img.youtube.com/vi/lxDYZT-HbZI/hqdefault.jpg",
+                "readTime": "2 min read",
+                "publishDate": "Aug 31",
+                "type": "video"
+            },
+            {
+                "title": "Osmosis V16.0 | The Magnesium Upgrade",
+                "url": "https://interchaininfo.zone/resources/osmosis-v16-0-the-magnesium-upgrade",
+                "image": "https://interchaininfo.zone/uploads/2023/07/Frame-1321316872.png",
+                "readTime": "2 min read",
+                "publishDate": "July 18",
+                "type": "article"
+            },
+            {
+                "title": "Osmosis Connector for Hummingbot — Project O-Nexum",
+                "url": "https://interchaininfo.zone/resources/osmosis-connector-for-hummingbot-project-o-nexum",
+                "image": "https://interchaininfo.zone/uploads/2023/07/32323.png",
+                "readTime": "10 min read",
+                "publishDate": "July 12",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "SifChain",
+        "summary": null,
+        "excerpt": "The decentralized exchange where Cosmos meets Ethereum, and soon much more.\n",
+        "url": "https://interchaininfo.zone/indexes/sifchain",
+        "resources": [
+            {
+                "title": "Osmosis Connector for Hummingbot — Project O-Nexum",
+                "url": "https://interchaininfo.zone/resources/osmosis-connector-for-hummingbot-project-o-nexum",
+                "image": "https://interchaininfo.zone/uploads/2023/07/32323.png",
+                "readTime": "10 min read",
+                "publishDate": "July 12",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "KIRA",
+        "summary": null,
+        "excerpt": "The first decentralized network that enables market access to any digital asset. \n",
+        "url": "https://interchaininfo.zone/indexes/kira",
+        "resources": [
+            {
+                "title": "Tutorial — How to get $DFR (Beta Version)",
+                "url": "https://interchaininfo.zone/resources/tutorial-how-to-get-dfr-beta-version",
+                "image": "https://interchaininfo.zone/uploads/2022/11/Tutorial-—-How-to-get-DFR.jpg",
+                "readTime": "4 min read",
+                "publishDate": "Dec 1",
+                "type": "article"
+            },
+            {
+                "title": "Liam at Confident in Crypto—Why Cosmoverse Should Have a Game Corner, Host Super Smash Bros Tourneys",
+                "url": "https://interchaininfo.zone/resources/liam-at-confident-in-crypto-why-cosmoverse-should-have-a-game-corner-host-super-smash-bros-tourneys",
+                "image": "https://img.youtube.com/vi/14VACEaLGDs/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Jan 31",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Bostrom – Boot/Cyb.ai",
+        "summary": null,
+        "excerpt": "Data Oracle, Smart Contract Platform, Environment for autonomous programs.\n",
+        "url": "https://interchaininfo.zone/indexes/bostrombootcybai",
+        "resources": []
+    },
+    {
+        "title": "Axelar",
+        "summary": "<p>Axelar is a secure cross-chain communication platform for Web3, enabling interchain dApps. It uses gateway smart contracts, validators, and relayer services to facilitate communication across chains.</p>",
+        "excerpt": "Axelar enables secure cross-chain communication for Web3, facilitating interchain dApps.\n",
+        "url": "https://interchaininfo.zone/indexes/axelar",
+        "resources": [
+            {
+                "title": "Axelar Deep Dive: Cross-Chain Pioneers",
+                "url": "https://interchaininfo.zone/resources/axelar-deep-dive-cross-chain-pioneers",
+                "image": "https://interchaininfo.zone/uploads/2023/09/Twitter-post-19.png",
+                "readTime": "3 min read",
+                "publishDate": "Sept 8",
+                "type": "article"
+            },
+            {
+                "title": "MY TOP 5 COSMOS COINS FOR 2023!!",
+                "url": "https://interchaininfo.zone/resources/my-top-5-cosmos-coins-for-2023",
+                "image": "https://img.youtube.com/vi/cLRuJ5M91hs/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Jan 31",
+                "type": "video"
+            },
+            {
+                "title": "Cosmos ATOM Airdrop MEGA GUIDE for 2023!",
+                "url": "https://interchaininfo.zone/resources/cosmos-atom-airdrop-mega-guide-for-2023",
+                "image": "https://img.youtube.com/vi/bsu8MtxBm94/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Jan 31",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Cerberus",
+        "summary": null,
+        "excerpt": "The three-headed meme-coin, NFT project & smart contracts chain.\n",
+        "url": "https://interchaininfo.zone/indexes/cerberus",
+        "resources": []
+    },
+    {
+        "title": "Ki Chain",
+        "summary": null,
+        "excerpt": "A chain for wealth management.\n",
+        "url": "https://interchaininfo.zone/indexes/kichain",
+        "resources": []
+    },
+    {
+        "title": "Onomy Protocol",
+        "summary": null,
+        "excerpt": "Powering ONEX, a multi-chain DEX converging Forex and Decentralized Finance.\n",
+        "url": "https://interchaininfo.zone/indexes/onomyprotocol",
+        "resources": [
+            {
+                "title": "Nov 21–27 Weekly Newsletter: What happened on the Cosmos ecosystem this week?",
+                "url": "https://interchaininfo.zone/resources/nov-21-27-weekly-newsletter-what-happened-on-the-cosmos-ecosystem-this-week",
+                "image": "https://interchaininfo.zone/uploads/2022/12/Nov-21–27-Weekly-Newsletter.jpg",
+                "readTime": "4 min read",
+                "publishDate": "Dec 3",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "HASHGARD",
+        "summary": null,
+        "excerpt": "Hashgard is a new generation decentralized finance public blockchain.\n",
+        "url": "https://interchaininfo.zone/indexes/hashgard",
+        "resources": [
+            {
+                "title": "Tendermint Core EXPLAINED (Algorithm & History)",
+                "url": "https://interchaininfo.zone/resources/tendermint-core-explained-algorithm-history",
+                "image": "https://img.youtube.com/vi/kTczTT9DlP8/hqdefault.jpg",
+                "readTime": "2 min read",
+                "publishDate": "July 15",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "IDEP",
+        "summary": null,
+        "excerpt": "Private by default AR Engine | A decentralized AR cloud with data privacy.\n",
+        "url": "https://interchaininfo.zone/indexes/idep",
+        "resources": [
+            {
+                "title": "Tendermint Core EXPLAINED (Algorithm & History)",
+                "url": "https://interchaininfo.zone/resources/tendermint-core-explained-algorithm-history",
+                "image": "https://img.youtube.com/vi/kTczTT9DlP8/hqdefault.jpg",
+                "readTime": "2 min read",
+                "publishDate": "July 15",
+                "type": "video"
+            },
+            {
+                "title": "Unleashing the Power of Bitcoin Staking: A Revolutionary Leap for the Proof-of-Stake Ecosystem",
+                "url": "https://interchaininfo.zone/resources/unleashing-the-power-of-bitcoin-staking-a-revolutionary-leap-for-the-proof-of-stake-ecosystem",
+                "image": "https://interchaininfo.zone/uploads/2023/07/babylon-1.png",
+                "readTime": "3 min read",
+                "publishDate": "July 14",
+                "type": "article"
+            },
+            {
+                "title": "Osmosis Connector for Hummingbot — Project O-Nexum",
+                "url": "https://interchaininfo.zone/resources/osmosis-connector-for-hummingbot-project-o-nexum",
+                "image": "https://interchaininfo.zone/uploads/2023/07/32323.png",
+                "readTime": "10 min read",
+                "publishDate": "July 12",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Gravity bridge",
+        "summary": null,
+        "excerpt": "Gravity Bridge is a decentralized Cosmos blockchain whose primary purpose is to secure the operation of bridges between blockchains.\n",
+        "url": "https://interchaininfo.zone/indexes/gravitybridge",
+        "resources": []
+    },
+    {
+        "title": "Comdex",
+        "summary": "<p>Comdex is a Cosmos-based ecosystem that includes a DeFi focused Layer-1 blockchain and a close-ended SaaS platform for commodity trading and settlement. It aims to streamline and digitize commodity trading and bring one of the most complete and composable DeFi experiences to Cosmos.</p>",
+        "excerpt": " Cosmos-based ecosystem revolutionizing commodity trading with a DeFi-focused Layer-1 blockchain and a SaaS platform.\n",
+        "url": "https://interchaininfo.zone/indexes/comdex",
+        "resources": [
+            {
+                "title": "Sei Network lets you build high throughput DEXs on its base layer",
+                "url": "https://interchaininfo.zone/resources/sei-network-lets-you-build-high-throughput-dexs-on-its-base-layer",
+                "image": "https://img.youtube.com/vi/WGizshbtU-Y/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Jan 31",
+                "type": "video"
+            },
+            {
+                "title": "HARBOR Emissions- A Complete Walkthrough",
+                "url": "https://interchaininfo.zone/resources/harbor-emissions-a-complete-walkthrough",
+                "image": "https://interchaininfo.zone/uploads/2023/07/harbor.png",
+                "readTime": "12 min read",
+                "publishDate": "July 12",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Injective",
+        "summary": null,
+        "excerpt": "Decentralized interoperable smart contracts platform.\n",
+        "url": "https://interchaininfo.zone/indexes/injective",
+        "resources": [
+            {
+                "title": "Dexterium DEX – Overview",
+                "url": "https://interchaininfo.zone/resources/dexterium-dex-overview",
+                "image": "https://interchaininfo.zone/uploads/2022/12/Dexterium-DEX-Overview.jpeg",
+                "readTime": "6 min read",
+                "publishDate": "Dec 8",
+                "type": "article"
+            },
+            {
+                "title": "Nov 21–27 Weekly Newsletter: What happened on the Cosmos ecosystem this week?",
+                "url": "https://interchaininfo.zone/resources/nov-21-27-weekly-newsletter-what-happened-on-the-cosmos-ecosystem-this-week",
+                "image": "https://interchaininfo.zone/uploads/2022/12/Nov-21–27-Weekly-Newsletter.jpg",
+                "readTime": "4 min read",
+                "publishDate": "Dec 3",
+                "type": "article"
+            },
+            {
+                "title": "The Gate Contract",
+                "url": "https://interchaininfo.zone/resources/the-gate-contract",
+                "image": "https://interchaininfo.zone/uploads/2023/07/gate.png",
+                "readTime": "14 min read",
+                "publishDate": "July 12",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Structs",
+        "summary": null,
+        "excerpt": "A 5X game in the Cosmos 🎮 GameFirst.\n",
+        "url": "https://interchaininfo.zone/indexes/structs",
+        "resources": [
+            {
+                "title": "Citizen Cosmos: Eric Waisanen, game theory, inflation & token value",
+                "url": "https://interchaininfo.zone/resources/citizen-cosmos-eric-waisanen-game-theory-inflation-token-value",
+                "image": "https://img.youtube.com/vi/qVQwWZLheRQ/hqdefault.jpg",
+                "readTime": "1 min read",
+                "publishDate": "Feb 24",
+                "type": "video"
+            },
+            {
+                "title": "MetaMask & PayPal: Direct Crypto Sells Just Got Easier",
+                "url": "https://interchaininfo.zone/resources/metamask-paypal-direct-crypto-sells-just-got-easier",
+                "image": "https://interchaininfo.zone/uploads/2023/09/Twitter-post-17.png",
+                "readTime": "1 min read",
+                "publishDate": "Sept 6",
+                "type": "article"
+            },
+            {
+                "title": "Load balancer for APIs (RCP & LCD) on Cosmos-based networks",
+                "url": "https://interchaininfo.zone/resources/load-balancer-for-apis-rcp-lcd-on-cosmos-based-networks",
+                "image": "https://interchaininfo.zone/uploads/2022/11/Load-balancer-for-APIs-RCP-LCD-on-Cosmos-based-networks.jpg",
+                "readTime": "1 min read",
+                "publishDate": "Nov 30",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Sommelier",
+        "summary": null,
+        "excerpt": "Off-chain Ethereum co-processor.\n",
+        "url": "https://interchaininfo.zone/indexes/sommelier",
+        "resources": [
+            {
+                "title": "Privacy in Cosmos Live: Panel – ICS, Mesh, IBC & Privacy",
+                "url": "https://interchaininfo.zone/resources/privacy-in-cosmos-live-panel-ics-mesh-ibc-privacy",
+                "image": "https://img.youtube.com/vi/BbFn2Fb4pj0/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "July 12",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Mars Protocol",
+        "summary": null,
+        "excerpt": "The galaxy’s most powerful credit protocol.\n",
+        "url": "https://interchaininfo.zone/indexes/marsprotocol",
+        "resources": [
+            {
+                "title": "Unleashing the Power of Bitcoin Staking: A Revolutionary Leap for the Proof-of-Stake Ecosystem",
+                "url": "https://interchaininfo.zone/resources/unleashing-the-power-of-bitcoin-staking-a-revolutionary-leap-for-the-proof-of-stake-ecosystem",
+                "image": "https://interchaininfo.zone/uploads/2023/07/babylon-1.png",
+                "readTime": "3 min read",
+                "publishDate": "July 14",
+                "type": "article"
+            },
+            {
+                "title": "Navigating the Fragmented Cosmos: Charting a Path for the Interchain",
+                "url": "https://interchaininfo.zone/resources/navigating-the-fragmented-cosmos-charting-a-path-for-the-interchain",
+                "image": "https://interchaininfo.zone/uploads/2023/07/Frame-1321316853.png",
+                "readTime": "2 min read",
+                "publishDate": "July 9",
+                "type": "article"
+            },
+            {
+                "title": "DeFi Bridging Explored: Centauri — IBC Beyond the Cosmos",
+                "url": "https://interchaininfo.zone/resources/defi-bridging-explored-centauri-ibc-beyond-the-cosmos",
+                "image": "https://interchaininfo.zone/uploads/2023/01/Screenshot-2023-01-30-173356.png",
+                "readTime": "5 min read",
+                "publishDate": "Jan 31",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Umee",
+        "summary": "<p>Umee is a decentralized, cross-chain, DeFi hub that aims to facilitate seamless interactions between distinct blockchain ecosystems. It's a base layer blockchain protocol designed to enable the borrowing and lending of digital assets across multiple blockchains. Built using Tendermint Proof of Stake consensus protocol, the Umee blockchain provides interoperability with the Cosmos ecosystem, Ethereum network, side chain architectures, L2 scaling solutions, and alternative base layer protocols.</p>",
+        "excerpt": "The largest cross-chain lending & borrowing DeFi Hub in the Cosmos.\n",
+        "url": "https://interchaininfo.zone/indexes/umee",
+        "resources": [
+            {
+                "title": "The Role of DAO Tokens | Umeeversity | Umee | Cosmos",
+                "url": "https://interchaininfo.zone/resources/the-role-of-dao-tokens-umeeversity-umee-cosmos",
+                "image": "https://img.youtube.com/vi/ysFM25HZNMA/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "April 18",
+                "type": "video"
+            },
+            {
+                "title": "The Newest Wallet in the Cosmos! Tabu.",
+                "url": "https://interchaininfo.zone/resources/the-newest-wallet-in-the-cosmos-tabu",
+                "image": "https://interchaininfo.zone/uploads/2023/03/Frame-1321316797.png",
+                "readTime": "2 min read",
+                "publishDate": "March 20",
+                "type": "article"
+            },
+            {
+                "title": "Weekly Roundup by Team Kujira: Ep.33",
+                "url": "https://interchaininfo.zone/resources/weekly-roundup-by-team-kujira-ep-33",
+                "image": "https://interchaininfo.zone/uploads/2023/06/Frame-62.png",
+                "readTime": "11 min read",
+                "publishDate": "June 29",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Persistence",
+        "summary": null,
+        "excerpt": "Tendermint based Layer-1 powering an ecosystem of DeFi applications focused on unlocking the liquidity of staked assets.\n",
+        "url": "https://interchaininfo.zone/indexes/persistence",
+        "resources": [
+            {
+                "title": "Introducing Dexter – Interchain DEX for Yield-Generating Assets",
+                "url": "https://interchaininfo.zone/resources/introducing-dexter-interchain-dex-for-yield-generating-assets",
+                "image": "https://interchaininfo.zone/uploads/2023/04/1_4EEafQlO0_pzSG7hJ9WCpQ-1.webp",
+                "readTime": "9 min read",
+                "publishDate": "April 28",
+                "type": "article"
+            },
+            {
+                "title": "COSMOS ECOSYSTEM NEWS 21/1/22: GoC, Interchain Dev. Academy, Juno Comm. SubDAO, Namada, ICF’s TAB & MORE!",
+                "url": "https://interchaininfo.zone/resources/cosmos-ecosystem-news-21-1-22-goc-interchain-dev-academy-juno-comm-subdao-namada-icfs-tab-more",
+                "image": "https://img.youtube.com/vi/TxV6RL71mOk/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "April 16",
+                "type": "video"
+            },
+            {
+                "title": "IBC Swap — simplifying swaps and transfers across the interchain",
+                "url": "https://interchaininfo.zone/resources/ibc-swap-simplifying-swaps-and-transfers-across-the-interchain",
+                "image": "https://interchaininfo.zone/uploads/2023/07/Frame-1321316852.png",
+                "readTime": "11 min read",
+                "publishDate": "July 12",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "AssetMantle",
+        "summary": null,
+        "excerpt": "Multi-tenant NFT marketplace framework, securely mint, own, and trade digital assets.\n",
+        "url": "https://interchaininfo.zone/indexes/assetmantle",
+        "resources": [
+            {
+                "title": "COSMOS NEWS: dYdX v4 UPDATES, ATOM, INJ, OSMO & MORE!!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-dydx-v4-updates-atom-inj-osmo-more",
+                "image": "https://interchaininfo.zone/uploads/2023/08/Cosmos_news_August.jpeg",
+                "readTime": "14 min read",
+                "publishDate": "Aug 22",
+                "type": "video"
+            },
+            {
+                "title": "COSMOS NEWS: NEW US BILL & DEFI?!!, ATOM, AIRDROPS, INJ & MORE!!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-new-us-bill-defi-atom-airdrops-inj-more",
+                "image": "https://img.youtube.com/vi/1Lim2PHx3-M/hqdefault.jpg",
+                "readTime": "2 min read",
+                "publishDate": "Aug 3",
+                "type": "video"
+            },
+            {
+                "title": "COSMOS NEWS: dYdX v4 public testnet in COSMOS, MME CRYPTO REGULATIONS updates, INJECTIVE, SECRET Network & MORE!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-dydx-v4-public-testnet-in-cosmos-mme-crypto-regulations-updates-injective-secret-network-more",
+                "image": "https://img.youtube.com/vi/dtouedxEwSk/hqdefault.jpg",
+                "readTime": "54 min read",
+                "publishDate": "July 24",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "OmniFlix Network",
+        "summary": null,
+        "excerpt": "Decentralized media and network layer for Creators & Sovereign Communities.\n",
+        "url": "https://interchaininfo.zone/indexes/omniflixnetwork",
+        "resources": [
+            {
+                "title": "COSMOS NEWS: dYdX v4 public testnet in COSMOS, MME CRYPTO REGULATIONS updates, INJECTIVE, SECRET Network & MORE!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-dydx-v4-public-testnet-in-cosmos-mme-crypto-regulations-updates-injective-secret-network-more",
+                "image": "https://img.youtube.com/vi/dtouedxEwSk/hqdefault.jpg",
+                "readTime": "54 min read",
+                "publishDate": "July 24",
+                "type": "video"
+            },
+            {
+                "title": "COSMOS NEWS: Neutron, INJECTIVE, PaaS by Secret Network, IBC v.7.1, KEPLR 2.0, ICF, Stride & MORE!",
+                "url": "https://interchaininfo.zone/resources/cosmos-news-neutron-injective-paas-by-secret-network-ibc-v-7-1-keplr-2-0-icf-stride-more",
+                "image": "https://img.youtube.com/vi/tGfb2LJMHq4/hqdefault.jpg",
+                "readTime": "44 min read",
+                "publishDate": "July 12",
+                "type": "video"
+            },
+            {
+                "title": "Lum Network presentation @ Cosmoverse 2022 w/ Sarah-Diane Eck",
+                "url": "https://interchaininfo.zone/resources/lum-network-presentation-cosmoverse-2022-w-sarah-diane-eck",
+                "image": "https://img.youtube.com/vi/3ZoJLL2tbH8/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "Dec 1",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Uptick Network",
+        "summary": null,
+        "excerpt": "Borderless multi-chain NFT infrastructure for Web3.\n",
+        "url": "https://interchaininfo.zone/indexes/upticknetwork",
+        "resources": []
+    },
+    {
+        "title": "Band Protocol",
+        "summary": null,
+        "excerpt": "Secure, scalable cross-chain decentralized oracle – we connect smart contracts to external data and APIs.\n",
+        "url": "https://interchaininfo.zone/indexes/bandprotocol",
+        "resources": [
+            {
+                "title": "The Gate Contract",
+                "url": "https://interchaininfo.zone/resources/the-gate-contract",
+                "image": "https://interchaininfo.zone/uploads/2023/07/gate.png",
+                "readTime": "14 min read",
+                "publishDate": "July 12",
+                "type": "article"
+            },
+            {
+                "title": "Navigating the Fragmented Cosmos: Charting a Path for the Interchain",
+                "url": "https://interchaininfo.zone/resources/navigating-the-fragmented-cosmos-charting-a-path-for-the-interchain",
+                "image": "https://interchaininfo.zone/uploads/2023/07/Frame-1321316853.png",
+                "readTime": "2 min read",
+                "publishDate": "July 9",
+                "type": "article"
+            },
+            {
+                "title": "IBC Explained (InterBlockchain Communication Animated)",
+                "url": "https://interchaininfo.zone/resources/ibc-explained",
+                "image": "https://img.youtube.com/vi/-jWWrHL1miM/hqdefault.jpg",
+                "readTime": "2 min read",
+                "publishDate": "July 15",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Odin Protocol",
+        "summary": null,
+        "excerpt": "Cross Chain Data Oracle! Built on Cosmos.\n",
+        "url": "https://interchaininfo.zone/indexes/odinprotocol",
+        "resources": []
+    },
+    {
+        "title": "Akash Network",
+        "summary": "<p>The Akash Blockchain is a decentralized cloud computing platform that aims to provide an efficient, secure, and affordable alternative to traditional cloud service providers. By harnessing the power of blockchain technology, Akash enables developers to access a global network of underutilized computing resources, and users to monetize their idle infrastructure. This article covers the basics of the Akash Blockchain, its components and architecture, the Akash Token (AKT), use cases, and the platform’s advantages and challenges.</p>",
+        "excerpt": "The #1 decentralized cloud computing marketplace.\n",
+        "url": "https://interchaininfo.zone/indexes/akashnetwork",
+        "resources": [
+            {
+                "title": "BREAKING: NATIVE TETHER USDT IS COMING TO COSMOS!!",
+                "url": "https://interchaininfo.zone/resources/breaking-native-tether-usdt-is-coming-to-cosmos",
+                "image": "https://img.youtube.com/vi/lpFm8Npnxuw/hqdefault.jpg",
+                "readTime": "1 min read",
+                "publishDate": "July 12",
+                "type": "video"
+            },
+            {
+                "title": "DeCloud | Developers, Resources & Contributions | Envy | Akash | Cosmos",
+                "url": "https://interchaininfo.zone/resources/decloud-developers-resources-contributions-envy-akash-cosmos",
+                "image": "https://img.youtube.com/vi/utRa7rFBU3o/hqdefault.jpg",
+                "readTime": "0 min read",
+                "publishDate": "April 18",
+                "type": "video"
+            }
+        ]
+    },
+    {
+        "title": "Bitcanna",
+        "summary": "<p>BitCanna aims to provide the best and most user-friendly solutions available for the cannabis market. Having our roots in the cannabis industry we are positioned to tackle challenges existing in the industry around for example banking. Our platform will allow consumers and the industry to connect, while offering tools to help them transact as well!</p>",
+        "excerpt": "Providing solution for the challenges in the cannabis industry.\n",
+        "url": "https://interchaininfo.zone/indexes/bitcanna",
+        "resources": []
+    },
+    {
+        "title": "Bitsong",
+        "summary": null,
+        "excerpt": "Tokenizing music & fan interaction.\n",
+        "url": "https://interchaininfo.zone/indexes/bitsong",
+        "resources": []
+    },
+    {
+        "title": "Dig Chain",
+        "summary": null,
+        "excerpt": "Real estate powered by blockchain.\n",
+        "url": "https://interchaininfo.zone/indexes/digchain",
+        "resources": [
+            {
+                "title": "A Beginner’s Guide to Cosmos Governance",
+                "url": "https://interchaininfo.zone/resources/a-beginners-guide-to-cosmos-governance",
+                "image": "https://interchaininfo.zone/uploads/2023/07/12222.png",
+                "readTime": "22 min read",
+                "publishDate": "July 12",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "ixo",
+        "summary": null,
+        "excerpt": "Build your ImpactDAO marketplace on the Internet of Impact. A layer-1 carbon-negative chain purposed for ReFi and verifying EarthState change.\n",
+        "url": "https://interchaininfo.zone/indexes/ixo",
+        "resources": []
+    },
+    {
+        "title": "Regen Network",
+        "summary": "<p class=\"p1\"><span class=\"s1\">Regen Network aims to establish foundational fintech infrastructure for ecological claims and data, serving as the base layer for climate-focused projects. By combining blockchain and ecology, it addresses environmental challenges and redefines societal appreciation of ecological stewardship. The platform includes Regen Ledger, which launched in April 2021, and Regen Marketplace, launched in September 2022. Nature Carbon Ton (NCT) was introduced, enabling trade on the Osmosis platform. The platform utilizes modules like Ecocredit, Marketplace, and Data to facilitate on-chain trading of ecosystem service credits. $REGEN is the native token rewarding validators and facilitating governance. The community, composed of scientists, developers, and enthusiasts, aims to have a significant climate impact with millions of credits retired and hectares of land under ecological regeneration.</span></p>",
+        "excerpt": "Carbon-credit based web3 economy.\n",
+        "url": "https://interchaininfo.zone/indexes/regennetwork",
+        "resources": [
+            {
+                "title": "PORTFOLIO UPDATE + NEW COSMOS AIRDROP $STRD",
+                "url": "https://interchaininfo.zone/resources/portfolio-update-new-cosmos-airdrop-strd",
+                "image": "https://img.youtube.com/vi/UXGqlsKbQxs/hqdefault.jpg",
+                "readTime": "1 min read",
+                "publishDate": "Nov 30",
+                "type": "video"
+            },
+            {
+                "title": "Introducing Dexter – Interchain DEX for Yield-Generating Assets",
+                "url": "https://interchaininfo.zone/resources/introducing-dexter-interchain-dex-for-yield-generating-assets",
+                "image": "https://interchaininfo.zone/uploads/2023/04/1_4EEafQlO0_pzSG7hJ9WCpQ-1.webp",
+                "readTime": "9 min read",
+                "publishDate": "April 28",
+                "type": "article"
+            }
+        ]
+    },
+    {
+        "title": "Sentinel dVPN",
+        "summary": null,
+        "excerpt": "Web3 Cosmos-based Global Web of Decentralized Virtual Private Networks built on a P2P bandwidth sharing marketplace. Build secure dVPN apps on Sentinel.\n",
+        "url": "https://interchaininfo.zone/indexes/sentineldvpn",
+        "resources": []
+    }
+]

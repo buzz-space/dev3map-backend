@@ -68,8 +68,10 @@ class StatisticController extends BaseController
             "rising_star",
             "ibc_astronaut",
             "seriousness",
+            "description",
+            "refer_ici",
             "is_repo"
-        )->first())
+        )->with("resources")->first())
             return $response->setError()->setMessage("Chain not found!");
 
         if ($chain->is_repo) {
@@ -192,6 +194,49 @@ class StatisticController extends BaseController
             $data->where("exact_date", ">=", now()->addDays(-1 * $filter));
 
         $data = array_reverse($data->limit(500)->get()->toArray());
+
+        return $response->setData($data);
+    }
+
+    public function getDeveloperChartBackup(Request $request, BaseHttpResponse $response)
+    {
+        $validator = Validator::make($request->all(), [
+            'filter' => "nullable|in:7,30",
+        ]);
+
+        if ($validator->fails())
+            return $response->setError()->setMessage(processValidators($validator->errors()->toArray()));
+
+        if ($chain = Chain::find($request->input("chain"))) {
+            $data = Commit::where("chain", $chain->id);
+        } else
+            $data = Commit::query();
+
+        $data->groupBy("exact_date")
+            ->selectRaw("exact_date, (SUM(total_full_time) + SUM(total_part_time)) as active_developer, SUM(total_commit) as total_commit,
+             SUM(additions) as additions, SUM(deletions) as deletions")
+            ->orderBy("exact_date", "ASC");
+
+//        $filter = $request->input("filter", false);
+//        if ($filter)
+//            $data->where("exact_date", ">=", now()->addDays(-1 * $filter));
+        $data->where("exact_date", ">=", now()->startOfYear());
+
+//        $data = array_reverse($data->limit(500)->get()->toArray());
+        $data = $data->get();
+
+        if ($chain = Chain::find($request->input("chain"))) {
+            $start = Commit::where("chain", $chain->id);
+        } else
+            $start = Commit::query();
+        $total = $start->groupBy("exact_date")
+            ->selectRaw("exact_date, SUM(total_commit) as total_commit")
+            ->where("exact_date", "<", now()->startOfYear())->get()->toArray();
+        $total = array_sum(array_column($total, "total_commit"));
+        foreach ($data as $item){
+            $total += $item->total_commit;
+            $item->total_commit = $total;
+        }
 
         return $response->setData($data);
     }

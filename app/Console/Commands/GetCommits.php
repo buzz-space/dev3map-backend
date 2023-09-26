@@ -73,7 +73,7 @@ class GetCommits extends Command
                     if ($lastCommit = Commit::where("repo", $repository->id)->orderBy("exact_date", "DESC")->first())
                         $last = $from;
                     else {
-                        if ($repository->id <= 4674) {
+                        if ($repository->id <= 4789) {
                             echo "Repository has no commit!" . PHP_EOL;
                             continue;
                         }
