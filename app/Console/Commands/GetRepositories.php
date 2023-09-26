@@ -64,7 +64,7 @@ class GetRepositories extends Command
                     $chain->avatar = $chainInfo->avatar_url ? $chainInfo->avatar_url : null;
 //                    $chain->name = $chainInfo->name ?? ucfirst(utf8convert($chain->login));
                     $chain->website = $chainInfo->blog ?? "";
-                    $chain->description = $chainInfo->description ?? "";
+//                    $chain->description = $chainInfo->description ?? "";
 //                $chain->categories = $categories[$i];
                     // Get all repository from chain (test aura-nw)
                     $prefix = $chain->github_prefix;
