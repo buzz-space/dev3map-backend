@@ -5,6 +5,8 @@ namespace App\Console\Commands;
 use Botble\Statistic\Models\Commit;
 use Botble\Statistic\Models\CommitChart;
 use Botble\Statistic\Models\CommitSHA;
+use Botble\Statistic\Models\Pull;
+use Botble\Statistic\Models\Repository;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\DB;
@@ -75,6 +77,14 @@ class HandleNft extends Command
 //            }
 //        }
 
+        ini_set("max_execution_time", -1);
+        $repos = Repository::get();
+        echo "Total: " . count($repos) . PHP_EOL;
+        foreach ($repos as $i => $repo){
+            echo "Repo " . ($i + 1) . ":". $repo->name . PHP_EOL;
+            $repo->pull_request_closed = Pull::where("repo", $repo->id)->count();
+            $repo->save();
+        }
 
     }
 
