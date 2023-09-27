@@ -34,11 +34,26 @@ class ChainInfo extends BaseModel
         "issue_performance",
         "community_attribute",
         "total_repository",
-        "range"
+        "range",
+        "rising_star",
+        "ibc_astronaut",
+        "seriousness",
+        "commit_rank",
+        "pull_rank",
+        "dev_rank",
+        "issue_rank",
+        "fork_rank",
+        "star_rank",
+        "pr_rank",
     ];
 
     public function getTotalDeveloperAttribute()
     {
         return $this->full_time_developer + $this->part_time_developer;
+    }
+
+    public function chain_info()
+    {
+        return $this->belongsTo(Chain::class, "chain")->select("name", "slug", "avatar", "github_prefix");
     }
 }
