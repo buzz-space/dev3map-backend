@@ -30,16 +30,6 @@ class Chain extends BaseModel
         'avatar',
         "subscribers",
         'website',
-        "rising_star",
-        "ibc_astronaut",
-        "seriousness",
-        "commit_rank",
-        "pull_rank",
-        "dev_rank",
-        "issue_rank",
-        "fork_rank",
-        "star_rank",
-        "pr_rank",
         "is_repo",
     ];
 
