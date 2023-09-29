@@ -16,5 +16,6 @@ Route::group([
     Route::get("ranking", "StatisticController@ranking");
     Route::get("chain-repository/{id}", "StatisticController@getChainRepository");
     Route::get("chain-developer/{id}", "StatisticController@getTopDeveloper");
+    Route::get("performance/{id}", "StatisticController@getPerformance");
     Route::post("add-chain", "StatisticController@addChain");
 });

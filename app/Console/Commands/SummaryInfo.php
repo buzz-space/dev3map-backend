@@ -61,7 +61,7 @@ class SummaryInfo extends Command
                 $last30Days->total_fork = $last21Days->total_fork ?? $last30Days->total_fork;
                 $last30Days->save();
             }
-            if ($last30Days) {
+            if ($last21Days) {
                 $last21Days->total_star = $last14Days->total_star ?? $last21Days->total_star;
                 $last21Days->total_fork = $last14Days->total_fork ?? $last21Days->total_star;
                 $last21Days->save();

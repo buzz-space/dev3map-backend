@@ -136,6 +136,10 @@ class SummarizeDeveloper extends Command
                 "value" => 24 * 14,
             ],
             [
+                "name" => "before_30_days",
+                "value" => 24 * 60,
+            ],
+            [
                 "name" => "21_days",
                 "value" => 24 * 21,
             ],
