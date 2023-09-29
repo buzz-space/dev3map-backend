@@ -177,6 +177,24 @@ class APIController extends Controller
      *     ),
      * )
      */
+        /**
+     * @SWG\Get (
+     *     path="/api/v1/performance/{chain_id}",
+     *     description="Get chain performance",
+     *     tags={"chain"},
+     *     @SWG\Parameter(
+     *         name="chain_id",
+     *         in="path",
+     *         type="number",
+     *         description="Chain ID",
+     *         required=true,
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="OK",
+     *     ),
+     * )
+     */
     /**
      * @SWG\Post (
      *     path="/api/v1/add-chain",

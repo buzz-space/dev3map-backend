@@ -344,6 +344,22 @@ class StatisticController extends BaseController
         return $response->setData($calculate);
     }
 
+    public function getPerformance($chain_id, Request $request, BaseHttpResponse $response)
+    {
+        if (!$chain = Chain::find($chain_id))
+            return $response->setError()->setMessage("Chain not found!");
+
+        $ranges = [
+            'all',
+            '7_days',
+            '30_days'
+        ];
+
+        $info = ChainInfo::where('chain', $chain_id)->whereIn('range', $ranges)->get();
+
+        return $response->setData($info);
+    }
+
     public function addChain(Request $request, BaseHttpResponse $response)
     {
         $validator = Validator::make($request->all(), [
