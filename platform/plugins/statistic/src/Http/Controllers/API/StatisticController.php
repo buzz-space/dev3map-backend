@@ -65,9 +65,6 @@ class StatisticController extends BaseController
             'avatar',
             "subscribers",
             'website',
-            "rising_star",
-            "ibc_astronaut",
-            "seriousness",
             "description",
             "refer_ici",
             "is_repo"
