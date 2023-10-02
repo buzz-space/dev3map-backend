@@ -177,43 +177,68 @@ class APIController extends Controller
      *     ),
      * )
      */
-//    /**
-//     * @SWG\Post (
-//     *     path="/api/v1/add-chain",
-//     *     description="Add info for chain",
-//     *     tags={"backend"},
-//     *     @SWG\Parameter(
-//     *         name="name",
-//     *         in="query",
-//     *         type="string",
-//     *         description="Chain name",
-//     *         required=true,
-//     *     ),
-//     *     @SWG\Parameter(
-//     *         name="categories",
-//     *         in="query",
-//     *         type="string",
-//     *         description="Chain categories",
-//     *         required=true,
-//     *     ),
-//     *     @SWG\Parameter(
-//     *         name="github_prefix",
-//     *         in="query",
-//     *         type="string",
-//     *         description="Chain github",
-//     *         required=true,
-//     *     ),
-//     *     @SWG\Parameter(
-//     *         name="is_repo",
-//     *         in="query",
-//     *         type="number",
-//     *         description="Chain is repository?",
-//     *         required=false,
-//     *     ),
-//     *     @SWG\Response(
-//     *         response=200,
-//     *         description="OK",
-//     *     ),
-//     * )
-//     */
+        /**
+     * @SWG\Get (
+     *     path="/api/v1/performance/{chain_id}",
+     *     description="Get chain performance",
+     *     tags={"chain"},
+     *     @SWG\Parameter(
+     *         name="chain_id",
+     *         in="path",
+     *         type="number",
+     *         description="Chain ID",
+     *         required=true,
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="OK",
+     *     ),
+     * )
+     */
+    /**
+     * @SWG\Post (
+     *     path="/api/v1/add-chain",
+     *     description="Add info for chain",
+     *     tags={"backend"},
+     *     @SWG\Parameter(
+     *         name="name",
+     *         in="query",
+     *         type="string",
+     *         description="Chain name",
+     *         required=true,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="categories",
+     *         in="query",
+     *         type="string",
+     *         description="Chain categories",
+     *         required=true,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="github_prefix",
+     *         in="query",
+     *         type="string",
+     *         description="Chain github",
+     *         required=true,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="is_repo",
+     *         in="query",
+     *         type="number",
+     *         description="Chain is repository?",
+     *         required=false,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="symbol",
+     *         in="query",
+     *         type="string",
+     *         description="Symbol of chain",
+     *         required=false,
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="OK",
+     *     ),
+     * )
+     */
 }

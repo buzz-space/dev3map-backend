@@ -56,20 +56,28 @@ class SummaryInfo extends Command
             $last21Days = ChainInfo::where("chain", $chain->id)->where("range", "21_days")->first();
             $last30Days = ChainInfo::where("chain", $chain->id)->where("range", "30_days")->first();
 
-            $last30Days->total_star = $last21Days->total_star ?? $last30Days->total_star;
-            $last30Days->total_fork = $last21Days->total_fork ?? $last30Days->total_fork;
-            $last30Days->save();
-            if ($last21Days){
-                $last21Days->total_star = $last14Days->total_star;
-                $last21Days->total_fork = $last14Days->total_fork;
+            if ($last30Days) {
+                $last30Days->total_star = $last21Days->total_star ?? $last30Days->total_star;
+                $last30Days->total_fork = $last21Days->total_fork ?? $last30Days->total_fork;
+                $last30Days->save();
+            }
+            if ($last21Days) {
+                $last21Days->total_star = $last14Days->total_star ?? $last21Days->total_star;
+                $last21Days->total_fork = $last14Days->total_fork ?? $last21Days->total_star;
                 $last21Days->save();
             }
-            $last14Days->total_star = $last7Days->total_star;
-            $last14Days->total_fork = $last7Days->total_fork;
-            $last14Days->save();
-            $last7Days->total_star = $now->total_star;
-            $last7Days->total_fork = $now->total_fork;
-            $last7Days->save();
+
+            if ($last14Days){
+                $last14Days->total_star = $last7Days->total_star ?? $last14Days->total_star;
+                $last14Days->total_fork = $last7Days->total_fork ?? $last14Days->total_star;
+                $last14Days->save();
+            }
+
+            if ($last7Days){
+                $last7Days->total_star = $now->total_star ?? $last7Days->total_star;
+                $last7Days->total_fork = $now->total_fork ?? $last7Days->total_star;
+                $last7Days->save();
+            }
 
             $range = [
                 [

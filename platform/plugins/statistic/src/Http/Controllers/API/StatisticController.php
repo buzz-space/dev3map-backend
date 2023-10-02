@@ -65,9 +65,6 @@ class StatisticController extends BaseController
             'avatar',
             "subscribers",
             'website',
-            "rising_star",
-            "ibc_astronaut",
-            "seriousness",
             "description",
             "refer_ici",
             "is_repo"
@@ -272,27 +269,24 @@ class StatisticController extends BaseController
             return $response->setError()->setMessage(processValidators($validator->errors()->toArray()));
 
         $type = $request->input("type");
-        $data = Chain::orderBy($type, "DESC")->take(100)->get();
+        $data = ChainInfo::where("range", "7_days")->orderBy($type, "DESC")->take(100)->get();
         $total_chain = Chain::count();
-        foreach ($data as $chain) {
-            $now = $chain->info()->where("range", "all")->first();
-            $info = $chain->info()->where("range", "7_days")->first();
-            $chain->total_commit = $info->total_commits;
-            $chain->total_pull_merged = $info->total_pull_merged;
-            $chain->total_developer = ($info->full_time_developer) + ($info->part_time_developer);
-            $chain->total_issue = $info->total_issue_solved;
-            $chain->total_star = $info->total_star;
-            $chain->total_fork = $info->total_fork;
-            $chain->total_pull_request = $info->total_pull_request;
-            $chain->commit_score = 101 - $chain->commit_rank;
-            $chain->pulls_score = 101 - $chain->pull_rank;
-            $chain->dev_score = 101 - $chain->dev_rank;
-            $chain->issue_score = 101 - $chain->issue_rank;
-            $chain->star_score = 101 - $chain->star_rank;
-            $chain->fork_score = 101 - $chain->fork_rank;
-            $chain->pr_score = 101 - $chain->pr_rank;
+        foreach ($data as $info) {
+            $info->total_commit = $info->total_commits;
+            $info->commit_score = 101 - $info->commit_rank;
+            $info->pulls_score = 101 - $info->pull_rank;
+            $info->dev_score = 101 - $info->dev_rank;
+            $info->issue_score = 101 - $info->issue_rank;
+            $info->star_score = 101 - $info->star_rank;
+            $info->fork_score = 101 - $info->fork_rank;
+            $info->pr_score = 101 - $info->pr_rank;
+            $info->total_issue = $info->total_issue_solved;
+            $info->total_developer = ($info->full_time_developer) + ($info->part_time_developer);
 
-            $chain->total_chain = $total_chain;
+            $info->name = $info->chain_info ? $info->chain_info->name : "";
+            $info->avatar = $info->chain_info ? $info->chain_info->avatar : "";
+            $info->github_prefix = $info->chain_info ? $info->chain_info->slug : "";
+            $info->total_chain = $total_chain;
         }
         return $response->setData($data);
     }
@@ -347,6 +341,22 @@ class StatisticController extends BaseController
         return $response->setData($calculate);
     }
 
+    public function getPerformance($chain_id, Request $request, BaseHttpResponse $response)
+    {
+        if (!$chain = Chain::find($chain_id))
+            return $response->setError()->setMessage("Chain not found!");
+
+        $ranges = [
+            'all',
+            '7_days',
+            '30_days'
+        ];
+
+        $info = ChainInfo::where('chain', $chain_id)->whereIn('range', $ranges)->get();
+
+        return $response->setData($info);
+    }
+
     public function addChain(Request $request, BaseHttpResponse $response)
     {
         $validator = Validator::make($request->all(), [
@@ -362,7 +372,8 @@ class StatisticController extends BaseController
             "name" => $request->input("name"),
             "github_prefix" => $request->input("github_prefix"),
             "categories" => $request->input("categories"),
-            "is_repo" => $request->has("is_repo")
+            "is_repo" => $request->has("is_repo"),
+            "symbol" => $request->input("symbol")
         ]);
 
         return $response->setMessage("Created " . $chain->name);
