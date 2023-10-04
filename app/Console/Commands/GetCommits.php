@@ -78,18 +78,21 @@ class GetCommits extends Command
                             continue;
                         }
                     }
-                    $until = now()->toDateString();
-                    $url = "https://api.github.com/repos/$prefix/commits?per_page=100";
-                    $url .= "&since=" . date(DATE_ISO8601, strtotime($last));
-                    $url .= "&until=" . date(DATE_ISO8601, strtotime($until));
-                    $lastPage = get_last_page(get_github_data($url, "header"));
-                    echo "Total page: " . $lastPage . PHP_EOL;
-                    for ($i = 1; $i <= $lastPage; $i++) {
+                    $until = "2023-10-03 18:00:00";
+                    $urlBranch = "https://api.github.com/repos/$prefix/branches?protected=true";
+                    $branches = json_decode(get_github_data($urlBranch));
+                    foreach ($branches as $branch) {
+                        $url = "https://api.github.com/repos/$prefix/commits?per_page=100&sha=" . $branch->name;
+                        $url .= "&since=" . date(DATE_ISO8601, strtotime($last));
+                        $url .= "&until=" . date(DATE_ISO8601, strtotime($until));
+                        $lastPage = get_last_page(get_github_data($url, "header"));
+                        echo "Total page at ". $branch->name ." : " . $lastPage . PHP_EOL;
+                        for ($i = 1; $i <= $lastPage; $i++) {
 //                        if ($chain->id == $chainId && $repository->id == $repoId && $i < $page) continue;
 //                    $i = 1;
-                        echo "Process page $i..." . PHP_EOL;
-                        $commitUrl = $url . "&page=$i";
-                        $data = json_decode(get_github_data($commitUrl));
+                            echo "Process page $i..." . PHP_EOL;
+                            $commitUrl = $url . "&page=$i";
+                            $data = json_decode(get_github_data($commitUrl));
                         if (isset($data->message)) {
                             Log::info("Repository " . $repository->name . ": " . $data->message);
                             continue;
@@ -131,6 +134,7 @@ class GetCommits extends Command
                                 }
                                 if (!$save = Commit::where("repo", $repository->id)
                                     ->where("exact_date", $commitDate)
+                                    ->where("branch", $branch->name)
                                     ->first()
                                 ) {
                                     $save = new Commit();
@@ -139,6 +143,7 @@ class GetCommits extends Command
                                     $save->exact_date = $commitDate;
                                     $save->additions = 0;
                                     $save->deletions = 0;
+                                    $save->branch = $branch->name;
                                 }
                                 $save->total_commit = 0;
                                 $save->author_list = [];
@@ -151,6 +156,7 @@ class GetCommits extends Command
                             $save->author_list = array_merge($save->author_list, [$author]);
                             $save->total_commit += 1;
                         }
+                    }
                     }
 
                     /**
