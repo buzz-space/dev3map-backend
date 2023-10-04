@@ -22,6 +22,7 @@ class Commit extends BaseModel
     protected $fillable = [
         'chain',
         "repo",
+        "branch",
         "exact_date",
         "author_list",
         "total_commit",
