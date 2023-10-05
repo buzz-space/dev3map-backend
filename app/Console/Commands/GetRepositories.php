@@ -211,6 +211,7 @@ class GetRepositories extends Command
                 echo $exception->getMessage() . PHP_EOL;
                 break;
             }
+            break;
         }
 
 

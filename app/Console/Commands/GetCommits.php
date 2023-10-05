@@ -78,7 +78,7 @@ class GetCommits extends Command
                             continue;
                         }
                     }
-                    $until = "2023-10-03 18:00:00";
+                    $until = "2023-10-05 00:00:00";
                     $urlBranch = "https://api.github.com/repos/$prefix/branches?protected=true";
                     $branches = json_decode(get_github_data($urlBranch));
                     foreach ($branches as $branch) {
@@ -219,6 +219,7 @@ class GetCommits extends Command
                 Log::error("Chain " . $chain->id . "-" . $chain->name . " have exception: " . implode(". ", [$exception->getMessage(), $exception->getTraceAsString(), $exception->getCode(), $exception->getLine()]));
                 break;
             }
+            break;
         }
 
         echo "It's take " . now()->diffInMinutes($start) . " minutes!" . PHP_EOL;
