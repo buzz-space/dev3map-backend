@@ -81,82 +81,84 @@ class GetCommits extends Command
                     $until = "2023-10-05 00:00:00";
                     $urlBranch = "https://api.github.com/repos/$prefix/branches?protected=true";
                     $branches = json_decode(get_github_data($urlBranch));
+                    if (isset($branches->message)) {
+                        Log::info("Repository " . $repository->name . ": " . $branches->message);
+                        continue;
+                    }
                     foreach ($branches as $branch) {
                         $url = "https://api.github.com/repos/$prefix/commits?per_page=100&sha=" . $branch->name;
                         $url .= "&since=" . date(DATE_ISO8601, strtotime($last));
                         $url .= "&until=" . date(DATE_ISO8601, strtotime($until));
                         $lastPage = get_last_page(get_github_data($url, "header"));
-                        echo "Total page at ". $branch->name ." : " . $lastPage . PHP_EOL;
+                        echo "Total page at " . $branch->name . " : " . $lastPage . PHP_EOL;
                         for ($i = 1; $i <= $lastPage; $i++) {
 //                        if ($chain->id == $chainId && $repository->id == $repoId && $i < $page) continue;
 //                    $i = 1;
                             echo "Process page $i..." . PHP_EOL;
                             $commitUrl = $url . "&page=$i";
                             $data = json_decode(get_github_data($commitUrl));
-                        if (isset($data->message)) {
-                            Log::info("Repository " . $repository->name . ": " . $data->message);
-                            continue;
-                        }
-                        $date = null;
-                        $save = null;
-                        $sha = [];
-                        foreach ($data as $z => $commit) {
-                            if (strpos($commit->commit->message, "Merge pull request") === 0)
-                                continue;
-                            if (isset($commit->author))
-                                $author = $commit->author->login ?? "";
-                            else
-                                $author = $commit->commit->author->name;
-                            if (!in_array($author, $contributors))
-                                continue;
-                            $commitDate = date("Y-m-d", strtotime($commit->commit->author->date));
-                            if ($date != $commitDate || $z == (count($data) - 1)) {
-                                if ($save) {
-                                    $save->author_list = implode(",", $save->author_list);
-                                    $save->save();
+                            $date = null;
+                            $save = null;
+                            $sha = [];
+                            foreach ($data as $z => $commit) {
+                                if (strpos($commit->commit->message, "Merge pull request") === 0)
+                                    continue;
+                                if (isset($commit->author))
+                                    $author = $commit->author->login ?? "";
+                                else
+                                    $author = $commit->commit->author->name;
+                                if ($repository->is_fork) {
+                                    if (!in_array($author, $contributors))
+                                        continue;
+                                }
+                                $commitDate = date("Y-m-d", strtotime($commit->commit->author->date));
+                                if ($date != $commitDate || $z == (count($data) - 1)) {
+                                    if ($save) {
+                                        $save->author_list = implode(",", $save->author_list);
+                                        $save->save();
 
-                                    // save sha
-                                    $exists = CommitSHA::where("commit_id", $save->id)->pluck("sha")->toArray();
-                                    $sha = array_filter($sha, function ($row) use ($exists) {
-                                        return !in_array($row, $exists);
-                                    });
-                                    foreach ($sha as $z) {
-                                        CommitSHA::create([
-                                            "sha" => $z,
-                                            "commit_id" => $save->id
-                                        ]);
-                                    }
-                                    $sha = [];
+                                        // save sha
+                                        $exists = CommitSHA::where("commit_id", $save->id)->pluck("sha")->toArray();
+                                        $sha = array_filter($sha, function ($row) use ($exists) {
+                                            return !in_array($row, $exists);
+                                        });
+                                        foreach ($sha as $x) {
+                                            CommitSHA::create([
+                                                "sha" => $x,
+                                                "commit_id" => $save->id
+                                            ]);
+                                        }
+                                        $sha = [];
 //                                    if (now()->gt($start) && now()->diffInMinutes($start) > 55) {
 //                                        $lastExactDate = null;
 //                                        throw new \Exception("Stopped. Start: " . $start->toDateTimeString() . ", end: " . now()->toDateTimeString());
 //                                    }
-                                }
-                                if (!$save = Commit::where("repo", $repository->id)
-                                    ->where("exact_date", $commitDate)
-                                    ->where("branch", $branch->name)
-                                    ->first()
-                                ) {
-                                    $save = new Commit();
-                                    $save->chain = $repository->chain;
-                                    $save->repo = $repository->id;
-                                    $save->exact_date = $commitDate;
-                                    $save->additions = 0;
-                                    $save->deletions = 0;
-                                    $save->branch = $branch->name;
-                                }
-                                $save->total_commit = 0;
-                                $save->author_list = [];
+                                    }
+                                    if (!$save = Commit::where("repo", $repository->id)
+                                        ->where("exact_date", $commitDate)
+                                        ->where("branch", $branch->name)
+                                        ->first()
+                                    ) {
+                                        $save = new Commit();
+                                        $save->chain = $repository->chain;
+                                        $save->repo = $repository->id;
+                                        $save->exact_date = $commitDate;
+                                        $save->additions = 0;
+                                        $save->deletions = 0;
+                                        $save->branch = $branch->name;
+                                    }
+                                    $save->total_commit = 0;
+                                    $save->author_list = [];
 
-                                $date = $commitDate;
+                                    $date = $commitDate;
+                                }
+                                $sha[] = $commit->sha;
+                                $save->additions += 0;
+                                $save->deletions += 0;
+                                $save->author_list = array_merge($save->author_list, [$author]);
+                                $save->total_commit += 1;
                             }
-                            $sha[] = $commit->sha;
-                            $save->additions += 0;
-                            $save->deletions += 0;
-                            $save->author_list = array_merge($save->author_list, [$author]);
-                            $save->total_commit += 1;
                         }
-                    }
                     }
 
                     /**
