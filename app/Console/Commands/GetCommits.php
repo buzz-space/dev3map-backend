@@ -217,7 +217,7 @@ class GetCommits extends Command
                 Log::error("Chain " . $chain->id . "-" . $chain->name . " have exception: " . implode(". ", [$exception->getMessage(), $exception->getTraceAsString(), $exception->getCode(), $exception->getLine()]));
                 break;
             }
-            break;
+//            break;
         }
 
         echo "It's take " . now()->diffInMinutes($start) . " minutes!" . PHP_EOL;

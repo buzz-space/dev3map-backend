@@ -129,7 +129,7 @@ class SummaryInfo extends Command
                 $contributors = unique_name(Repository::where("chain", $chain->id)->pluck("total_contributor")->toArray());
                 if ($filter == 0){
                     $commits = Commit::where("chain", $chain->id)->get()->toArray();
-                    $developers = Commit::where("chain", $chain->id)->where("exact_date", ">=", (clone $day)->addMonths(-3))->get()->toArray();
+                    $developers = Commit::where("chain", $chain->id)->where("exact_date", ">=", (clone $day)->addMonths(-3)->startOfMonth())->get()->toArray();
                     $repositories = Repository::where("chain", $chain->id)->count();
                     $issues = Issue::where("chain", $chain->id)->count();
                     $pulls = Pull::where("chain", $chain->id)->count();
