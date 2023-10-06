@@ -195,13 +195,13 @@ class SummarizeDeveloper extends Command
                 $fork_index = array_search($chain->id, $sortByFork);
                 $pr_index = array_search($chain->id, $sortByPR);
                 // Rank
-                $chainInfo->commit_rank = $commit_index !== false ? 1 + $commit_index : 101;
-                $chainInfo->pull_rank = $pull_index !== false ? 1 + $pull_index : 101;
-                $chainInfo->issue_rank = $issue_index !== false ? 1 + $issue_index : 101;
-                $chainInfo->dev_rank = $dev_index !== false ? 1 + $dev_index : 101;
-                $chainInfo->star_rank = $star_index !== false ? 1 + $star_index : 101;
-                $chainInfo->fork_rank = $fork_index !== false ? 1 + $fork_index : 101;
-                $chainInfo->pr_rank = $pr_index !== false ? 1 + $pr_index : 101;
+                $chainInfo->commit_rank = $commit_index !== false ? 1 + ($commit_index > 100 ? 100 : $commit_index) : 101;
+                $chainInfo->pull_rank = $pull_index !== false ? 1 + ($pull_index > 100 ? 100 : $pull_index) : 101;
+                $chainInfo->issue_rank = $issue_index !== false ? 1 + ($issue_index > 100 ? 100 : $issue_index) : 101;
+                $chainInfo->dev_rank = $dev_index !== false ? 1 + ($dev_index > 100 ? 100 : $dev_index) : 101;
+                $chainInfo->star_rank = $star_index !== false ? 1 + ($star_index > 100 ? 100 : $star_index) : 101;
+                $chainInfo->fork_rank = $fork_index !== false ? 1 + ($fork_index > 100 ? 100 : $fork_index) : 101;
+                $chainInfo->pr_rank = $pr_index !== false ? 1 + ($pr_index > 100 ? 100 : $pr_index) : 101;
                 // Score
                 $commit_score = 101 - ($chain->commit_rank > 101 ? 101 : $chainInfo->commit_rank);
                 $pull_score = 101 - ($chain->pull_rank > 101 ? 101 : $chainInfo->pull_rank);
