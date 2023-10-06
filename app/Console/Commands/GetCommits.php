@@ -198,13 +198,9 @@ class GetCommits extends Command
                                 $full += 1;
                                 $saving["full_time"][] = $author;
                             }
-                            if ($commits <= 10 && $commits > 1) {
+                            if ($commits <= 10) {
                                 $part += 1;
                                 $saving["part_time"][] = $author;
-                            }
-                            if ($commits == 1) {
-                                $one += 1;
-                                $saving["one_time"][] = $author;
                             }
 
                             $totalCommit += $commits;
