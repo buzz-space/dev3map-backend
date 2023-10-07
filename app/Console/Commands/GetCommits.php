@@ -78,15 +78,19 @@ class GetCommits extends Command
                             continue;
                         }
                     }
-                    $until = "2023-10-05 00:00:00";
+                    $until = now()->toDateTimeString();
                     $urlBranch = "https://api.github.com/repos/$prefix/branches?protected=true";
                     $branches = json_decode(get_github_data($urlBranch));
                     if (isset($branches->message)) {
                         Log::info("Repository " . $repository->name . ": " . $branches->message);
                         continue;
                     }
+                    if(empty($branches))
+                        array_push($branches, (object)["name" => ""]);
                     foreach ($branches as $branch) {
-                        $url = "https://api.github.com/repos/$prefix/commits?per_page=100&sha=" . $branch->name;
+                        $url = "https://api.github.com/repos/$prefix/commits?per_page=100";
+                        if ($branch->name)
+                            $url .= "&sha=" . $branch->name;
                         $url .= "&since=" . date(DATE_ISO8601, strtotime($last));
                         $url .= "&until=" . date(DATE_ISO8601, strtotime($until));
                         $lastPage = get_last_page(get_github_data($url, "header"));
@@ -99,11 +103,11 @@ class GetCommits extends Command
                             $data = json_decode(get_github_data($commitUrl));
                             $date = null;
                             $save = null;
-                            $sha = [];
+//                            $sha = [];
                             foreach ($data as $z => $commit) {
                                 if (strpos($commit->commit->message, "Merge pull request") === 0)
                                     continue;
-                                if (isset($commit->author))
+                                if ($commit->author)
                                     $author = $commit->author->login ?? "";
                                 else
                                     $author = $commit->commit->author->name;
@@ -112,23 +116,23 @@ class GetCommits extends Command
                                         continue;
                                 }
                                 $commitDate = date("Y-m-d", strtotime($commit->commit->author->date));
-                                if ($date != $commitDate || $z == (count($data) - 1)) {
+                                if ($date != $commitDate) {
                                     if ($save) {
                                         $save->author_list = implode(",", $save->author_list);
                                         $save->save();
 
                                         // save sha
-                                        $exists = CommitSHA::where("commit_id", $save->id)->pluck("sha")->toArray();
-                                        $sha = array_filter($sha, function ($row) use ($exists) {
-                                            return !in_array($row, $exists);
-                                        });
-                                        foreach ($sha as $x) {
-                                            CommitSHA::create([
-                                                "sha" => $x,
-                                                "commit_id" => $save->id
-                                            ]);
-                                        }
-                                        $sha = [];
+//                                        $exists = CommitSHA::where("commit_id", $save->id)->pluck("sha")->toArray();
+//                                        $sha = array_filter($sha, function ($row) use ($exists) {
+//                                            return !in_array($row, $exists);
+//                                        });
+//                                        foreach ($sha as $x) {
+//                                            CommitSHA::create([
+//                                                "sha" => $x,
+//                                                "commit_id" => $save->id
+//                                            ]);
+//                                        }
+//                                        $sha = [];
 //                                    if (now()->gt($start) && now()->diffInMinutes($start) > 55) {
 //                                        $lastExactDate = null;
 //                                        throw new \Exception("Stopped. Start: " . $start->toDateTimeString() . ", end: " . now()->toDateTimeString());
@@ -152,11 +156,16 @@ class GetCommits extends Command
 
                                     $date = $commitDate;
                                 }
-                                $sha[] = $commit->sha;
+//                                $sha[] = $commit->sha;
                                 $save->additions += 0;
                                 $save->deletions += 0;
                                 $save->author_list = array_merge($save->author_list, [$author]);
                                 $save->total_commit += 1;
+
+                                if ($z == count($data) - 1){
+                                    $save->author_list = implode(",", $save->author_list);
+                                    $save->save();
+                                }
                             }
                         }
                     }
