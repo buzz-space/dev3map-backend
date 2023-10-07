@@ -76,7 +76,7 @@ class StatisticController extends BaseController
             if ($repo)
                 $chain->github_prefix = $repo->github_prefix;
         }
-        $chain->stats = $chain->stats()->where("range", "all")->first();
+        $chain->stats = $chain->stats()->whereIn("range", ["all", "7_days", "30_days"])->get();
         return $response->setData($chain);
     }
 
