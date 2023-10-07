@@ -210,7 +210,7 @@ class SummaryInfo extends Command
                 });
                 $partTime = unique_name(array_column($developers, "part_time"));
                 $partTime = array_filter($partTime, function ($c) use ($contributors, $fullTime){
-                    return !empty($c) && in_array($c, $contributors) && !in_array($c, $fullTime);
+                    return !empty($c) && !in_array($c, $fullTime);
                 });
                 $info->full_time = implode(",", $fullTime);
                 $info->part_time = implode(",", $partTime);
