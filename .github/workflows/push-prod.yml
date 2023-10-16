@@ -28,4 +28,4 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ secrets.DOCKER_USERNAME }}/dev3map-backend:1.0.9
+          tags: ${{ secrets.DOCKER_USERNAME }}/dev3map-backend:1.0.10
