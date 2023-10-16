@@ -113,6 +113,8 @@ class SummaryInfo extends Command
 
             ];
 
+            $allContributors = [];
+
             foreach ($range as $item){
                 $filter = $item["value"];$range_name = $item["name"];$skip = $item["skip"];
                 echo "Range: $filter-$range_name" . PHP_EOL;
@@ -127,6 +129,7 @@ class SummaryInfo extends Command
                     $info->save();
                 }
                 $contributors = unique_name(Repository::where("chain", $chain->id)->pluck("total_contributor")->toArray());
+                $allContributors = array_merge($allContributors, $contributors);
                 if ($filter == 0){
                     $commits = Commit::where("chain", $chain->id)->get()->toArray();
                     $developers = Commit::where("chain", $chain->id)->where("exact_date", ">=", (clone $day)->addMonths(-3)->startOfMonth())->get()->toArray();
@@ -225,6 +228,9 @@ class SummaryInfo extends Command
                 $info->total_pull_request = $pulls;
                 $info->save();
             }
+
+            $chain->total_contributor = count(unique_name($allContributors));
+            $chain->save();
         }
 
         //Issue
