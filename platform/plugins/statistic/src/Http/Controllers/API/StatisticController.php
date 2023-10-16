@@ -36,7 +36,10 @@ class StatisticController extends BaseController
             $before['30_days'] = $item->stats()->where("range", "before_30_days")->first();
             $before['all'] = $item->stats()->where("range", "all")->first();
             foreach ($stats as $stat) {
-                if ($stat->range == "all") continue;
+                if ($stat->range == "all") {
+                    $stat->full_time_developer = $item->total_contributor;
+                    $stat->part_time_developer = 0;
+                }
                 $star = $before['all']->total_star - $stat->total_star; $starLast = (($minus = $stat->total_star - $before[$stat->range]->total_star) > 0) ? $minus : 1;
                 $fork = $before['all']->total_fork - $stat->total_fork; $forkLast = (($minus = $stat->total_fork - $before[$stat->range]->total_fork) > 0) ? $minus : 1;
                 $stat->commit_percent = number_format(check_percent($stat->total_commits / ($before[$stat->range]->total_commits > 0 ? $before[$stat->range]->total_commits : 1) * 100), 2);

@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Botble\Statistic\Models\Chain;
 use Botble\Statistic\Models\ChainResource;
 use Illuminate\Console\Command;
+use RvMedia;
 
 class GetInfoICI extends Command
 {
@@ -92,7 +93,7 @@ class GetInfoICI extends Command
                 $exist->refer_ici = $resource->url;
             }
             $exist->name = $resource->title;
-            $exist->image = $resource->image;
+            $exist->image = $resource->image ?? RvMedia::getDefaultImage();
             $exist->category = $resource->type;
             $exist->created_date = date("Y-m-d", strtotime($resource->publishDate));
             $exist->save();

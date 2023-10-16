@@ -29,6 +29,7 @@ class Chain extends BaseModel
         'categories',
         'avatar',
         "subscribers",
+        "total_contributor",
         'website',
         "is_repo",
     ];
