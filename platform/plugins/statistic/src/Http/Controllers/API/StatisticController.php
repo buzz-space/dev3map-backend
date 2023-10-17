@@ -29,7 +29,7 @@ class StatisticController extends BaseController
                 $query->where("categories", "like", "%$z%");
             }
         }
-        $data = $query->selectRaw("id, name, slug as github_prefix, symbol, avatar")->get();
+        $data = $query->selectRaw("id, name, slug as github_prefix, symbol, avatar, total_contributor")->get();
         foreach ($data as $item) {
             $stats = $item->stats()->whereIn("range", ["7_days", "30_days", "all"])->get();
             $before['7_days'] = $item->stats()->where("range", "before_7_days")->first();

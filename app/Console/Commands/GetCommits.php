@@ -80,7 +80,7 @@ class GetCommits extends Command
                     }
                     $until = now()->toDateTimeString();
                     $urlBranch = "https://api.github.com/repos/$prefix/branches?protected=true";
-                    $branches = json_decode(get_github_data($urlBranch));
+                    $branches = json_decode(get_github_data($urlBranch, 1));
                     if (isset($branches->message)) {
                         Log::info("Repository " . $repository->name . ": " . $branches->message);
                         continue;
@@ -93,14 +93,14 @@ class GetCommits extends Command
                             $url .= "&sha=" . $branch->name;
                         $url .= "&since=" . date(DATE_ISO8601, strtotime($last));
                         $url .= "&until=" . date(DATE_ISO8601, strtotime($until));
-                        $lastPage = get_last_page(get_github_data($url, "header"));
+                        $lastPage = get_last_page(get_github_data($url, 0));
                         echo "Total page at " . $branch->name . " : " . $lastPage . PHP_EOL;
                         for ($i = 1; $i <= $lastPage; $i++) {
 //                        if ($chain->id == $chainId && $repository->id == $repoId && $i < $page) continue;
 //                    $i = 1;
                             echo "Process page $i..." . PHP_EOL;
                             $commitUrl = $url . "&page=$i";
-                            $data = json_decode(get_github_data($commitUrl));
+                            $data = json_decode(get_github_data($commitUrl, 1));
                             $date = null;
                             $save = null;
 //                            $sha = [];

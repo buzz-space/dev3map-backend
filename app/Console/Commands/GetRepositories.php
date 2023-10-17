@@ -49,15 +49,20 @@ class GetRepositories extends Command
         set_time_limit(0);
         $chainId = $this->ask("From chain ID?");
         $repoId = $this->ask("From repo ID?");
+        $howToGet = $this->choice("Choose data want to get?", ["all", "issue", "pull"], "all");
+//        $useKey = $this->ask("Use key?");
+        $useKey = 1;
         $chains = Chain::orderBy("id", "ASC")->get();
 
         foreach ($chains as $i => $chain) {
             if ($chain->id < $chainId) continue;
             echo "Chain " . $chain->name . PHP_EOL;
+
             try {
+
                 if (!$chain->is_repo) {
                     $chainUrl = "https://api.github.com/orgs/" . $chain->github_prefix;
-                    $chainInfo = json_decode(get_github_data($chainUrl));
+                    $chainInfo = json_decode(get_github_data($chainUrl, 1, $useKey));
                     if (isset($chainInfo->message))
                         throw new \Exception($chainInfo->message);
 
@@ -69,21 +74,26 @@ class GetRepositories extends Command
                     // Get all repository from chain (test aura-nw)
                     $prefix = $chain->github_prefix;
                     $url = "https://api.github.com/orgs/$prefix/repos?per_page=100";
-                    $lastPage = get_last_page(get_github_data($url, "header"));
-                    $repository = [];
-                    for ($i = 1; $i <= $lastPage; $i++) {
-                        $repository = array_merge($repository, array_column((array)json_decode(get_github_data($url . "&page=$i")), "full_name", "name"));
+                    $lastPage = get_last_page(get_github_data($url, 0, $useKey));
+                    if ($howToGet != "pull"){
+                        $repository = [];
+                        for ($i = 1; $i <= $lastPage; $i++) {
+                            $repository = array_merge($repository, array_column((array)json_decode(get_github_data($url . "&page=$i", 1, $useKey)), "full_name", "name"));
+                        }
+                    }
+                    else{
+                        $repository = Repository::where("chain", $chain->id)->orderBy("id", "ASC")->get();
                     }
                 } else
                     $repository = [$chain->name => $chain->github_prefix];
 
                 echo "With " . count($repository) . PHP_EOL;
                 foreach ($repository as $name => $repoPrefix) {
-                    if (strpos($repoPrefix, "chromium") !== false || strpos($repoPrefix, "linux") !== false ) continue;
+                    if (strpos($repoPrefix, "chromium") !== false || strpos($repoPrefix, "linux") !== false) continue;
                     $repoUrl = "https://api.github.com/repos/$repoPrefix";
                     echo "Repo " . $repoUrl . " of chain " . $chain->name . PHP_EOL;
-                    $repoInfo = json_decode(get_github_data($repoUrl));
-                    if (isset($repoInfo->message)){
+                    $repoInfo = json_decode(get_github_data($repoUrl, 1, $useKey));
+                    if (isset($repoInfo->message)) {
                         if (strpos($repoInfo->message, "API rate limit exceeded"))
                             throw new \Exception($repoInfo->message);
                         continue;
@@ -98,105 +108,109 @@ class GetRepositories extends Command
                     echo "Repo id " . $repo->id . ":" . $chain->id . PHP_EOL;
                     if ($chain->id == $chainId && $repo->id < $repoId) continue;
 
-                    // Contributors
-                    $url = "https://api.github.com/repos/$repoPrefix/contributors?per_page=100";
-                    $lastPage = get_last_page(get_github_data($url, "header", 2));
-                    $contributors = [];
-                    echo "Get contributors!" . PHP_EOL;
-                    for ($i = 1; $i <= $lastPage; $i++) {
-                        $pageUrl = $url . "&page=$i";
-                        $data = json_decode(get_github_data($pageUrl, "body", 2));
-                        if (isset($data->message))
-                            throw new \Exception($data->message);
+                    if ($howToGet != "pull") {
+                        // Contributors
+                        $url = "https://api.github.com/repos/$repoPrefix/contributors?per_page=100";
+                        $lastPage = get_last_page(get_github_data($url, 0, $useKey));
+                        $contributors = [];
+                        echo "Get contributors!" . PHP_EOL;
+                        for ($i = 1; $i <= $lastPage; $i++) {
+                            $pageUrl = $url . "&page=$i";
+                            $data = json_decode(get_github_data($pageUrl, 1, $useKey));
+                            if (isset($data->message))
+                                throw new \Exception($data->message);
 
-                        $contributors += array_column((array)$data, "login");
-                    }
-                    $contributors = array_filter($contributors, function ($row){
-                       return strpos($row, "[bot]") === false;
-                    });
-
-                    // Fork contributor
-                    $repo->total_star = $repoInfo->stargazers_count;
-                    $repo->total_fork = $repoInfo->forks_count;
-                    $repo->subscribers = $repoInfo->subscribers_count;
-                    $repo->description = $repoInfo->description;
-                    if ($repoInfo->fork) {
-                        $cUrl = "https://api.github.com/repos/" . $repoInfo->parent->full_name . "/contributors?per_page=100";
-                        $parentContributors = array_column((array)json_decode(get_github_data($cUrl, "body", 2)), "login");
-
-                        $contributors = array_filter($contributors, function ($row) use ($parentContributors) {
-                            return !in_array($row, $parentContributors);
+                            $contributors += array_column((array)$data, "login");
+                        }
+                        $contributors = array_filter($contributors, function ($row) {
+                            return strpos($row, "[bot]") === false;
                         });
-                    }
-                    $repo->total_contributor = implode(",", $contributors);
-                    $repo->contributors = count($contributors);
 
-                    // Issue
-                    $url = "https://api.github.com/repos/$repoPrefix/issues?per_page=100&state=closed";
-                    if ($lastIssue = Issue::where("repo", $repo->id)->orderBy("open_date", "DESC")->first())
-                        $url .= ("&since=" . date(DATE_ISO8601, strtotime($lastIssue->open_date)));
-                    $lastPage = get_last_page(get_github_data($url, "header", 2));
-                    echo "Get issue solved with $lastPage page!" . PHP_EOL;
-                    $total_issue = 0;
-                    for ($i = 1; $i <= $lastPage; $i++) {
-                        $pageUrl = $url . "&page=$i";
-                        $data = json_decode(get_github_data($pageUrl, "body", 2));
-                        if (isset($data->message))
-                            throw new \Exception($data->message);
+                        // Fork contributor
+                        $repo->total_star = $repoInfo->stargazers_count;
+                        $repo->total_fork = $repoInfo->forks_count;
+                        $repo->subscribers = $repoInfo->subscribers_count;
+                        $repo->description = $repoInfo->description;
+                        if ($repoInfo->fork) {
+                            $cUrl = "https://api.github.com/repos/" . $repoInfo->parent->full_name . "/contributors?per_page=100";
+                            $parentContributors = array_column((array)json_decode(get_github_data($cUrl, 1, $useKey)), "login");
 
-                        foreach ($data as $issue) {
-                            $total_issue += 1;
-                            if (!$exist = Issue::where("issue_id", $issue->id)->first()) {
-                                $open = Carbon::createFromTimestamp(strtotime($issue->created_at));
-                                $closed = Carbon::createFromTimestamp(strtotime($issue->closed_at));
+                            $contributors = array_filter($contributors, function ($row) use ($parentContributors) {
+                                return !in_array($row, $parentContributors);
+                            });
+                        }
+                        $repo->total_contributor = implode(",", $contributors);
+                        $repo->contributors = count($contributors);
 
-                                Issue::create([
-                                    "issue_id" => $issue->id,
-                                    "creator" => $issue->user->login,
-                                    "repo" => $repo->id,
-                                    "chain" => $repo->chain,
-                                    "open_date" => $open->toDateTimeString(),
-                                    "close_date" => $closed->toDateTimeString(),
-                                    "total_minute" => $closed->diffInMinutes($open)
-                                ]);
+                        // Issue
+                        $url = "https://api.github.com/repos/$repoPrefix/issues?per_page=100&state=closed";
+                        if ($lastIssue = Issue::where("repo", $repo->id)->orderBy("open_date", "DESC")->first())
+                            $url .= ("&since=" . date(DATE_ISO8601, strtotime($lastIssue->open_date)));
+                        $lastPage = get_last_page(get_github_data($url, 0, $useKey));
+                        echo "Get issue solved with $lastPage page!" . PHP_EOL;
+                        $total_issue = 0;
+                        for ($i = 1; $i <= $lastPage; $i++) {
+                            $pageUrl = $url . "&page=$i";
+                            $data = json_decode(get_github_data($pageUrl, 1, $useKey));
+                            if (isset($data->message))
+                                throw new \Exception($data->message);
+
+                            foreach ($data as $issue) {
+                                $total_issue += 1;
+                                if (!$exist = Issue::where("issue_id", $issue->id)->first()) {
+                                    $open = Carbon::createFromTimestamp(strtotime($issue->created_at));
+                                    $closed = Carbon::createFromTimestamp(strtotime($issue->closed_at));
+
+                                    Issue::create([
+                                        "issue_id" => $issue->id,
+                                        "creator" => $issue->user->login,
+                                        "repo" => $repo->id,
+                                        "chain" => $repo->chain,
+                                        "open_date" => $open->toDateTimeString(),
+                                        "close_date" => $closed->toDateTimeString(),
+                                        "total_minute" => $closed->diffInMinutes($open)
+                                    ]);
+                                }
                             }
                         }
+                        $repo->total_issue_solved = $total_issue;
                     }
-                    $repo->total_issue_solved = $total_issue;
 
-                    // Pull
-                    $url = "https://api.github.com/repos/$repoPrefix/pulls?per_page=100&state=all&sort=created&direction=asc";
-                    $lastPage = get_last_page(get_github_data($url, "header", 2));
+                    if ($howToGet != "issue") {
+                        // Pull
+                        $url = "https://api.github.com/repos/$repoPrefix/pulls?per_page=100&state=all&sort=created&direction=asc";
+                        $lastPage = get_last_page(get_github_data($url, 1, $useKey));
 
-                    $pulls = Pull::where("repo", $repo->id)->count();
-                    $firstPage = (int) floor($pulls / 100);
-                    echo "Get pull request with $lastPage page!" . PHP_EOL;
-                    $total_pulls = 0;
-                    for ($i = $firstPage; $i <= $lastPage; $i++) {
-                        $pageUrl = $url . "&page=$i";
-                        $data = json_decode(get_github_data($pageUrl, "body", 2));
-                        if (isset($data->message))
-                            throw new \Exception($data->message);
+                        $pulls = Pull::where("repo", $repo->id)->count();
+                        $firstPage = (int)floor($pulls / 100);
+                        echo "Get pull request with $lastPage page!" . PHP_EOL;
+                        $total_pulls = 0;
+                        for ($i = $firstPage; $i <= $lastPage; $i++) {
+                            $pageUrl = $url . "&page=$i";
+                            $data = json_decode(get_github_data($pageUrl, 1, $useKey));
+                            if (isset($data->message))
+                                throw new \Exception($data->message);
 
-                        foreach ($data as $pull) {
-                            if ($pull->state == "closed")
-                                $total_pulls += 1;
-                            if (!$exist = Pull::where("pull_id", $pull->id)->first()) {
-                                Pull::create([
-                                    "pull_id" => $pull->id,
-                                    "author" => $pull->user->login,
-                                    "status" => $pull->state,
-                                    "repo" => $repo->id,
-                                    "chain" => $repo->chain,
-                                    "created_date" => date("Y-m-d H:i:s", strtotime($pull->created_at)),
-                                ]);
-                            } else {
-                                $exist->created_date = date("Y-m-d H:i:s", strtotime($pull->created_at));
-                                $exist->save();
+                            foreach ($data as $pull) {
+                                if ($pull->state == "closed")
+                                    $total_pulls += 1;
+                                if (!$exist = Pull::where("pull_id", $pull->id)->first()) {
+                                    Pull::create([
+                                        "pull_id" => $pull->id,
+                                        "author" => $pull->user->login,
+                                        "status" => $pull->state,
+                                        "repo" => $repo->id,
+                                        "chain" => $repo->chain,
+                                        "created_date" => date("Y-m-d H:i:s", strtotime($pull->created_at)),
+                                    ]);
+                                } else {
+                                    $exist->created_date = date("Y-m-d H:i:s", strtotime($pull->created_at));
+                                    $exist->save();
+                                }
                             }
                         }
+                        $repo->pull_request_closed = $total_pulls;
                     }
-                    $repo->pull_request_closed = $total_pulls;
 
                     $repo->created_date = date("Y-m-d H:i:s", strtotime($repoInfo->created_at));
                     $repo->is_fork = $repoInfo->fork;
@@ -211,7 +225,7 @@ class GetRepositories extends Command
                 echo $exception->getMessage() . PHP_EOL;
                 break;
             }
-            break;
+//            break;
         }
 
 
