@@ -49,10 +49,15 @@ class GetRepositories extends Command
         set_time_limit(0);
         $chainId = $this->ask("From chain ID?");
         $repoId = $this->ask("From repo ID?");
-        $howToGet = $this->choice("Choose data want to get?", ["all", "issue", "pull"], "all");
+//        $howToGet = $this->choice("Choose data want to get?", ["all", "contributor", "pull_issue"], "all");
+        $howToGet = "all";
 //        $useKey = $this->ask("Use key?");
         $useKey = 1;
-        $chains = Chain::orderBy("id", "ASC")->get();
+        $toChain = $this->ask("To chain ID?");
+        $chains = Chain::orderBy("id", "ASC");
+        if ($toChain > 0)
+            $chains->where("id", "<=", $toChain);
+        $chains = $chains->get();
 
         foreach ($chains as $i => $chain) {
             if ($chain->id < $chainId) continue;
@@ -75,13 +80,12 @@ class GetRepositories extends Command
                     $prefix = $chain->github_prefix;
                     $url = "https://api.github.com/orgs/$prefix/repos?per_page=100";
                     $lastPage = get_last_page(get_github_data($url, 0, $useKey));
-                    if ($howToGet != "pull"){
+                    if ($howToGet != "pull") {
                         $repository = [];
                         for ($i = 1; $i <= $lastPage; $i++) {
                             $repository = array_merge($repository, array_column((array)json_decode(get_github_data($url . "&page=$i", 1, $useKey)), "full_name", "name"));
                         }
-                    }
-                    else{
+                    } else {
                         $repository = Repository::where("chain", $chain->id)->orderBy("id", "ASC")->get();
                     }
                 } else
@@ -108,7 +112,7 @@ class GetRepositories extends Command
                     echo "Repo id " . $repo->id . ":" . $chain->id . PHP_EOL;
                     if ($chain->id == $chainId && $repo->id < $repoId) continue;
 
-                    if ($howToGet != "pull") {
+                    if ($howToGet != "pull_issue") {
                         // Contributors
                         $url = "https://api.github.com/repos/$repoPrefix/contributors?per_page=100";
                         $lastPage = get_last_page(get_github_data($url, 0, $useKey));
@@ -141,7 +145,9 @@ class GetRepositories extends Command
                         }
                         $repo->total_contributor = implode(",", $contributors);
                         $repo->contributors = count($contributors);
+                    }
 
+                    if ($howToGet != "contributor") {
                         // Issue
                         $url = "https://api.github.com/repos/$repoPrefix/issues?per_page=100&state=closed";
                         if ($lastIssue = Issue::where("repo", $repo->id)->orderBy("open_date", "DESC")->first())
@@ -174,9 +180,7 @@ class GetRepositories extends Command
                             }
                         }
                         $repo->total_issue_solved = $total_issue;
-                    }
 
-                    if ($howToGet != "issue") {
                         // Pull
                         $url = "https://api.github.com/repos/$repoPrefix/pulls?per_page=100&state=all&sort=created&direction=asc";
                         $lastPage = get_last_page(get_github_data($url, 1, $useKey));
