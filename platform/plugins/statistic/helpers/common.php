@@ -1,8 +1,7 @@
 <?php
 
-function get_github_data($url, $return = "body", $key = 1)
+function get_github_data($url, $body = 1, $key = 1)
 {
-    $key = 1;
     $ch = curl_init($url);
     $headers = [];
     curl_setopt($ch, CURLOPT_HTTPHEADER, [
@@ -27,7 +26,7 @@ function get_github_data($url, $return = "body", $key = 1)
 
     $body = curl_exec($ch);
 
-    if ($return == "body")
+    if ($body)
         return $body;
     return $headers;
 
