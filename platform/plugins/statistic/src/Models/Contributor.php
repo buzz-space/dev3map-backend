@@ -22,6 +22,9 @@ class Contributor extends BaseModel
     protected $fillable = [
         "chain",
         "repo",
-        "contributors",
+        "name",
+        "login",
+        "description",
+        "avatar",
     ];
 }

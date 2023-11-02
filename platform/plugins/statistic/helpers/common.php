@@ -24,10 +24,10 @@ function get_github_data($url, $body = 1, $key = 1)
         }
     );
 
-    $body = curl_exec($ch);
+    $data = curl_exec($ch);
 
     if ($body)
-        return $body;
+        return $data;
     return $headers;
 
 }
@@ -122,4 +122,22 @@ function unique_name(array $array){
 
 function check_percent($percent){
     return $percent > 100 ? $percent - 100 : -1 * (100 - $percent);
+}
+
+function get_data_from_url($url, $header = []){
+    $ch = curl_init();
+
+    curl_setopt($ch, CURLOPT_URL, $url);
+    if (!empty($header)) {
+        curl_setopt(
+            $ch,
+            CURLOPT_HTTPHEADER,
+            $header
+        );
+    }
+    curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
+    $result = curl_exec($ch);
+    curl_close($ch);
+
+    return $result;
 }

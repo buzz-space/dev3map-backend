@@ -381,4 +381,72 @@ class StatisticController extends BaseController
 
         return $response->setMessage("Created " . $chain->name);
     }
+
+    public function getContributorInfo($login, BaseHttpResponse $response)
+    {
+        if (!$dev = Contributor::where("login", $login)->first())
+            return $response->setError()->setMessage("Developer not found!");
+
+        return $response->setData($dev);
+    }
+
+    public function getContributorActivity($login, Request $request, BaseHttpResponse $response)
+    {
+        if (!$dev = Contributor::where("login", $login)->first())
+            return $response->setError()->setMessage("Developer not found!");
+
+        $month = $request->input("month", now()->month);
+        $year = $request->input("year", now()->year);
+
+        $date = Carbon::create($year, $month, 1);
+        $res = [];
+        for ($i = 0; $i <= $date->daysInMonth; $i++){
+            $author = Commit::where("exact_date", (clone $date)->addDays($i))->where("author_list", "like", "%$login%")->pluck("author_list")->toArray();
+            $listContributor = array_filter(explode(",", implode(",", $author)));
+            $values = array_count_values($listContributor);
+            $res[] = [
+                "date" => (clone $date)->addDays($i)->format("Y-m-d"),
+                "commits" => isset($values[$login]) ? $values[$login] : 0
+            ];
+        }
+
+        return $response->setData($res);
+    }
+
+    public function getDeveloperContribution($login, BaseHttpResponse $response)
+    {
+        if (!$dev = Contributor::where("login", $login)->first())
+            return $response->setError()->setMessage("Developer not found!");
+
+        $chains = Commit::where("author_list", "like", "%$login%")
+            ->groupBy("chain")
+            ->selectRaw("chain, GROUP_CONCAT(author_list SEPARATOR ',') as author")
+            ->get();
+
+        foreach ($chains as $chain){
+            $selectedChain = Chain::find($chain->chain);
+            $chain->name = $selectedChain->name;
+            $chain->avatar = $selectedChain->avatar;
+            $chain->symbol = $selectedChain->symbol;
+
+            $listContributor = array_filter(explode(",", $chain->author));
+            $values = array_count_values($listContributor);
+            $chain->developer_commit = isset($values[$login]) ? $values[$login] : 0;
+            $chain->total_commit = $selectedChain->repositories()->sum("total_commit");
+            unset($chain->author);
+        }
+
+        return $response->setData($chains);
+    }
+
+    public function getContributorRepositories($login, BaseHttpResponse $response)
+    {
+        if (!$dev = Contributor::where("login", $login)->first())
+            return $response->setError()->setMessage("Developer not found!");
+
+        $repositories = Repository::whereIn("id", explode(",", $dev->repo))
+            ->select("id", "name", "description", "total_commit", "pull_request_closed", "total_issue_solved")->get();
+
+        return $response->setData($repositories);
+    }
 }

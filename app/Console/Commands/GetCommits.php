@@ -70,8 +70,9 @@ class GetCommits extends Command
                     $last = "2020-01-01";
                     $contributors = unique_name(explode(",", $repository->total_contributor));
                     $prefix = $repository->github_prefix;
-                    if ($lastCommit = Commit::where("repo", $repository->id)->orderBy("exact_date", "DESC")->first())
-                        $last = $from;
+                    if ($lastCommit = Commit::where("repo", $repository->id)->orderBy("exact_date", "DESC")->first()) {
+//                        $last = $from;
+                    }
                     else {
                         if ($repository->id <= 4789) {
                             echo "Repository has no commit!" . PHP_EOL;
@@ -105,8 +106,9 @@ class GetCommits extends Command
                             $save = null;
 //                            $sha = [];
                             foreach ($data as $z => $commit) {
-                                if (strpos($commit->commit->message, "Merge pull request") === 0)
-                                    continue;
+                                if (!isset($commit->commit)) continue;
+//                                if (strpos($commit->commit->message, "Merge pull request") === 0)
+//                                    continue;
                                 if ($commit->author)
                                     $author = $commit->author->login ?? "";
                                 else
