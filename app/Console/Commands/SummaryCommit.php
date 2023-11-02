@@ -43,7 +43,7 @@ class SummaryCommit extends Command
      *
      * @return int
      */
-    public function handle()
+    public function handles()
     {
         $start = now();
         ini_set("memory_limit", -1);
@@ -100,5 +100,14 @@ class SummaryCommit extends Command
         }
 
         return 1;
+    }
+
+    public function handle(){
+        foreach (Repository::all() as $item){
+            $item->total_commit = $item->commits()->sum("total_commit");
+            $item->save();
+
+            echo "Processed repo " . $item->name . PHP_EOL;
+        }
     }
 }

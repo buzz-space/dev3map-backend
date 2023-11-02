@@ -262,5 +262,95 @@ class APIController extends Controller
      * )
      */
 
+    /**
+     * @SWG\Get (
+     *     path="/api/v1/developer/{login}",
+     *     description="Get developer info",
+     *     tags={"developer"},
+     *     @SWG\Parameter(
+     *         name="login",
+     *         in="path",
+     *         type="string",
+     *         description="Developer login",
+     *         required=true,
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="OK",
+     *     ),
+     * )
+     */
+
+    /**
+     * @SWG\Get (
+     *     path="/api/v1/developer-activity/{login}",
+     *     description="Get developer activity",
+     *     tags={"developer"},
+     *     @SWG\Parameter(
+     *         name="login",
+     *         in="path",
+     *         type="string",
+     *         description="Developer login",
+     *         required=true,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="month",
+     *         in="query",
+     *         type="number",
+     *         description="Filter month (default now)",
+     *         required=false,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="year",
+     *         in="query",
+     *         type="number",
+     *         description="Filter year (default now)",
+     *         required=false,
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="OK",
+     *     ),
+     * )
+     */
+
+    /**
+     * @SWG\Get (
+     *     path="/api/v1/developer-contribution/{login}",
+     *     description="Get developer contribution",
+     *     tags={"developer"},
+     *     @SWG\Parameter(
+     *         name="login",
+     *         in="path",
+     *         type="string",
+     *         description="Developer login",
+     *         required=true,
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="OK",
+     *     ),
+     * )
+     */
+
+    /**
+     * @SWG\Get (
+     *     path="/api/v1/developer-repository/{login}",
+     *     description="Get developer repository",
+     *     tags={"developer"},
+     *     @SWG\Parameter(
+     *         name="login",
+     *         in="path",
+     *         type="string",
+     *         description="Developer login",
+     *         required=true,
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="OK",
+     *     ),
+     * )
+     */
+
 
 }
