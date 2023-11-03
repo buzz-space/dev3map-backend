@@ -400,7 +400,7 @@ class StatisticController extends BaseController
 
         $date = Carbon::create($year, $month, 1);
         $res = [];
-        for ($i = 0; $i <= $date->daysInMonth; $i++){
+        for ($i = 0; $i < $date->daysInMonth; $i++){
             $author = Commit::where("exact_date", (clone $date)->addDays($i))->where("author_list", "like", "%$login%")->pluck("author_list")->toArray();
             $listContributor = array_filter(explode(",", implode(",", $author)));
             $values = array_count_values($listContributor);
