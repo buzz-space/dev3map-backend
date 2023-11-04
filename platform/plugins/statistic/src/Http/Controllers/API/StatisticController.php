@@ -449,6 +449,12 @@ class StatisticController extends BaseController
             ->selectRaw("chain, GROUP_CONCAT(author_list SEPARATOR ',') as author")
             ->get();
 
+        $issue = Issue::where("creator", "like", "%$login%")->groupBy("chain")
+            ->selectRaw("chain, COUNT(*) as creator")->pluck("creator", "chain")->toArray();
+
+        $pull = Pull::where("author", "like", "%$login%")->groupBy("chain")
+            ->selectRaw("chain, COUNT(*) as creator")->pluck("creator", "chain")->toArray();
+
         foreach ($chains as $chain){
             $selectedChain = Chain::find($chain->chain);
             $chain->name = $selectedChain->name;
@@ -458,8 +464,9 @@ class StatisticController extends BaseController
 
             $listContributor = array_filter(explode(",", $chain->author));
             $values = array_count_values($listContributor);
-            $chain->developer_commit = isset($values[$login]) ? $values[$login] : 0;
-            $chain->total_commit = $selectedChain->repositories()->sum("total_commit");
+            $chain->developer_commit = (isset($values[$login]) ? $values[$login] : 0) + (isset($issue[$chain->chain]) ? $issue[$chain->chain] : 0)
+                + (isset($pull[$chain->chain]) ? $pull[$chain->chain] : 0);
+            $chain->total_commit = $selectedChain->repositories()->sum("total_commit") + $selectedChain->repositories()->sum("total_issue_solved") + $selectedChain->repositories()->sum("pull_request_closed");
             unset($chain->author);
         }
 
