@@ -172,8 +172,8 @@ class GetRepositories extends Command
                                         "creator" => $issue->user->login,
                                         "repo" => $repo->id,
                                         "chain" => $repo->chain,
-                                        "open_date" => $open->toDateTimeString(),
-                                        "close_date" => $closed->toDateTimeString(),
+                                        "open_date" => $open->startOfDay()->toDateTimeString(),
+                                        "close_date" => $closed->startOfDay()->toDateTimeString(),
                                         "total_minute" => $closed->diffInMinutes($open)
                                     ]);
                                 }
@@ -205,10 +205,10 @@ class GetRepositories extends Command
                                         "status" => $pull->state,
                                         "repo" => $repo->id,
                                         "chain" => $repo->chain,
-                                        "created_date" => date("Y-m-d H:i:s", strtotime($pull->created_at)),
+                                        "created_date" => date("Y-m-d", strtotime($pull->created_at)),
                                     ]);
                                 } else {
-                                    $exist->created_date = date("Y-m-d H:i:s", strtotime($pull->created_at));
+                                    $exist->created_date = date("Y-m-d", strtotime($pull->created_at));
                                     $exist->save();
                                 }
                             }

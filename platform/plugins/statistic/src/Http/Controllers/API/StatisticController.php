@@ -16,6 +16,7 @@ use Botble\Statistic\Models\Pull;
 use Botble\Statistic\Models\Repository;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 
 class StatisticController extends BaseController
@@ -399,21 +400,40 @@ class StatisticController extends BaseController
         $year = $request->input("year", now()->year);
 
         $date = Carbon::create($year, $month, 1);
+        $commits = Commit::where([
+            ["exact_date", ">=", $date->toDateString()],
+            ["exact_date", "<=", (clone $date)->endOfMonth()->toDateString()],
+            ["author_list", "like", "%$login%"]
+        ])->groupBy("exact_date")->selectRaw("exact_date, GROUP_CONCAT(author_list SEPARATOR ',') as author")
+            ->orderBy("exact_date", "ASC")->get();
+        $lstCommit = [];
+        foreach ($commits as $item){
+            $listContributor = array_filter(explode(",", $item->author));
+            $values = array_count_values($listContributor);
+            $item->total = isset($values[$login]) ? $values[$login] : 0;
+            unset($item->author);
+
+            $lstCommit[$item->exact_date] = $item->total;
+        }
+        $lstIssue = Issue::where([
+            ["open_date", ">=", $date->toDateString()],
+            ["open_date", "<=", (clone $date)->endOfMonth()->toDateString()],
+            ["creator", "like", "%$login%"]
+        ])->groupBy("open_date")->selectRaw("open_date as exact_date, COUNT(*) as creator")
+            ->orderBy("exact_date", "ASC")->pluck("creator", "exact_date")->toArray();
+
+        $lstPull = Pull::where([
+            ["created_date", ">=", $date->toDateString()],
+            ["created_date", "<=", (clone $date)->endOfMonth()->toDateString()],
+            ["author", "like", "%$login%"]
+        ])->groupBy("created_date")->selectRaw("created_date as exact_date, COUNT(*) as creator")
+            ->orderBy("exact_date", "ASC")->pluck("creator", "exact_date")->toArray();
+
         $res = [];
         for ($i = 0; $i < $date->daysInMonth; $i++){
-            $selectedDate = (clone $date)->addDays($i)->toDateString();
-            $author = Commit::where("exact_date", $selectedDate)->where("author_list", "like", "%$login%")->pluck("author_list")->toArray();
-            $listContributor = array_filter(explode(",", implode(",", $author)));
-            $values = array_count_values($listContributor);
-            $commits = isset($values[$login]) ? $values[$login] : 0;
-
-            $issue = Issue::where("open_date", $selectedDate)->where("creator", "like", "%$login%")->count();
-            $pull = Pull::where("created_date", $selectedDate)->where("author", "like", "%$login%")->count();
-
-            $res[] = [
-                "date" => (clone $date)->addDays($i)->format("Y-m-d"),
-                "commits" => $commits + $issue + $pull
-            ];
+            $s = (clone $date)->addDays($i)->toDateTimeString();
+            $res[$i + 1] = (isset($lstCommit[$s]) ? $lstCommit[$s] : 0) + (isset($lstIssue[$s]) ? $lstIssue[$s] : 0)
+                + (isset($lstPull[$s]) ? $lstPull[$s] : 0);
         }
 
         return $response->setData($res);
