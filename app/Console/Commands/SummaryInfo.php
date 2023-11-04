@@ -6,7 +6,7 @@ use Botble\Statistic\Models\Chain;
 use Botble\Statistic\Models\ChainInfo;
 use Botble\Statistic\Models\Commit;
 use Botble\Statistic\Models\Contributor;
-use Botble\Statistic\Models\Developer;
+use Botble\Statistic\Models\DeveloperStatistic;
 use Botble\Statistic\Models\Issue;
 use Botble\Statistic\Models\Pull;
 use Botble\Statistic\Models\Repository;

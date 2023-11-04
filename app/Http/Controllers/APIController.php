@@ -352,5 +352,24 @@ class APIController extends Controller
      * )
      */
 
+    /**
+     * @SWG\Get (
+     *     path="/api/v1/developer-statistic/{login}",
+     *     description="Get developer statistic",
+     *     tags={"developer"},
+     *     @SWG\Parameter(
+     *         name="login",
+     *         in="path",
+     *         type="string",
+     *         description="Developer login",
+     *         required=true,
+     *     ),
+     *     @SWG\Response(
+     *         response=200,
+     *         description="OK",
+     *     ),
+     * )
+     */
+
 
 }

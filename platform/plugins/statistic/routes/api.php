@@ -21,5 +21,6 @@ Route::group([
     Route::get("developer-activity/{login}", "StatisticController@getContributorActivity");
     Route::get("developer-contribution/{login}", "StatisticController@getDeveloperContribution");
     Route::get("developer-repository/{login}", "StatisticController@getContributorRepositories");
+    Route::get("developer-statistic/{login}", "StatisticController@getContributorStatistic");
     Route::post("add-chain", "StatisticController@addChain");
 });
