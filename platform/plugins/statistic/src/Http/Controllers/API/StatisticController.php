@@ -10,7 +10,7 @@ use Botble\Statistic\Models\ChainInfo;
 use Botble\Statistic\Models\Commit;
 use Botble\Statistic\Models\CommitChart;
 use Botble\Statistic\Models\Contributor;
-use Botble\Statistic\Models\Developer;
+use Botble\Statistic\Models\DeveloperStatistic;
 use Botble\Statistic\Models\Issue;
 use Botble\Statistic\Models\Pull;
 use Botble\Statistic\Models\Repository;
@@ -434,6 +434,7 @@ class StatisticController extends BaseController
             $chain->name = $selectedChain->name;
             $chain->avatar = $selectedChain->avatar;
             $chain->symbol = $selectedChain->symbol;
+            $chain->github_prefix = $selectedChain->github_prefix;
 
             $listContributor = array_filter(explode(",", $chain->author));
             $values = array_count_values($listContributor);
@@ -451,8 +452,16 @@ class StatisticController extends BaseController
             return $response->setError()->setMessage("Developer not found!");
 
         $repositories = Repository::whereIn("id", explode(",", $dev->repo))
-            ->select("id", "name", "description", "total_commit", "pull_request_closed", "total_issue_solved")->get();
+            ->select("id", "name", "description", "github_prefix", "total_commit", "pull_request_closed", "total_issue_solved")->get();
 
         return $response->setData($repositories);
+    }
+
+    public function getContributorStatistic($login, BaseHttpResponse $response)
+    {
+        if (!$dev = Contributor::where("login", $login)->first())
+            return $response->setError()->setMessage("Developer not found!");
+
+        return $response->setData($dev->statistic);
     }
 }
