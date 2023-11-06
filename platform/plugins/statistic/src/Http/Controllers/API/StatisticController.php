@@ -455,6 +455,7 @@ class StatisticController extends BaseController
         $pull = Pull::where("author", "like", "%$login%")->groupBy("chain")
             ->selectRaw("chain, COUNT(*) as creator")->pluck("creator", "chain")->toArray();
 
+        $totalContribution = 0;
         foreach ($chains as $chain){
             $selectedChain = Chain::find($chain->chain);
             $chain->name = $selectedChain->name;
@@ -468,6 +469,11 @@ class StatisticController extends BaseController
                 + (isset($pull[$chain->chain]) ? $pull[$chain->chain] : 0);
             $chain->total_commit = $selectedChain->repositories()->sum("total_commit") + $selectedChain->repositories()->sum("total_issue_solved") + $selectedChain->repositories()->sum("pull_request_closed");
             unset($chain->author);
+            $totalContribution += $chain->developer_commit;
+        }
+
+        foreach ($chains as $chain){
+            $chain->percent = round($chain->developer_commit / $totalContribution * 100, 2);
         }
 
         return $response->setData($chains);
