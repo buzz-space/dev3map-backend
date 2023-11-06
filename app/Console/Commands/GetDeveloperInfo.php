@@ -40,9 +40,10 @@ class GetDeveloperInfo extends Command
      */
     public function handle()
     {
+        $repo = $this->ask("Begin repo");
         foreach (Repository::where("chain", 4)->orderBy("id", "ASC")->get() as $item) {
+            echo "Repository " . $item->id . "-" . $item->name . PHP_EOL;
             $contributors = array_filter(explode(",", $item->total_contributor));
-            Log::info($contributors);
             foreach ($contributors as $contributor) {
                 if ($found = Contributor::where("login", $contributor)->first()) {
                     $found->chain = implode(",", array_unique(array_merge(explode(",", $found->chain), [$item->chain])));
