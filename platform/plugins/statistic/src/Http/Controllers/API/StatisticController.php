@@ -432,8 +432,13 @@ class StatisticController extends BaseController
         $res = [];
         for ($i = 0; $i < $date->daysInMonth; $i++){
             $s = (clone $date)->addDays($i)->toDateTimeString();
-            $res[$i + 1] = (isset($lstCommit[$s]) ? $lstCommit[$s] : 0) + (isset($lstIssue[$s]) ? $lstIssue[$s] : 0)
-                + (isset($lstPull[$s]) ? $lstPull[$s] : 0);
+            $res[] = [
+                "commit" => isset($lstCommit[$s]) ? $lstCommit[$s] : 0,
+                "issue" => isset($lstIssue[$s]) ? $lstIssue[$s] : 0,
+                "pull" => isset($lstPull[$s]) ? $lstPull[$s] : 0,
+                'total' => (isset($lstCommit[$s]) ? $lstCommit[$s] : 0) + (isset($lstIssue[$s]) ? $lstIssue[$s] : 0)
+                    + (isset($lstPull[$s]) ? $lstPull[$s] : 0)
+            ] ;
         }
 
         return $response->setData($res);
