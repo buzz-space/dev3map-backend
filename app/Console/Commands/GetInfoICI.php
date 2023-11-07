@@ -5,6 +5,7 @@ namespace App\Console\Commands;
 use Botble\Statistic\Models\Chain;
 use Botble\Statistic\Models\ChainResource;
 use Illuminate\Console\Command;
+use Illuminate\Support\Facades\Log;
 use RvMedia;
 
 class GetInfoICI extends Command
@@ -40,43 +41,47 @@ class GetInfoICI extends Command
      */
     public function handle()
     {
-        $data = json_decode(file_get_contents(public_path("docs/json/ici.json")));
-
-        foreach ($data as $i => $chain){
-            switch ($chain->title){
-                case "Stargaze": {
-                    $this->updateInfo($data[$i], 53);
-                    break;
-                }
-                case "PlanqNetwork": {
-                    $this->updateInfo($data[$i], 69);
-                    break;
-                }
-                case "Juno Network": {
-                    $this->updateInfo($data[$i], 24);
-                    break;
-                }
-                case "CUDOS": {
-                    $this->updateInfo($data[$i], 15);
-                    break;
-                }
-                case "Sommelier": {
-                    $this->updateInfo($data[$i], 51);
-                    break;
-                }
-                default: {
-                    if ($found = Chain::where("name", "like", "%" . $chain->title ."%")->first()) {
-                        $this->updateInfo($data[$i], $found->id);
+        for ($i = 1; $i < 2; $i++){
+            $data = json_decode(get_data_from_url("https://interchaininfo.zone/api/dev3web/indexes", ["X-API-KEY: dMp3Cyi0QliJPbgH6KmH8HSUTXCD69wLx"]));
+            $data = $data->data;
+            foreach ($data as $i => $chain){
+                switch ($chain->title){
+                    case "Stargaze": {
+                        $this->updateInfo($data[$i], 53);
                         break;
                     }
-                    $cutString = explode(" ", $chain->title);
-                    if ($found = Chain::where("name", "like", "%$cutString[0]%")->first()) {
-                        $this->updateInfo($data[$i], $found->id);
+                    case "PlanqNetwork": {
+                        $this->updateInfo($data[$i], 69);
                         break;
+                    }
+                    case "Juno Network": {
+                        $this->updateInfo($data[$i], 24);
+                        break;
+                    }
+                    case "CUDOS": {
+                        $this->updateInfo($data[$i], 15);
+                        break;
+                    }
+                    case "Sommelier": {
+                        $this->updateInfo($data[$i], 51);
+                        break;
+                    }
+                    default: {
+                        if ($found = Chain::where("name", "like", "%" . $chain->title ."%")->first()) {
+                            $this->updateInfo($data[$i], $found->id);
+                            break;
+                        }
+                        $cutString = explode(" ", $chain->title);
+                        if ($found = Chain::where("name", "like", "%$cutString[0]%")->first()) {
+                            $this->updateInfo($data[$i], $found->id);
+                            break;
+                        }
                     }
                 }
             }
         }
+
+        echo "Done";
     }
 
     private function updateInfo($ici, $chain_id)

@@ -6,7 +6,7 @@ use Botble\Base\Traits\EnumCastable;
 use Botble\Base\Enums\BaseStatusEnum;
 use Botble\Base\Models\BaseModel;
 
-class Contributor extends BaseModel
+class DeveloperStatistic extends BaseModel
 {
 
     /**
@@ -14,22 +14,18 @@ class Contributor extends BaseModel
      *
      * @var string
      */
-    protected $table = 'repository_contributors';
+    protected $table = 'contributor_statistic';
 
     /**
      * @var array
      */
     protected $fillable = [
-        "chain",
-        "repo",
-        "name",
-        "login",
-        "description",
-        "avatar",
+        "range",
+        "contributor_id",
+        "total_commit",
+        "total_pull_request",
+        "total_pull_merged",
+        "total_issue",
+        "merge_ratio",
     ];
-
-    public function statistic()
-    {
-        return $this->hasMany(DeveloperStatistic::class, "contributor_id");
-    }
 }
