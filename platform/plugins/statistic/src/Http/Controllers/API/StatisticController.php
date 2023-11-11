@@ -444,7 +444,7 @@ class StatisticController extends BaseController
         return $response->setData($res);
     }
 
-    public function getDeveloperContribution($login, BaseHttpResponse $response)
+    public function getDeveloperContribution($login, Request $request, BaseHttpResponse $response)
     {
         if (!$dev = Contributor::where("login", $login)->first())
             return $response->setError()->setMessage("Developer not found!");
@@ -472,7 +472,7 @@ class StatisticController extends BaseController
             $values = array_count_values($listContributor);
             $chain->developer_commit = (isset($values[$login]) ? $values[$login] : 0) + (isset($issue[$chain->chain]) ? $issue[$chain->chain] : 0)
                 + (isset($pull[$chain->chain]) ? $pull[$chain->chain] : 0);
-            $chain->total_commit = $selectedChain->repositories()->sum("total_commit") + $selectedChain->repositories()->sum("total_issue_solved") + $selectedChain->repositories()->sum("pull_request_closed");
+//            $chain->total_commit = $selectedChain->repositories()->sum("total_commit") + $selectedChain->repositories()->sum("total_issue_solved") + $selectedChain->repositories()->sum("pull_request_closed");
             unset($chain->author);
             $totalContribution += $chain->developer_commit;
         }
@@ -481,16 +481,59 @@ class StatisticController extends BaseController
             $chain->percent = round($chain->developer_commit / $totalContribution * 100, 2);
         }
 
+        $chains = $chains->toArray();
+        if ($request->has("sort")){
+            $sort = $request->input("sort");
+            if ($sort == "ASC"){
+                usort($chains, function ($a, $b) {
+                    return $a["percent"] - $b["percent"];
+                });
+            }
+            else{
+                usort($chains, function ($a, $b) {
+                    return $b["percent"] - $a["percent"];
+                });
+            }
+        }
+
         return $response->setData($chains);
     }
 
-    public function getContributorRepositories($login, BaseHttpResponse $response)
+    public function getContributorRepositories($login, Request $request, BaseHttpResponse $response)
     {
         if (!$dev = Contributor::where("login", $login)->first())
             return $response->setError()->setMessage("Developer not found!");
 
         $repositories = Repository::whereIn("id", explode(",", $dev->repo))
-            ->select("id", "name", "description", "github_prefix", "total_commit", "pull_request_closed", "total_issue_solved")->get();
+            ->select("id", "name", "description", "github_prefix")->get();
+
+        foreach ($repositories as $repository){
+            $authors = Commit::where("repo", $repository->id)->where("author_list", "like", "%$login%")->pluck("author_list")->toArray();
+            $listContributor = array_filter(explode(",", implode(",", $authors)));
+            $values = array_count_values($listContributor);
+            $totalCommit = isset($values[$login]) ? $values[$login] : 0;
+            $issue = Issue::where("creator", "like", "%$login%")->where("repo", $repository->id)->count();
+            $pull = Pull::where("author", "like", "%$login%")->where("repo", $repository->id)->count();
+            $repository->total_commit = $totalCommit;
+            $repository->total_issue = $issue;
+            $repository->total_pull = $pull;
+            $repository->total = $totalCommit + $issue + $pull;
+        }
+
+        $repositories = $repositories->toArray();
+        if ($request->has("sort")){
+            $sort = $request->input("sort");
+            if ($sort == "ASC"){
+                usort($repositories, function ($a, $b) {
+                    return $a["total"] - $b["total"];
+                });
+            }
+            else{
+                usort($repositories, function ($a, $b) {
+                    return $b["total"] - $a["total"];
+                });
+            }
+        }
 
         return $response->setData($repositories);
     }
