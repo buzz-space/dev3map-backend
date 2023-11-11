@@ -13,7 +13,7 @@ return new class extends Migration {
     public function up()
     {
         Schema::table('repository_issues', function (Blueprint $table) {
-            $table->string("repo", 255)->nullable()->change();
+            $table->text("repo")->nullable()->change();
         });
     }
 
