@@ -78,7 +78,7 @@ class GetCommits extends Command
                         $last = $from;
                     }
                     else {
-                        if ($repository->id <= 4789) {
+                        if ($repository->id <= 5650) {
                             if ($env == "local") echo "Repository has no commit!" . PHP_EOL;
                             continue;
                         }
