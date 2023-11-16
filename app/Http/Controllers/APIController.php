@@ -326,6 +326,13 @@ class APIController extends Controller
      *         description="Developer login",
      *         required=true,
      *     ),
+     *     @SWG\Parameter(
+     *         name="sort",
+     *         in="query",
+     *         type="string",
+     *         description="Sort (DESC|ASC)",
+     *         required=false,
+     *     ),
      *     @SWG\Response(
      *         response=200,
      *         description="OK",
@@ -344,6 +351,13 @@ class APIController extends Controller
      *         type="string",
      *         description="Developer login",
      *         required=true,
+     *     ),
+     *     @SWG\Parameter(
+     *         name="sort",
+     *         in="query",
+     *         type="string",
+     *         description="Sorting (ASC,DESC)",
+     *         required=false,
      *     ),
      *     @SWG\Response(
      *         response=200,

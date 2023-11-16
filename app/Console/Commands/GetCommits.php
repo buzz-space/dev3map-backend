@@ -52,30 +52,34 @@ class GetCommits extends Command
     {
         ini_set("memory_limit", -1);
         set_time_limit(0);
-        $from = $this->ask("From?");
-        $chainId = $this->ask("From chain ID?");
+        $from = now()->addDays(-1)->toDateString();
+//        $from = $this->ask("From?");
+        $chainId = 0;
+//        $chainId = $this->ask("From chain ID?");
         $start = now();
+        $env = env("APP_ENV", "local");
+        echo "Begin: " . $start->toDateTimeString() . PHP_EOL;
         foreach (Chain::orderBy("id", "ASC")->get() as $chain) {
             if ($chain->id < $chainId) continue;
-            echo "Chain: " . $chain->name . PHP_EOL;
+            if ($env == "local") echo "Chain: " . $chain->name . PHP_EOL;
             $repositories = Repository::where("chain", $chain->id)->orderBy("id", "ASC")->get();
-            echo "With " . count($repositories) . PHP_EOL;
+            if ($env == "local") echo "With " . count($repositories) . PHP_EOL;
             try {
                 foreach ($repositories as $j => $repository) {
 //                    if ($chain->id == $chainId && $repository->id < $repoId) continue;
                     /**
                      * Get commits
                      */
-                    echo ($j + 1) . " (" . $chain->id . "): " . $repository->id . "-" . $repository->name . PHP_EOL;
+                    if ($env == "local") echo ($j + 1) . " (" . $chain->id . "): " . $repository->id . "-" . $repository->name . PHP_EOL;
                     $last = "2020-01-01";
                     $contributors = unique_name(explode(",", $repository->total_contributor));
                     $prefix = $repository->github_prefix;
                     if ($lastCommit = Commit::where("repo", $repository->id)->orderBy("exact_date", "DESC")->first()) {
-//                        $last = $from;
+                        $last = $from;
                     }
                     else {
-                        if ($repository->id <= 4789) {
-                            echo "Repository has no commit!" . PHP_EOL;
+                        if ($repository->id <= 5650) {
+                            if ($env == "local") echo "Repository has no commit!" . PHP_EOL;
                             continue;
                         }
                     }
@@ -95,11 +99,11 @@ class GetCommits extends Command
                         $url .= "&since=" . date(DATE_ISO8601, strtotime($last));
                         $url .= "&until=" . date(DATE_ISO8601, strtotime($until));
                         $lastPage = get_last_page(get_github_data($url, 0));
-                        echo "Total page at " . $branch->name . " : " . $lastPage . PHP_EOL;
+                        if ($env == "local") echo "Total page at " . $branch->name . " : " . $lastPage . PHP_EOL;
                         for ($i = 1; $i <= $lastPage; $i++) {
 //                        if ($chain->id == $chainId && $repository->id == $repoId && $i < $page) continue;
 //                    $i = 1;
-                            echo "Process page $i..." . PHP_EOL;
+                            if ($env == "local") echo "Process page $i..." . PHP_EOL;
                             $commitUrl = $url . "&page=$i";
                             $data = json_decode(get_github_data($commitUrl, 1));
                             $date = null;
