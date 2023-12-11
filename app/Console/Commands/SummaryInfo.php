@@ -47,6 +47,8 @@ class SummaryInfo extends Command
     public function handle()
     {
         $day = Carbon::createFromTimestamp(strtotime($this->ask("Date?", now()->toDateString())));
+        setting()->set("last_update", $day);
+        setting()->save();
         foreach (Chain::orderBy("id", "ASC")->get() as $chain){
             echo "Chain name: " . $chain->name . PHP_EOL;
             // Before update, change star fork
