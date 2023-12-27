@@ -10,7 +10,6 @@ use Botble\Statistic\Models\Repository;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\Log;
-use mysql_xdevapi\Exception;
 use RvMedia;
 
 class GetRepositories extends Command
@@ -20,7 +19,7 @@ class GetRepositories extends Command
      *
      * @var string
      */
-    protected $signature = 'get:repositories';
+    protected $signature = 'get:repositories {start_chain} {start_repo} {end_chain}';
 
     /**
      * The console command description.
@@ -47,13 +46,14 @@ class GetRepositories extends Command
     public function handle()
     {
         set_time_limit(0);
-        $chainId = $this->ask("From chain ID?");
-        $repoId = $this->ask("From repo ID?");
+        $chainId = $this->argument("start_chain") ?? 0;
+        $repoId = $this->argument("start_repo") ?? 0;
+        $toChain = $this->argument("to_chain") ?? 0;
+        echo "Start: $chainId, end: $toChain, start repo: $repoId" . PHP_EOL;
 //        $howToGet = $this->choice("Choose data want to get?", ["all", "contributor", "pull_issue"], "all");
         $howToGet = "all";
 //        $useKey = $this->ask("Use key?");
         $useKey = 1;
-        $toChain = $this->ask("To chain ID?");
         $chains = Chain::orderBy("id", "ASC");
         if ($toChain > 0)
             $chains->where("id", "<=", $toChain);
