@@ -24,7 +24,7 @@ class GetCommits extends Command
      *
      * @var string
      */
-    protected $signature = 'get:commits';
+    protected $signature = 'get:commits {from_date} {from_id} {to_id}';
 
     /**
      * The console command description.
@@ -52,21 +52,19 @@ class GetCommits extends Command
     {
         ini_set("memory_limit", -1);
         set_time_limit(0);
-        $from = now()->addDays(-1)->toDateString();
-//        $from = $this->ask("From?");
-        $chainId = 0;
-//        $chainId = $this->ask("From chain ID?");
+        $from = $this->argument("from_date") ?? now()->addDays(-7)->toDateString();
+        $chainId = $this->argument("from_id") ?? 0;
         $start = now();
         $env = env("APP_ENV", "local");
         echo "Begin: " . $start->toDateTimeString() . PHP_EOL;
         foreach (Chain::orderBy("id", "ASC")->get() as $chain) {
             if ($chain->id < $chainId) continue;
-            if ($env == "local") echo "Chain: " . $chain->name . PHP_EOL;
             $repositories = Repository::where("chain", $chain->id)->orderBy("id", "ASC")->get();
-            if ($env == "local") echo "With " . count($repositories) . PHP_EOL;
+            if ($env == "local") echo "Chain " . $chain->name . " with " . count($repositories) . PHP_EOL;
             try {
                 foreach ($repositories as $j => $repository) {
 //                    if ($chain->id == $chainId && $repository->id < $repoId) continue;
+                    echo ($j + 1) . ": Repo " . $repository->name . PHP_EOL;
                     /**
                      * Get commits
                      */
