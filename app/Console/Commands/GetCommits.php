@@ -59,11 +59,15 @@ class GetCommits extends Command
         echo "Begin: " . $start->toDateTimeString() . PHP_EOL;
         foreach (Chain::orderBy("id", "ASC")->get() as $chain) {
             if ($chain->id < $chainId) continue;
+            setting()->set("process_chain", $chain->id);
+            setting()->save();
             $repositories = Repository::where("chain", $chain->id)->orderBy("id", "ASC")->get();
             if ($env == "local") echo "Chain " . $chain->name . " with " . count($repositories) . PHP_EOL;
             try {
                 foreach ($repositories as $j => $repository) {
 //                    if ($chain->id == $chainId && $repository->id < $repoId) continue;
+                    setting()->set("process_repo", $repository->id);
+                    setting()->save();
                     echo ($j + 1) . ": Repo " . $repository->name . PHP_EOL;
                     /**
                      * Get commits
@@ -106,7 +110,7 @@ class GetCommits extends Command
                             $data = json_decode(get_github_data($commitUrl, 1));
                             $date = null;
                             $save = null;
-//                            $sha = [];
+                            $sha = [];
                             foreach ($data as $z => $commit) {
                                 if (!isset($commit->commit)) continue;
 //                                if (strpos($commit->commit->message, "Merge pull request") === 0)
@@ -126,17 +130,17 @@ class GetCommits extends Command
                                         $save->save();
 
                                         // save sha
-//                                        $exists = CommitSHA::where("commit_id", $save->id)->pluck("sha")->toArray();
-//                                        $sha = array_filter($sha, function ($row) use ($exists) {
-//                                            return !in_array($row, $exists);
-//                                        });
-//                                        foreach ($sha as $x) {
-//                                            CommitSHA::create([
-//                                                "sha" => $x,
-//                                                "commit_id" => $save->id
-//                                            ]);
-//                                        }
-//                                        $sha = [];
+                                        $exists = CommitSHA::where("commit_id", $save->id)->pluck("sha")->toArray();
+                                        $sha = array_filter($sha, function ($row) use ($exists) {
+                                            return !in_array($row, $exists);
+                                        });
+                                        foreach ($sha as $x) {
+                                            CommitSHA::create([
+                                                "sha" => $x,
+                                                "commit_id" => $save->id
+                                            ]);
+                                        }
+                                        $sha = [];
 //                                    if (now()->gt($start) && now()->diffInMinutes($start) > 55) {
 //                                        $lastExactDate = null;
 //                                        throw new \Exception("Stopped. Start: " . $start->toDateTimeString() . ", end: " . now()->toDateTimeString());
@@ -160,7 +164,7 @@ class GetCommits extends Command
 
                                     $date = $commitDate;
                                 }
-//                                $sha[] = $commit->sha;
+                                $sha[] = $commit->sha;
                                 $save->additions += 0;
                                 $save->deletions += 0;
                                 $save->author_list = array_merge($save->author_list, [$author]);
