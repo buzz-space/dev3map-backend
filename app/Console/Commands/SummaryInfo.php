@@ -20,7 +20,7 @@ class SummaryInfo extends Command
      *
      * @var string
      */
-    protected $signature = 'summary:info';
+    protected $signature = 'summary:info {day}';
 
     /**
      * The console command description.
@@ -46,7 +46,7 @@ class SummaryInfo extends Command
      */
     public function handle()
     {
-        $day = Carbon::createFromTimestamp(strtotime($this->ask("Date?", now()->toDateString())));
+        $day = Carbon::createFromTimestamp(strtotime($this->argument("day") ?? now()->toDateString()));
         setting()->set("last_update", $day);
         setting()->save();
         foreach (Chain::orderBy("id", "ASC")->get() as $chain){
