@@ -41,17 +41,20 @@ class StatisticController extends BaseController
                     $stat->full_time_developer = $item->total_contributor;
                     $stat->part_time_developer = 0;
                 }
-                $star = $before['all']->total_star - $stat->total_star; $starLast = (($minus = $stat->total_star - $before[$stat->range]->total_star) > 0) ? $minus : 1;
-                $fork = $before['all']->total_fork - $stat->total_fork; $forkLast = (($minus = $stat->total_fork - $before[$stat->range]->total_fork) > 0) ? $minus : 1;
-                $stat->commit_percent = number_format(check_percent($stat->total_commits / ($before[$stat->range]->total_commits > 0 ? $before[$stat->range]->total_commits : 1) * 100), 2);
-                $stat->developer_percent = number_format(check_percent(($stat->total_developer) / ($before[$stat->range]->total_developer > 0 ? $before[$stat->range]->total_developer : 1) * 100), 2);
-                $stat->repository_percent = number_format(check_percent($stat->total_repository / ($before[$stat->range]->total_repository > 0 ? $before[$stat->range]->total_repository : 1) * 100), 2);
-                $stat->issue_percent = number_format(check_percent($stat->total_issue_solved / ($before[$stat->range]->total_issue_solved > 0 ? $before[$stat->range]->total_issue_solved : 1) * 100), 2);
-                $stat->pull_percent = number_format(check_percent($stat->total_pull_merged / ($before[$stat->range]->total_pull_merged > 0 ? $before[$stat->range]->total_pull_merged : 1) * 100), 2);
-                $stat->star_percent = number_format(check_percent($star / $starLast * 100), 2);
-                $stat->fork_percent = number_format(check_percent($fork / $forkLast * 100), 2);
-                $stat->total_star = $star;
-                $stat->total_fork = $fork;
+                else{
+                    $star = $before['all']->total_star - $stat->total_star; $starLast = (($minus = $stat->total_star - $before[$stat->range]->total_star) > 0) ? $minus : 1;
+                    $fork = $before['all']->total_fork - $stat->total_fork; $forkLast = (($minus = $stat->total_fork - $before[$stat->range]->total_fork) > 0) ? $minus : 1;
+                    $stat->commit_percent = number_format(check_percent($stat->total_commits / ($before[$stat->range]->total_commits > 0 ? $before[$stat->range]->total_commits : 1) * 100), 2);
+                    $stat->developer_percent = number_format(check_percent(($stat->total_developer) / ($before[$stat->range]->total_developer > 0 ? $before[$stat->range]->total_developer : 1) * 100), 2);
+                    $stat->repository_percent = number_format(check_percent($stat->total_repository / ($before[$stat->range]->total_repository > 0 ? $before[$stat->range]->total_repository : 1) * 100), 2);
+                    $stat->issue_percent = number_format(check_percent($stat->total_issue_solved / ($before[$stat->range]->total_issue_solved > 0 ? $before[$stat->range]->total_issue_solved : 1) * 100), 2);
+                    $stat->pull_percent = number_format(check_percent($stat->total_pull_merged / ($before[$stat->range]->total_pull_merged > 0 ? $before[$stat->range]->total_pull_merged : 1) * 100), 2);
+                    $stat->star_percent = number_format(check_percent($star / $starLast * 100), 2);
+                    $stat->fork_percent = number_format(check_percent($fork / $forkLast * 100), 2);
+                    $stat->total_star = $star;
+                    $stat->total_fork = $fork;
+                }
+
             }
 
             $item->stats = $stats;
@@ -171,7 +174,7 @@ class StatisticController extends BaseController
         return $response->setData($data);
     }
 
-    public function getDeveloperChart(Request $request, BaseHttpResponse $response)
+    public function getDeveloperChartBackup(Request $request, BaseHttpResponse $response)
     {
         $validator = Validator::make($request->all(), [
             'filter' => "nullable|in:7,30",
@@ -199,7 +202,7 @@ class StatisticController extends BaseController
         return $response->setData($data);
     }
 
-    public function getDeveloperChartBackup(Request $request, BaseHttpResponse $response)
+    public function getDeveloperChart(Request $request, BaseHttpResponse $response)
     {
         $validator = Validator::make($request->all(), [
             'filter' => "nullable|in:7,30",

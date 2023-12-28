@@ -21,7 +21,7 @@ class SummarizeDeveloper extends Command
      *
      * @var string
      */
-    protected $signature = 'summary:developer';
+    protected $signature = 'summary:developer {from}';
 
     /**
      * The console command description.
@@ -61,7 +61,8 @@ class SummarizeDeveloper extends Command
                 "value" => 24 * 30,
             ],
         ];
-        foreach (Contributor::orderBy("id", "ASC")->get() as $contributor){
+        $from = $this->argument("from") ?? 0;
+        foreach (Contributor::where("id", ">=", $from)->orderBy("id", "ASC")->get() as $contributor){
             $queryCommit = Commit::where("author_list", "like", "%" . $contributor->login . "%");
             $queryIssue = Issue::where("creator", "like", "%" . $contributor->login . "%");
             $queryPull = Pull::where("author", "like", "%" . $contributor->login . "%");
