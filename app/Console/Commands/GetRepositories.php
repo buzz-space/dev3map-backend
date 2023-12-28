@@ -48,7 +48,7 @@ class GetRepositories extends Command
         set_time_limit(0);
         $chainId = $this->argument("start_chain") ?? 0;
         $repoId = $this->argument("start_repo") ?? 0;
-        $toChain = $this->argument("to_chain") ?? 0;
+        $toChain = $this->argument("end_chain") ?? 0;
         echo "Start: $chainId, end: $toChain, start repo: $repoId" . PHP_EOL;
 //        $howToGet = $this->choice("Choose data want to get?", ["all", "contributor", "pull_issue"], "all");
         $howToGet = "all";
@@ -61,6 +61,8 @@ class GetRepositories extends Command
 
         foreach ($chains as $i => $chain) {
             if ($chain->id < $chainId) continue;
+            setting()->set("process_chain", $chain->id);
+            setting()->save();
             echo "Chain " . $chain->name . PHP_EOL;
 
             try {
@@ -94,6 +96,8 @@ class GetRepositories extends Command
                 echo "With " . count($repository) . PHP_EOL;
                 foreach ($repository as $name => $repoPrefix) {
                     if (strpos($repoPrefix, "chromium") !== false || strpos($repoPrefix, "linux") !== false) continue;
+                    setting()->set("process_repo", $repoPrefix);
+                    setting()->save();
                     $repoUrl = "https://api.github.com/repos/$repoPrefix";
                     echo "Repo " . $repoUrl . " of chain " . $chain->name . PHP_EOL;
                     $repoInfo = json_decode(get_github_data($repoUrl, 1, $useKey));
