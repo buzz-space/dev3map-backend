@@ -43,16 +43,13 @@ class SummaryCommit extends Command
      *
      * @return int
      */
-    public function handles()
+    public function handle()
     {
-        $start = now();
         ini_set("memory_limit", -1);
-        $commits = Commit::orderBy("id", "ASC")->get();
-        $lastCommit = setting("last_commit", 0);
+        $commits = Commit::where("exact_date", ">=", "2023-06-01")->orderBy("id", "ASC")->get();
         foreach ($commits as $commit) {
             $repo = Repository::find($commit->repo);
             $prefix = $repo->github_prefix;
-            if ($commit->id <= $lastCommit) continue;
             $sha = CommitSHA::where("commit_id", $commit->id)->pluck("sha");
             $total_addition = 0;
             $total_deletion = 0;
@@ -61,7 +58,10 @@ class SummaryCommit extends Command
                 $detail = json_decode(get_github_data($detailUrl, "body"));
                 if (isset($detail->message)){
                     Log::error($detail->message);
-                    continue;
+                    if (strpos($detail->message, "API rate limit") !== false) {
+                        Log::info("Last commit is " . $commit->id);
+                        return 1;
+                    }
                 }
                 $total_addition += $detail->stats->additions;
                 $total_deletion += $detail->stats->deletions;
@@ -88,21 +88,12 @@ class SummaryCommit extends Command
             $chart->total_additions += $total_addition;
             $chart->total_deletions += $total_deletion;
             $chart->save();
-
-            setting()->set("last_commit", $commit->id);
-            setting()->save();
-
-            if (now()->diffInMinutes($start) > 55){
-                Log::info("Stop at " . now()->toDateTimeString());
-                return 1;
-            }
-
         }
 
         return 1;
     }
 
-    public function handle(){
+    public function handles(){
         foreach (Repository::all() as $item){
             $item->total_commit = $item->commits()->sum("total_commit");
             $item->save();
