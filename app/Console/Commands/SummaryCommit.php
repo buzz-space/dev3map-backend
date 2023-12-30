@@ -19,7 +19,7 @@ class SummaryCommit extends Command
      *
      * @var string
      */
-    protected $signature = 'summary:commit';
+    protected $signature = 'summary:commit {from?}';
 
     /**
      * The console command description.
@@ -46,7 +46,8 @@ class SummaryCommit extends Command
     public function handle()
     {
         ini_set("memory_limit", -1);
-        $commits = Commit::where("exact_date", ">=", "2023-06-01")->orderBy("id", "ASC")->get();
+        $from = $this->argument("from") ?? 0;
+        $commits = Commit::where("exact_date", ">=", "2023-06-01")->where("id", ">=", $from)->orderBy("id", "ASC")->get();
         foreach ($commits as $commit) {
             $repo = Repository::find($commit->repo);
             $prefix = $repo->github_prefix;
