@@ -89,6 +89,9 @@ class SummaryCommit extends Command
             $chart->total_additions += $total_addition;
             $chart->total_deletions += $total_deletion;
             $chart->save();
+
+            setting()->set("last_commit", $commit->id);
+            setting()->save();
         }
 
         return 1;
