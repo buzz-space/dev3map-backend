@@ -47,7 +47,7 @@ class SummaryCommit extends Command
     {
         ini_set("memory_limit", -1);
         $start = now();
-        $from = $this->argument("from") ?? 0;
+        $from = setting("last_commit");
         $commits = Commit::where("exact_date", ">=", "2023-06-01")->where("id", ">", $from)->orderBy("id", "ASC")->get();
         foreach ($commits as $commit) {
             $repo = Repository::find($commit->repo);
