@@ -58,7 +58,7 @@ class SummaryCommit extends Command
             $total_deletion = 0;
             foreach ($sha as $item) {
                 $detailUrl = "https://api.github.com/repos/$prefix/commits/" . $item;
-                $detail = json_decode(get_github_data($detailUrl, "body"));
+                $detail = json_decode(get_github_data($detailUrl, "body"), $key);
                 if (isset($detail->message)){
                     Log::error($detail->message);
                     if (strpos($detail->message, "API rate limit") !== false) {
