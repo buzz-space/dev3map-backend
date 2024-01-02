@@ -48,6 +48,7 @@ class SummaryCommit extends Command
         ini_set("memory_limit", -1);
         $start = now();
         $from = setting("last_commit");
+        $key = setting("last_key", 1);
         $commits = Commit::where("exact_date", ">=", "2023-06-01")->where("id", ">", $from)->orderBy("id", "ASC")->get();
         foreach ($commits as $commit) {
             $repo = Repository::find($commit->repo);
@@ -61,7 +62,8 @@ class SummaryCommit extends Command
                 if (isset($detail->message)){
                     Log::error($detail->message);
                     if (strpos($detail->message, "API rate limit") !== false) {
-                        Log::info("Last commit is " . $commit->id);
+                        setting()->set("last_key", $key == 1 ? 2 : 1);
+                        setting()->save();
                         return 1;
                     }
                 }
@@ -96,6 +98,8 @@ class SummaryCommit extends Command
 
             if (now()->diffInMinutes($start) > 55){
                 Log::info("End at " . now()->toDateTimeString());
+                setting()->set("last_key", $key == 1 ? 2 : 1);
+                setting()->save();
                 return 1;
             }
         }
