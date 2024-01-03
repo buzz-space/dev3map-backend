@@ -58,7 +58,7 @@ class SummaryCommit extends Command
             $total_deletion = 0;
             foreach ($sha as $item) {
                 $detailUrl = "https://api.github.com/repos/$prefix/commits/" . $item;
-                $detail = json_decode(get_github_data($detailUrl, "body"), $key);
+                $detail = (array) json_decode(get_github_data($detailUrl, "body"), $key);
                 if (isset($detail->message)){
                     Log::error($detail->message);
                     if (strpos($detail->message, "API rate limit") !== false) {
@@ -67,8 +67,8 @@ class SummaryCommit extends Command
                         return 1;
                     }
                 }
-                $total_addition += $detail->stats->additions;
-                $total_deletion += $detail->stats->deletions;
+                $total_addition += $detail["stats"]["additions"];
+                $total_deletion += $detail["stats"]["deletions"];
             }
             $commit->additions = $total_addition;
             $commit->deletions = $total_deletion;
