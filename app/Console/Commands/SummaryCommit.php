@@ -46,62 +46,60 @@ class SummaryCommit extends Command
     public function handle()
     {
         ini_set("memory_limit", -1);
-        $start = now();
         $from = setting("last_commit");
-        $key = setting("last_key", 1);
+        $key = 1;
         $commits = Commit::where("exact_date", ">=", "2023-06-01")->where("id", ">", $from)->orderBy("id", "ASC")->get();
         foreach ($commits as $commit) {
-            $repo = Repository::find($commit->repo);
-            $prefix = $repo->github_prefix;
-            $sha = CommitSHA::where("commit_id", $commit->id)->pluck("sha");
-            $total_addition = 0;
-            $total_deletion = 0;
-            foreach ($sha as $item) {
-                $detailUrl = "https://api.github.com/repos/$prefix/commits/" . $item;
-                $detail = (array) json_decode(get_github_data($detailUrl, "body"), $key);
-                if (isset($detail->message)){
-                    Log::error($detail->message);
-                    if (strpos($detail->message, "API rate limit") !== false) {
-                        setting()->set("last_key", $key == 1 ? 2 : 1);
-                        setting()->save();
-                        return 1;
+            try{
+                $repo = Repository::find($commit->repo);
+                $prefix = $repo->github_prefix;
+                $sha = CommitSHA::where("commit_id", $commit->id)->pluck("sha");
+                $total_addition = 0;
+                $total_deletion = 0;
+                foreach ($sha as $item) {
+                    $detailUrl = "https://api.github.com/repos/$prefix/commits/" . $item;
+                    $detail = (array) json_decode(get_github_data($detailUrl, "body"), $key);
+                    if (isset($detail->message)){
+                        Log::error($detail->message);
+                        if (strpos($detail->message, "API rate limit") !== false) {
+                            $key = ($key == 1) ? 2 : 1;
+                            continue;
+                        }
                     }
+                    $total_addition += $detail["stats"]["additions"];
+                    $total_deletion += $detail["stats"]["deletions"];
                 }
-                $total_addition += $detail["stats"]["additions"];
-                $total_deletion += $detail["stats"]["deletions"];
-            }
-            $commit->additions = $total_addition;
-            $commit->deletions = $total_deletion;
-            $commit->save();
+                $commit->additions = $total_addition;
+                $commit->deletions = $total_deletion;
+                $commit->save();
 
-            $chart = CommitChart::where("chain", $repo->chain)
-                ->where("from", "<=", $commit->exact_date)
-                ->where("to", ">=", $commit->exact_date)
-                ->first();
-            if (!$chart){
-                $date = Carbon::createFromTimestamp(strtotime($commit->exact_date));
-                $chart = new CommitChart();
-                $chart->from =  Carbon::create($date->year, $date->month, $date->day > 15 ? 16 : 1);
-                $chart->to = Carbon::create($date->year, $date->month, $date->day > 15 ? 15 : $date->daysInMonth);
-                $chart->week = $date->day > 15 ? 2 : 1;
-                $chart->month = $date->month;
-                $chart->year = $date->year;
-                $chart->chain = $repo->chain;
-                $chart->save();
-            }
-            $chart->total_additions += $total_addition;
-            $chart->total_deletions += $total_deletion;
-            $chart->save();
-
-            setting()->set("last_commit", $commit->id);
-            setting()->save();
-
-            if (now()->diffInMinutes($start) > 55){
-                Log::info("End at " . now()->toDateTimeString());
-                setting()->set("last_key", $key == 1 ? 2 : 1);
+                setting()->set("last_commit", $commit->id);
                 setting()->save();
-                return 1;
+
+            } catch (\Exception $exception){
+                Log::error($exception->getMessage());
+                $key = ($key == 1) ? 2 : 1;
             }
+
+
+//            $chart = CommitChart::where("chain", $repo->chain)
+//                ->where("from", "<=", $commit->exact_date)
+//                ->where("to", ">=", $commit->exact_date)
+//                ->first();
+//            if (!$chart){
+//                $date = Carbon::createFromTimestamp(strtotime($commit->exact_date));
+//                $chart = new CommitChart();
+//                $chart->from =  Carbon::create($date->year, $date->month, $date->day > 15 ? 16 : 1);
+//                $chart->to = Carbon::create($date->year, $date->month, $date->day > 15 ? 15 : $date->daysInMonth);
+//                $chart->week = $date->day > 15 ? 2 : 1;
+//                $chart->month = $date->month;
+//                $chart->year = $date->year;
+//                $chart->chain = $repo->chain;
+//                $chart->save();
+//            }
+//            $chart->total_additions += $total_addition;
+//            $chart->total_deletions += $total_deletion;
+//            $chart->save();
         }
 
         return 1;
