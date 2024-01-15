@@ -28,7 +28,7 @@ class Commit extends BaseModel
         "total_commit",
         "total_fork_commit",
         "additions",
-        "deletion",
+        "deletions",
         "full_time",
         "part_time",
         "total_full_time",
