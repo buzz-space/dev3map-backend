@@ -279,6 +279,7 @@ class StatisticController extends BaseController
         $data = ChainInfo::where("range", "7_days")->orderBy($type, "DESC")->take(100)->get();
         $total_chain = Chain::count();
         foreach ($data as $info) {
+            $lastInfo = ChainInfo::where("range", "before_7_days")->where("chain", $info->chain)->first();
             $info->total_commit = $info->total_commits;
             $info->commit_score = 101 - $info->commit_rank;
             $info->pulls_score = 101 - $info->pull_rank;
@@ -287,6 +288,7 @@ class StatisticController extends BaseController
             $info->star_score = 101 - $info->star_rank;
             $info->fork_score = 101 - $info->fork_rank;
             $info->pr_score = 101 - $info->pr_rank;
+            $info->total_fork -= $lastInfo->total_fork;
             $info->total_issue = $info->total_issue_solved;
             $info->total_developer = ($info->full_time_developer) + ($info->part_time_developer);
 
