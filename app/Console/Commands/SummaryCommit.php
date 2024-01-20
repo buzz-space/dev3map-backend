@@ -19,7 +19,7 @@ class SummaryCommit extends Command
      *
      * @var string
      */
-    protected $signature = 'summary:commit {from_date)';
+    protected $signature = 'summary:commit';
 
     /**
      * The console command description.
@@ -50,7 +50,7 @@ class SummaryCommit extends Command
         $sha = CommitSHA::orderBy("id", "ASC")->get();
         foreach ($sha as $item){
             $commit = Commit::whereId($item->commit_id)->first();
-            $prefix = $commit->repo->github_prefix;
+            $prefix = $commit->target_repo->github_prefix;
             $detailUrl = "https://api.github.com/repos/$prefix/commits/" . $item;
             $detail = (array) json_decode(get_github_data($detailUrl, "body"), $key);
             if (isset($detail->message)){
