@@ -49,9 +49,11 @@ class SummaryCommit extends Command
         $key = 1;
         $sha = CommitSHA::orderBy("id", "ASC")->get();
         foreach ($sha as $item){
+            setting()->set("sha_id", $item->id);
+            setting()->save();
             $commit = Commit::whereId($item->commit_id)->first();
             $prefix = $commit->target_repo->github_prefix;
-            $detailUrl = "https://api.github.com/repos/$prefix/commits/" . $item;
+            $detailUrl = "https://api.github.com/repos/$prefix/commits/" . $item->sha;
             $detail = (array) json_decode(get_github_data($detailUrl, "body"), $key);
             if (isset($detail->message)){
                 Log::error($detail->message);
