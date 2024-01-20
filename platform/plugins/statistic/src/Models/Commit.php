@@ -36,4 +36,9 @@ class Commit extends BaseModel
         "one_time",
     ];
 
+    public function repo()
+    {
+        return $this->belongsTo(Repository::class, "repo");
+    }
+
 }
