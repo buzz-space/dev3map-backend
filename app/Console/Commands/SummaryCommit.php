@@ -61,7 +61,7 @@ class SummaryCommit extends Command
                     $key = ($key == 1) ? 2 : 1;
                     continue;
                 }
-                if (strpos($detail["message"], "Not found") !== false) {
+                if (strpos($detail["message"], "Not") !== false) {
                     $item->delete();
                     continue;
                 }
