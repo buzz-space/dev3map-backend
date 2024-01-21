@@ -55,13 +55,13 @@ class SummaryCommit extends Command
             $prefix = $commit->target_repo->github_prefix;
             $detailUrl = "https://api.github.com/repos/$prefix/commits/" . $item->sha;
             $detail = (array) json_decode(get_github_data($detailUrl, "body"), $key);
-            if (isset($detail->message)){
-                Log::error($detail->message);
-                if (strpos($detail->message, "API rate limit") !== false) {
+            if (isset($detail["message"])){
+                Log::error($detail["message"]);
+                if (strpos($detail["message"], "API rate limit") !== false) {
                     $key = ($key == 1) ? 2 : 1;
                     continue;
                 }
-                if (strpos($detail->message, "Not found") !== false) {
+                if (strpos($detail["message"], "Not found") !== false) {
                     $item->delete();
                     continue;
                 }
