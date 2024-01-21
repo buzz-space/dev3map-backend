@@ -61,6 +61,11 @@ class SummaryCommit extends Command
                     $key = ($key == 1) ? 2 : 1;
                     continue;
                 }
+                if (strpos($detail->message, "Not found") !== false) {
+                    $item->delete();
+                    continue;
+                }
+                return 1;
             }
 
             $commit->additions += $detail["stats"]["additions"];
