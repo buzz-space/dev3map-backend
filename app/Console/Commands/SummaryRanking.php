@@ -49,18 +49,18 @@ class SummaryRanking extends Command
                 "name" => "7_days",
                 "value" => 24 * 7,
             ],
-//            [
-//                "name" => "before_7_days",
-//                "value" => 24 * 14,
-//            ],
-//            [
-//                "name" => "before_30_days",
-//                "value" => 24 * 60,
-//            ],
-//            [
-//                "name" => "21_days",
-//                "value" => 24 * 21,
-//            ],
+            [
+                "name" => "before_7_days",
+                "value" => 24 * 14,
+            ],
+            [
+                "name" => "before_30_days",
+                "value" => 24 * 60,
+            ],
+            [
+                "name" => "21_days",
+                "value" => 24 * 21,
+            ],
             [
                 "name" => "30_days",
                 "value" => 24 * 30,
@@ -85,12 +85,12 @@ class SummaryRanking extends Command
                 $starAll = $sortByStar;
                 $forkAll = $sortByFork;
             }
-
-            for ($i = 0; $i < count($chainKeys); $i++) {
-                $sortByStar[$i] = $starAll[$i] - $sortByStar[$i];
-                $sortByFork[$i] = $forkAll[$i] - $sortByFork[$i];
+            else{
+                foreach ($chainKeys as $i) {
+                    $sortByStar[$i] = $starAll[$i] - $sortByStar[$i];
+                    $sortByFork[$i] = $forkAll[$i] - $sortByFork[$i];
+                }
             }
-
 
             arsort($sortByCommit);
             arsort($sortByIssue);
