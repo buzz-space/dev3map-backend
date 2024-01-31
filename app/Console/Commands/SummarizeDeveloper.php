@@ -21,7 +21,7 @@ class SummarizeDeveloper extends Command
      *
      * @var string
      */
-    protected $signature = 'summary:developer {from}';
+    protected $signature = 'summary:developer {from?}';
 
     /**
      * The console command description.
