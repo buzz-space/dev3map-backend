@@ -61,8 +61,9 @@ class GetRepositories extends Command
 
         foreach ($chains as $i => $chain) {
             if ($chain->id < $chainId) continue;
-            setting()->set("process_chain", $chain->id);
-            setting()->save();
+//            setting()->set("process_chain", $chain->id);
+//            setting()->save();
+            \Log::info("Process chain " . implode("-", [$chain->id, $chain->name, $chain->github_prefix]));
             echo "Chain " . $chain->name . PHP_EOL;
 
             try {
@@ -96,8 +97,8 @@ class GetRepositories extends Command
                 echo "With " . count($repository) . PHP_EOL;
                 foreach ($repository as $name => $repoPrefix) {
                     if (strpos($repoPrefix, "chromium") !== false || strpos($repoPrefix, "linux") !== false) continue;
-                    setting()->set("process_repo", $repoPrefix);
-                    setting()->save();
+//                    setting()->set("process_repo", $repoPrefix);
+//                    setting()->save();
                     $repoUrl = "https://api.github.com/repos/$repoPrefix";
                     echo "Repo " . $repoUrl . " of chain " . $chain->name . PHP_EOL;
                     $repoInfo = json_decode(get_github_data($repoUrl, 1, $useKey));
