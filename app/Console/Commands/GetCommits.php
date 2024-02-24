@@ -50,6 +50,11 @@ class GetCommits extends Command
      */
     public function handle()
     {
+        \Log::info(3);
+        sleep(5);
+        \Log::info(4);
+        return;
+
         ini_set("memory_limit", -1);
         set_time_limit(0);
         $from = $this->argument("from_date") ?? now()->addDays(-7)->toDateString();

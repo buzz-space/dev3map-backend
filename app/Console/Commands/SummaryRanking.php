@@ -40,6 +40,11 @@ class SummaryRanking extends Command
 
     public function handle()
     {
+        \Log::info(7);
+        sleep(5);
+        \Log::info(8);
+        return;
+
         $range = [
             [
                 "name" => "all",

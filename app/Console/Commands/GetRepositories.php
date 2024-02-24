@@ -45,6 +45,11 @@ class GetRepositories extends Command
      */
     public function handle()
     {
+        \Log::info(1);
+        sleep(5);
+        \Log::info(2);
+        return;
+
         set_time_limit(0);
         $chainId = $this->argument("start_chain") ?? 0;
         $repoId = $this->argument("start_repo") ?? 0;
