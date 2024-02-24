@@ -45,11 +45,7 @@ class GetRepositories extends Command
      */
     public function handle()
     {
-        \Log::info(1);
-        sleep(5);
-        \Log::info(2);
-        return;
-
+        \Log::info("Begin get repositories at " . now("Asia/Bangkok")->toDateTimeString());
         set_time_limit(0);
         $chainId = $this->argument("start_chain") ?? 0;
         $repoId = $this->argument("start_repo") ?? 0;
@@ -68,9 +64,7 @@ class GetRepositories extends Command
             if ($chain->id < $chainId) continue;
 //            setting()->set("process_chain", $chain->id);
 //            setting()->save();
-            \Log::info("Process chain " . implode("-", [$chain->id, $chain->name, $chain->github_prefix]));
             echo "Chain " . $chain->name . PHP_EOL;
-
             try {
 
                 if (!$chain->is_repo) {
@@ -243,6 +237,6 @@ class GetRepositories extends Command
         }
 
 
-        echo "Done" . PHP_EOL;
+        \Log::info("End get repositories at " . now("Asia/Bangkok")->toDateTimeString());
     }
 }

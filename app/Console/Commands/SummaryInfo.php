@@ -46,11 +46,7 @@ class SummaryInfo extends Command
      */
     public function handle()
     {
-        \Log::info(5);
-        sleep(5);
-        \Log::info(6);
-        return;
-
+        \Log::info("Begin summary info at " . now("Asia/Bangkok")->toDateTimeString());
         $day = Carbon::createFromTimestamp(strtotime($this->argument("day") ?? now()->toDateString()));
         setting()->set("last_update", $day);
         setting()->save();
@@ -255,5 +251,6 @@ class SummaryInfo extends Command
         setting()->set("community_attribute", number_format($communityAttribute, 2));
         setting()->save();
 
+        \Log::info("End summary info at " . now("Asia/Bangkok")->toDateTimeString());
     }
 }

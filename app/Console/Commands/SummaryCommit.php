@@ -45,6 +45,7 @@ class SummaryCommit extends Command
      */
     public function handle()
     {
+        \Log::info("Begin summary commit at " . now("Asia/Bangkok")->toDateTimeString());
         ini_set("memory_limit", -1);
         $key = 1;
         $sha = CommitSHA::orderBy("id", "ASC")->get();
@@ -72,6 +73,6 @@ class SummaryCommit extends Command
             $item->delete();
         }
 
-        return 1;
+        \Log::info("End summary commit at " . now("Asia/Bangkok")->toDateTimeString());
     }
 }

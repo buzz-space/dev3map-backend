@@ -40,11 +40,7 @@ class SummaryRanking extends Command
 
     public function handle()
     {
-        \Log::info(7);
-        sleep(5);
-        \Log::info(8);
-        return;
-
+        \Log::info("Begin summary ranking at " . now("Asia/Bangkok")->toDateTimeString());
         $range = [
             [
                 "name" => "all",
@@ -153,7 +149,8 @@ class SummaryRanking extends Command
             }
 
         }
-        echo "Done";
+        \Log::info("End summary ranking at " . now("Asia/Bangkok")->toDateTimeString());
+
     }
 
 
