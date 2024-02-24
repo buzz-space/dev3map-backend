@@ -42,6 +42,7 @@ class GetCommitChart extends Command
      */
     public function handle()
     {
+        \Log::info("Begin get commit chart at " . now("Asia/Bangkok")->toDateTimeString());
         $date = $this->ask("From?", "2020-01-01");
         $chainId = $this->ask("From chain:");
         foreach (Chain::orderBy("id", "ASC")->get() as $chain) {
@@ -134,7 +135,7 @@ class GetCommitChart extends Command
             echo "Has " . $totalCommit . PHP_EOL;
             $total += $totalCommit;
         }
-        echo "So total commit of chain " . $chain->name . " is " . number_format($total);
+        \Log::info("End get commit chart at " . now("Asia/Bangkok")->toDateTimeString());
 //        $chain->total_commit = $total;
 //        $chain->save();
     }

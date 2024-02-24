@@ -40,6 +40,7 @@ class GetDeveloperInfo extends Command
      */
     public function handle()
     {
+        \Log::info("Begin get developer info at " . now("Asia/Bangkok")->toDateTimeString());
         $repo = $this->argument("repo") ?? 0;
         foreach (Repository::where("id", ">=", $repo)->orderBy("id", "ASC")->get() as $item) {
             echo "Repository " . $item->id . "-" . $item->name . PHP_EOL;
@@ -74,5 +75,6 @@ class GetDeveloperInfo extends Command
             setting()->set("process_repo", $item->id);
             setting()->save();
         }
+        \Log::info("End get developer info at " . now("Asia/Bangkok")->toDateTimeString());
     }
 }

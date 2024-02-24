@@ -50,11 +50,7 @@ class GetCommits extends Command
      */
     public function handle()
     {
-        \Log::info(3);
-        sleep(5);
-        \Log::info(4);
-        return;
-
+        \Log::info("Begin get commits at " . now("Asia/Bangkok")->toDateTimeString());
         ini_set("memory_limit", -1);
         set_time_limit(0);
         $from = $this->argument("from_date") ?? now()->addDays(-7)->toDateString();
@@ -204,28 +200,19 @@ class GetCommits extends Command
 
                         $authors = array_count_values($currentAuthor);
                         $last30DayAuthors = array_count_values($lastAuthor);
-                        $full = 0;
-                        $part = 0;
-                        $one = 0;
-                        $totalCommit = 0;
                         $saving = [
                             "full_time" => [],
                             "part_time" => [],
-                            "one_time" => []
                         ];
                         foreach ($authors as $author => $commits) {
                             if (isset($last30DayAuthors[$author]))
                                 $commits += $last30DayAuthors[$author];
                             if ($commits > 10) {
-                                $full += 1;
                                 $saving["full_time"][] = $author;
                             }
                             if ($commits <= 10) {
-                                $part += 1;
                                 $saving["part_time"][] = $author;
                             }
-
-                            $totalCommit += $commits;
                         }
 
                         $item->full_time = implode(",", $saving["full_time"]);
@@ -242,6 +229,6 @@ class GetCommits extends Command
 //            break;
         }
 
-        echo "It's take " . now()->diffInMinutes($start) . " minutes!" . PHP_EOL;
+        \Log::info("End get commits at " . now("Asia/Bangkok")->toDateTimeString());
     }
 }
