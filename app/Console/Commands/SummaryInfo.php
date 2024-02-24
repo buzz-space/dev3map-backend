@@ -46,6 +46,11 @@ class SummaryInfo extends Command
      */
     public function handle()
     {
+        \Log::info(5);
+        sleep(5);
+        \Log::info(6);
+        return;
+
         $day = Carbon::createFromTimestamp(strtotime($this->argument("day") ?? now()->toDateString()));
         setting()->set("last_update", $day);
         setting()->save();
