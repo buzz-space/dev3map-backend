@@ -231,10 +231,17 @@ class GetRepositories extends Command
                 $chain->last_updated = now();
                 $chain->save();
             } catch (\Exception $exception) {
-                \Log::info("Suspend at chain " . $chain->id . " in repo $repoPrefix with exception " . $exception->getMessage());
-                break;
+                if (strpos($exception, "API limit") !== false){
+                    \Log::info("Suspend at chain " . $chain->id . " in repo $repoPrefix with limit rate API!");
+                    $useKey = $useKey == 1 ? 2 : 1;
+                    continue;
+                }
+                else{
+                    \Log::info("Suspend at chain " . $chain->id . " in repo $repoPrefix with exception " . $exception->getMessage());
+                    break;
+                }
+
             }
-//            break;
         }
 
 
