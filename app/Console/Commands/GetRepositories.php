@@ -60,6 +60,7 @@ class GetRepositories extends Command
             $chains->where("id", "<=", $toChain);
         $chains = $chains->get();
 
+        $repoPrefix = "";
         foreach ($chains as $i => $chain) {
             if ($chain->id < $chainId) continue;
 //            setting()->set("process_chain", $chain->id);
@@ -230,7 +231,7 @@ class GetRepositories extends Command
                 $chain->last_updated = now();
                 $chain->save();
             } catch (\Exception $exception) {
-                echo $exception->getMessage() . PHP_EOL;
+                \Log::info("Suspend at chain " . $chain->id . " in repo $repoPrefix with exception " . $exception->getMessage());
                 break;
             }
 //            break;
