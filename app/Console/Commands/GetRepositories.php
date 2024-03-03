@@ -97,8 +97,8 @@ class GetRepositories extends Command
                         $name = $repoInfo->name;
                         $repoPrefix = $repoInfo->full_name;
                     } else {
-                        \Log::info(json_encode($repoInfo));
-                        return;
+                        \Log::info($repoPrefix . " with error " . json_encode($repoInfo));
+                        continue;
                     }
                 }
                 if (!$repo = Repository::where("github_prefix", $repoPrefix)->first()) {
