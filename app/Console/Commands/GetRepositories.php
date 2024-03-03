@@ -88,10 +88,7 @@ class GetRepositories extends Command
                 echo "$count-$useKey. Repo " . $repoUrl . " of chain " . $chain->name . PHP_EOL;
                 $repoInfo = json_decode(get_github_data($repoUrl, 1, $useKey));
                 if (isset($repoInfo->message)) {
-                    if (strpos($repoInfo->message, "Not Found") !== false) {
-                        \Log::info($repoPrefix . " not found!");
-                        continue;
-                    } elseif (strpos($repoInfo->message, "Moved") !== false) {
+                    if (strpos($repoInfo->message, "Moved") !== false) {
                         $repoInfo = json_decode(get_github_data($repoInfo->url, 1, $useKey));
                         \Log::info($repoPrefix . " is moved to " . $repoInfo->full_name);
                         $name = $repoInfo->name;
@@ -176,7 +173,7 @@ class GetRepositories extends Command
 
                 // Pull
                 $url = "https://api.github.com/repos/$repoPrefix/pulls?per_page=100&state=all&sort=created&direction=asc";
-                $lastPage = get_last_page(get_github_data($url, 1, $useKey));
+                $lastPage = get_last_page(get_github_data($url, 0, $useKey));
 
                 $pulls = Pull::where("repo", $repo->id)->count();
                 $firstPage = (int)floor($pulls / 100);
@@ -184,8 +181,6 @@ class GetRepositories extends Command
                 for ($i = $firstPage; $i <= $lastPage; $i++) {
                     $pageUrl = $url . "&page=$i";
                     $data = json_decode(get_github_data($pageUrl, 1, $useKey));
-                    if (isset($data->message))
-                        throw new \Exception($data->message);
 
                     foreach ($data as $pull) {
                         if ($pull->state == "closed")
