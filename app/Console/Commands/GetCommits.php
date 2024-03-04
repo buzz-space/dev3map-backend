@@ -58,17 +58,21 @@ class GetCommits extends Command
         $start = now();
         $env = env("APP_ENV", "local");
         echo "Begin: " . $start->toDateTimeString() . PHP_EOL;
+        $count = 0;
+        $useKey = 1;
         foreach (Chain::orderBy("id", "ASC")->get() as $chain) {
             if ($chain->id < $chainId) continue;
-            setting()->set("process_chain", $chain->id);
-            setting()->save();
+//            setting()->set("process_chain", $chain->id);
+//            setting()->save();
             $repositories = Repository::where("chain", $chain->id)->orderBy("id", "ASC")->get();
             if ($env == "local") echo "Chain " . $chain->name . " with " . count($repositories) . PHP_EOL;
             try {
                 foreach ($repositories as $j => $repository) {
 //                    if ($chain->id == $chainId && $repository->id < $repoId) continue;
-                    setting()->set("process_repo", $repository->id);
-                    setting()->save();
+//                    setting()->set("process_repo", $repository->id);
+//                    setting()->save();
+                    $count++;
+                    $useKey = ((floor($count / 100) % 2 != 0) ? 2 : 1);
                     echo ($j + 1) . ": Repo " . $repository->name . PHP_EOL;
                     /**
                      * Get commits
@@ -88,19 +92,19 @@ class GetCommits extends Command
                     }
                     $until = now()->toDateTimeString();
                     $urlBranch = "https://api.github.com/repos/$prefix/branches?protected=true";
-                    $branches = json_decode(get_github_data($urlBranch, 1));
+                    $branches = json_decode(get_github_data($urlBranch, 1, $useKey));
                     if (isset($branches->message)) {
                         Log::info("Repository " . $repository->name . ": " . $branches->message);
                         continue;
                     }
                     if(empty($branches))
-                        array_push($branches, (object)["name" => ""]);
+                        $branches[] = (object)["name" => ""];
                     foreach ($branches as $branch) {
                         $url = "https://api.github.com/repos/$prefix/commits?per_page=100";
                         if ($branch->name)
                             $url .= "&sha=" . $branch->name;
-                        $url .= "&since=" . date(DATE_ISO8601, strtotime($last));
-                        $url .= "&until=" . date(DATE_ISO8601, strtotime($until));
+                        $url .= "&since=" . date(DATE_ATOM, strtotime($last));
+                        $url .= "&until=" . date(DATE_ATOM, strtotime($until));
                         $lastPage = get_last_page(get_github_data($url, 0));
                         if ($env == "local") echo "Total page at " . $branch->name . " : " . $lastPage . PHP_EOL;
                         for ($i = 1; $i <= $lastPage; $i++) {
@@ -108,7 +112,7 @@ class GetCommits extends Command
 //                    $i = 1;
                             if ($env == "local") echo "Process page $i..." . PHP_EOL;
                             $commitUrl = $url . "&page=$i";
-                            $data = json_decode(get_github_data($commitUrl, 1));
+                            $data = json_decode(get_github_data($commitUrl, 1, $useKey));
                             $date = null;
                             $save = null;
                             $sha = [];
