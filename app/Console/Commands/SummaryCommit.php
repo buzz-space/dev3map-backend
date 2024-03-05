@@ -56,14 +56,7 @@ class SummaryCommit extends Command
             $detail = (array) json_decode(get_github_data($detailUrl, 1, $useKey));
             if (isset($detail["message"])){
                 Log::error($detail["message"]);
-                if (strpos($detail["message"], "API rate limit") !== false) {
-                    return 1;
-                }
-                if (strpos($detail["message"], "Not") !== false) {
-                    $item->delete();
-                    continue;
-                }
-                return 1;
+                continue;
             }
 
             $commit->additions += $detail["stats"]["additions"];
