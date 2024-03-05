@@ -47,13 +47,13 @@ class SummaryCommit extends Command
     {
         \Log::info("Begin summary commit at " . now("Asia/Bangkok")->toDateTimeString());
         ini_set("memory_limit", -1);
-        $key = 1;
         $sha = CommitSHA::orderBy("id", "ASC")->get();
-        foreach ($sha as $item){
+        foreach ($sha as $i => $item){
+            $useKey = ((floor($i / 100) % 2 != 0) ? 2 : 1);
             $commit = Commit::whereId($item->commit_id)->first();
             $prefix = $commit->target_repo->github_prefix;
             $detailUrl = "https://api.github.com/repos/$prefix/commits/" . $item->sha;
-            $detail = (array) json_decode(get_github_data($detailUrl, "body"), $key);
+            $detail = (array) json_decode(get_github_data($detailUrl, 1, $useKey));
             if (isset($detail["message"])){
                 Log::error($detail["message"]);
                 if (strpos($detail["message"], "API rate limit") !== false) {
