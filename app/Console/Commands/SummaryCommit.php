@@ -58,12 +58,17 @@ class SummaryCommit extends Command
                 Log::error($detail["message"]);
                 continue;
             }
+            try{
+                $commit->additions += $detail["stats"]->additions;
+                $commit->deletions += $detail["stats"]->deletions;
+                $commit->save();
 
-            $commit->additions += $detail["stats"]["additions"];
-            $commit->deletions += $detail["stats"]["deletions"];
-            $commit->save();
-
-            $item->delete();
+                $item->delete();
+            }
+            catch (\Exception $exception){
+                \Log::info(json_encode($detail));
+                return;
+            }
         }
 
         \Log::info("End summary commit at " . now("Asia/Bangkok")->toDateTimeString());
