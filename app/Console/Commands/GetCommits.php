@@ -81,11 +81,10 @@ class GetCommits extends Command
                     $last = "2020-01-01";
                     $contributors = unique_name(explode(",", $repository->total_contributor));
                     $prefix = $repository->github_prefix;
-                    if ($lastCommit = Commit::where("repo", $repository->id)->orderBy("exact_date", "DESC")->first()) {
+                    if ($lastCommit = Commit::where("repo", $repository->id)->orderBy("exact_date", "DESC")->first())
                         $last = $from;
-                    }
                     else {
-                        if ($repository->id <= 5650) {
+                        if ($repository->id <= 6220) {
                             if ($env == "local") echo "Repository has no commit!" . PHP_EOL;
                             continue;
                         }
@@ -97,7 +96,7 @@ class GetCommits extends Command
                         Log::info("Repository " . $repository->name . ": " . $branches->message);
                         continue;
                     }
-                    if(empty($branches))
+                    if (empty($branches))
                         $branches[] = (object)["name" => ""];
                     foreach ($branches as $branch) {
                         $url = "https://api.github.com/repos/$prefix/commits?per_page=100";
@@ -105,6 +104,11 @@ class GetCommits extends Command
                             $url .= "&sha=" . $branch->name;
                         $url .= "&since=" . date(DATE_ATOM, strtotime($last));
                         $url .= "&until=" . date(DATE_ATOM, strtotime($until));
+                        $dataFirstPage = get_github_data($url, 0);
+                        if (isset($dataFirstPage->message)) {
+                            \Log::info($repository->github_prefix . " with error " . json_encode($dataFirstPage));
+                            continue;
+                        }
                         $lastPage = get_last_page(get_github_data($url, 0));
                         if ($env == "local") echo "Total page at " . $branch->name . " : " . $lastPage . PHP_EOL;
                         for ($i = 1; $i <= $lastPage; $i++) {
@@ -175,7 +179,7 @@ class GetCommits extends Command
                                 $save->author_list = array_merge($save->author_list, [$author]);
                                 $save->total_commit += 1;
 
-                                if ($z == count($data) - 1){
+                                if ($z == count($data) - 1) {
                                     $save->author_list = implode(",", $save->author_list);
                                     $save->save();
                                 }
