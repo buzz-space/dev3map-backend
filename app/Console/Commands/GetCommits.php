@@ -238,5 +238,6 @@ class GetCommits extends Command
         }
 
         \Log::info("End get commits at " . now("Asia/Bangkok")->toDateTimeString());
+        send_telegram_message("Get commits done!");
     }
 }
