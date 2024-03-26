@@ -72,5 +72,6 @@ class SummaryCommit extends Command
         }
 
         \Log::info("End summary commit at " . now("Asia/Bangkok")->toDateTimeString());
+        send_telegram_message("Summary commit done!");
     }
 }

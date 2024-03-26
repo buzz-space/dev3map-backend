@@ -204,5 +204,6 @@ class GetRepositories extends Command
             $chain->save();
         }
         \Log::info("End get repositories at " . now("Asia/Bangkok")->toDateTimeString());
+        send_telegram_message("Get repositories done!");
     }
 }
