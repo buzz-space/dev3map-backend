@@ -251,6 +251,6 @@ class SummaryInfo extends Command
         setting()->set("community_attribute", number_format($communityAttribute, 2));
         setting()->save();
 
-        \Log::info("End summary info at " . now("Asia/Bangkok")->toDateTimeString());
+        send_telegram_message("Summary info done!");
     }
 }
