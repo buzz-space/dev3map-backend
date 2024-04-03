@@ -135,7 +135,8 @@ class GetCommitChart extends Command
             echo "Has " . $totalCommit . PHP_EOL;
             $total += $totalCommit;
         }
-        \Log::info("End get commit chart at " . now("Asia/Bangkok")->toDateTimeString());
+        send_telegram_message("Get commit chart done!");
+
 //        $chain->total_commit = $total;
 //        $chain->save();
     }

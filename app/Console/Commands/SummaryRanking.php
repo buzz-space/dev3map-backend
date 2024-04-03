@@ -149,7 +149,8 @@ class SummaryRanking extends Command
             }
 
         }
-        \Log::info("End summary ranking at " . now("Asia/Bangkok")->toDateTimeString());
+        send_telegram_message("Summary ranking done!");
+
 
     }
 

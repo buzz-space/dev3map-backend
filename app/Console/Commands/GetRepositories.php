@@ -67,7 +67,7 @@ class GetRepositories extends Command
                 $chainUrl = "https://api.github.com/orgs/" . $chain->github_prefix;
                 $chainInfo = json_decode(get_github_data($chainUrl, 1, $useKey));
 
-                $chain->avatar = $chainInfo->avatar_url ?? null;
+//                $chain->avatar = $chainInfo->avatar_url ?? null;
                 $chain->website = $chainInfo->blog ?? "";
                 // Get all repository from chain (test aura-nw)
                 $prefix = $chain->github_prefix;
@@ -203,7 +203,6 @@ class GetRepositories extends Command
             $chain->last_updated = now();
             $chain->save();
         }
-        \Log::info("End get repositories at " . now("Asia/Bangkok")->toDateTimeString());
         send_telegram_message("Get repositories done!");
     }
 }
