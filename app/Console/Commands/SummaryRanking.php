@@ -40,7 +40,6 @@ class SummaryRanking extends Command
 
     public function handle()
     {
-        \Log::info("Begin summary ranking at " . now("Asia/Bangkok")->toDateTimeString());
         $range = [
             [
                 "name" => "all",
@@ -149,9 +148,7 @@ class SummaryRanking extends Command
             }
 
         }
-        send_telegram_message("Summary ranking done!");
-
-
+        send_telegram_message("Summary ranking " . now("Asia/Bangkok")->toDateTimeString());
     }
 
 

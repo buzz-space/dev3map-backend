@@ -45,7 +45,6 @@ class SummaryCommit extends Command
      */
     public function handle()
     {
-        \Log::info("Begin summary commit at " . now("Asia/Bangkok")->toDateTimeString());
         ini_set("memory_limit", -1);
         $sha = CommitSHA::orderBy("id", "ASC")->get();
         foreach ($sha as $i => $item){
@@ -71,7 +70,6 @@ class SummaryCommit extends Command
             }
         }
 
-        \Log::info("End summary commit at " . now("Asia/Bangkok")->toDateTimeString());
-        send_telegram_message("Summary commit done!");
+        send_telegram_message("Summary commit " . now("Asia/Bangkok")->toDateTimeString());
     }
 }

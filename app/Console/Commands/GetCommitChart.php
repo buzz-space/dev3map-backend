@@ -16,7 +16,7 @@ class GetCommitChart extends Command
      *
      * @var string
      */
-    protected $signature = 'commit:chart';
+    protected $signature = 'commit:chart {from_date}';
 
     /**
      * The console command description.
@@ -42,11 +42,8 @@ class GetCommitChart extends Command
      */
     public function handle()
     {
-        \Log::info("Begin get commit chart at " . now("Asia/Bangkok")->toDateTimeString());
         $date = $this->ask("From?", "2020-01-01");
-        $chainId = $this->ask("From chain:");
         foreach (Chain::orderBy("id", "ASC")->get() as $chain) {
-            if ($chain->id < $chainId) continue;
             echo "Chain " . $chain->name . PHP_EOL;
 
 //            if ($chain->total_commit <= 0)
@@ -63,14 +60,8 @@ class GetCommitChart extends Command
                 for ($i = 0; $i < $diff; $i++) {
                     $thisMonth = (clone $dateFirstCommit)->addMonths($i)->startOfMonth();
                     for ($j = 1; $j <= 2; $j++) {
-                        if ($j == 1){
-                            $startWeek = (clone $thisMonth)->startOfMonth();
-                            $endWeek = (clone $thisMonth)->addDays(14)->endOfDay();
-                        }
-                        else{
-                            $startWeek = (clone $thisMonth)->addDays(15)->startOfDay();
-                            $endWeek = (clone $thisMonth)->endOfMonth();
-                        }
+                        $startWeek = ($j == 1) ? (clone $thisMonth)->startOfMonth() : (clone $thisMonth)->addDays(15)->startOfDay();
+                        $endWeek = ($j == 1) ? (clone $thisMonth)->addDays(14)->endOfDay() : (clone $thisMonth)->endOfMonth();
 
                         echo "Week $j, start: " . $startWeek->toDateTimeString() . ", end: " . $endWeek->toDateTimeString() . PHP_EOL;
 
@@ -101,7 +92,7 @@ class GetCommitChart extends Command
                                 'from' => $startWeek->toDateString(),
                                 "to" => $endWeek->toDateString()
                             ]);
-                        else{
+                        else {
                             $exist->total_commit = $total_commit;
                             $exist->total_additions = $total_additions;
                             $exist->total_deletions = $total_deletions;
@@ -115,29 +106,6 @@ class GetCommitChart extends Command
 //            if ($choice == "no")
 //                break;
         }
-        echo "Done";
-    }
-
-    public function handles()
-    {
-        $chainId = $this->ask("Chain id?");
-        $chain = Chain::whereId($chainId)->first();
-        echo "Chain name: " . $chain->name . PHP_EOL;
-        $total = 0;
-        foreach (Repository::where("chain", $chain->id)->get() as $repo){
-            echo "Repo name: " . $repo->name . PHP_EOL;
-            $prefix = $repo->github_prefix;
-            $url = "https://api.github.com/repos/$prefix/commits?per_page=100";
-//            echo "url " . $url . PHP_EOL;
-            $lastPage = get_last_page(get_github_data($url, "header"));
-            $totalCommitLastPage = count(json_decode(get_github_data($url . "&page=$lastPage")));
-            $totalCommit = ($lastPage - 1) * 100 + $totalCommitLastPage;
-            echo "Has " . $totalCommit . PHP_EOL;
-            $total += $totalCommit;
-        }
-        send_telegram_message("Get commit chart done!");
-
-//        $chain->total_commit = $total;
-//        $chain->save();
+        send_telegram_message("Get commit chart " . now("Asia/Bangkok")->toDateTimeString());
     }
 }

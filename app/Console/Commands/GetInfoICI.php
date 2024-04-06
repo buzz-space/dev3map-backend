@@ -41,7 +41,6 @@ class GetInfoICI extends Command
      */
     public function handle()
     {
-        \Log::info("Begin get ICI info at " . now("Asia/Bangkok")->toDateTimeString());
         for ($i = 1; $i < 2; $i++){
             $data = json_decode(get_data_from_url("https://interchaininfo.zone/api/dev3web/indexes", ["X-API-KEY: dMp3Cyi0QliJPbgH6KmH8HSUTXCD69wLx"]));
             $data = $data->data;
@@ -82,7 +81,7 @@ class GetInfoICI extends Command
             }
         }
 
-        echo "Done";
+        send_telegram_message("Get ici info " . now("Asia/Bangkok")->toDateTimeString());
     }
 
     private function updateInfo($ici, $chain_id)

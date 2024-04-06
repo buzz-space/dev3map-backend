@@ -50,27 +50,18 @@ class GetCommits extends Command
      */
     public function handle()
     {
-        \Log::info("Begin get commits at " . now("Asia/Bangkok")->toDateTimeString());
-        ini_set("memory_limit", -1);
-        set_time_limit(0);
         $from = $this->argument("from_date") ?? now()->addDays(-7)->toDateString();
         $chainId = $this->argument("from_id") ?? 0;
         $start = now();
         $env = env("APP_ENV", "local");
         echo "Begin: " . $start->toDateTimeString() . PHP_EOL;
         $count = 0;
-        $useKey = 1;
         foreach (Chain::orderBy("id", "ASC")->get() as $chain) {
             if ($chain->id < $chainId) continue;
-//            setting()->set("process_chain", $chain->id);
-//            setting()->save();
             $repositories = Repository::where("chain", $chain->id)->orderBy("id", "ASC")->get();
             if ($env == "local") echo "Chain " . $chain->name . " with " . count($repositories) . PHP_EOL;
             try {
                 foreach ($repositories as $j => $repository) {
-//                    if ($chain->id == $chainId && $repository->id < $repoId) continue;
-//                    setting()->set("process_repo", $repository->id);
-//                    setting()->save();
                     $count++;
                     $useKey = ((floor($count / 100) % 2 != 0) ? 2 : 1);
                     echo ($j + 1) . ": Repo " . $repository->name . PHP_EOL;
@@ -93,7 +84,7 @@ class GetCommits extends Command
                     $urlBranch = "https://api.github.com/repos/$prefix/branches?protected=true";
                     $branches = json_decode(get_github_data($urlBranch, 1, $useKey));
                     if (isset($branches->message)) {
-                        Log::info("Repository " . $repository->name . ": " . $branches->message);
+                        send_telegram_message("Repository " . $repository->name . ": " . $branches->message);
                         continue;
                     }
                     if (empty($branches))
@@ -106,14 +97,12 @@ class GetCommits extends Command
                         $url .= "&until=" . date(DATE_ATOM, strtotime($until));
                         $dataFirstPage = get_github_data($url, 0);
                         if (isset($dataFirstPage->message)) {
-                            \Log::info($repository->github_prefix . " with error " . json_encode($dataFirstPage));
+                            send_telegram_message($repository->github_prefix . " with error " . json_encode($dataFirstPage));
                             continue;
                         }
                         $lastPage = get_last_page(get_github_data($url, 0));
                         if ($env == "local") echo "Total page at " . $branch->name . " : " . $lastPage . PHP_EOL;
                         for ($i = 1; $i <= $lastPage; $i++) {
-//                        if ($chain->id == $chainId && $repository->id == $repoId && $i < $page) continue;
-//                    $i = 1;
                             if ($env == "local") echo "Process page $i..." . PHP_EOL;
                             $commitUrl = $url . "&page=$i";
                             $data = json_decode(get_github_data($commitUrl, 1, $useKey));
@@ -122,8 +111,6 @@ class GetCommits extends Command
                             $sha = [];
                             foreach ($data as $z => $commit) {
                                 if (!isset($commit->commit)) continue;
-//                                if (strpos($commit->commit->message, "Merge pull request") === 0)
-//                                    continue;
                                 if ($commit->author)
                                     $author = $commit->author->login ?? "";
                                 else
@@ -150,10 +137,6 @@ class GetCommits extends Command
                                             ]);
                                         }
                                         $sha = [];
-//                                    if (now()->gt($start) && now()->diffInMinutes($start) > 55) {
-//                                        $lastExactDate = null;
-//                                        throw new \Exception("Stopped. Start: " . $start->toDateTimeString() . ", end: " . now()->toDateTimeString());
-//                                    }
                                     }
                                     if (!$save = Commit::where("repo", $repository->id)
                                         ->where("exact_date", $commitDate)
@@ -231,13 +214,11 @@ class GetCommits extends Command
                     }
                 }
             } catch (\Exception $exception) {
-                Log::error("Chain " . $chain->id . "-" . $chain->name . " have exception: " . implode(". ", [$exception->getMessage(), $exception->getTraceAsString(), $exception->getCode(), $exception->getLine()]));
+                send_telegram_message("Chain " . $chain->id . "-" . $chain->name . " have exception: " . implode(". ", [$exception->getMessage(), $exception->getCode(), $exception->getLine()]));
                 break;
             }
 //            break;
         }
-
-        \Log::info("End get commits at " . now("Asia/Bangkok")->toDateTimeString());
-        send_telegram_message("Get commits done!");
+        send_telegram_message("Get commits " . now("Asia/Bangkok")->toDateTimeString()");
     }
 }
