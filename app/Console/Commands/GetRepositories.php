@@ -45,8 +45,6 @@ class GetRepositories extends Command
      */
     public function handle()
     {
-        \Log::info("Begin get repositories at " . now("Asia/Bangkok")->toDateTimeString());
-        set_time_limit(0);
         $chainId = $this->argument("start_chain") ?? 0;
         $repoId = $this->argument("start_repo") ?? 0;
         $toChain = $this->argument("end_chain") ?? 0;
@@ -58,7 +56,7 @@ class GetRepositories extends Command
         $chains = $chains->get();
 
         $count = 0;
-        foreach ($chains as $i => $chain) {
+        foreach ($chains as $chain) {
             $chain->subscribers = 0;
             if ($chain->id < $chainId) continue;
             echo "Chain " . $chain->name . PHP_EOL;
@@ -90,11 +88,11 @@ class GetRepositories extends Command
                 if (isset($repoInfo->message)) {
                     if (strpos($repoInfo->message, "Moved") !== false) {
                         $repoInfo = json_decode(get_github_data($repoInfo->url, 1, $useKey));
-                        \Log::info($repoPrefix . " is moved to " . $repoInfo->full_name);
+                        send_telegram_message($repoPrefix . " is moved to " . $repoInfo->full_name);
                         $name = $repoInfo->name;
                         $repoPrefix = $repoInfo->full_name;
                     } else {
-                        \Log::info($repoPrefix . " with error " . json_encode($repoInfo));
+                        send_telegram_message($repoPrefix . " with error " . json_encode($repoInfo));
                         continue;
                     }
                 }
@@ -203,6 +201,6 @@ class GetRepositories extends Command
             $chain->last_updated = now();
             $chain->save();
         }
-        send_telegram_message("Get repositories done!");
+        send_telegram_message("Get repositories done at " . now("Asia/Bangkok")->toDateTimeString());
     }
 }
