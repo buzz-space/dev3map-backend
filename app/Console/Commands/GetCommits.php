@@ -219,6 +219,6 @@ class GetCommits extends Command
             }
 //            break;
         }
-        send_telegram_message("Get commits " . now("Asia/Bangkok")->toDateTimeString()");
+        send_telegram_message("Get commits " . now("Asia/Bangkok")->toDateTimeString());
     }
 }
