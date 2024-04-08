@@ -8,6 +8,7 @@ use Botble\Statistic\Models\CommitChart;
 use Botble\Statistic\Models\Repository;
 use Carbon\Carbon;
 use Illuminate\Console\Command;
+use function Symfony\Component\Translation\t;
 
 class GetCommitChart extends Command
 {
@@ -42,7 +43,7 @@ class GetCommitChart extends Command
      */
     public function handle()
     {
-        $date = $this->ask("From?", "2020-01-01");
+        $date = $this->ask("from_date");
         foreach (Chain::orderBy("id", "ASC")->get() as $chain) {
             echo "Chain " . $chain->name . PHP_EOL;
 

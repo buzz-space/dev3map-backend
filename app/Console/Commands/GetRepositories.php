@@ -103,6 +103,7 @@ class GetRepositories extends Command
                     $repo->chain = $chain->id;
                     $repo->save();
                 }
+                $repo->github_prefix = $repoPrefix;
                 $repo->total_star = $repoInfo->stargazers_count;
                 $repo->total_fork = $repoInfo->forks_count;
                 $repo->subscribers = $repoInfo->subscribers_count;
