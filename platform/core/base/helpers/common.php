@@ -280,3 +280,12 @@ function getIp(){
 //
 //    return $path;
 //}
+
+function send_telegram_message($message)
+{
+    $token = "6660694593:AAHub4SaffvxICVw9rXZG8Vdpitx9ZVwrgg";
+    $string = "https://api.telegram.org/bot$token/sendMessage?chat_id=5720718250&text=" . urlencode($message);
+    $client = new \GuzzleHttp\Client();
+    $result = $client->get($string);
+    return 1;
+}

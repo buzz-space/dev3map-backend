@@ -67,7 +67,9 @@ class SummaryRanking extends Command
             ],
         ];
 
-        foreach ($range as $r){
+        $starAll = [];
+        $forkAll = [];
+        foreach ($range as $r) {
             $info = ChainInfo::where("range", $r["name"])->orderBy("chain", "ASC")->selectRaw(
                 "chain, total_commits, total_issue_solved, total_pull_merged, total_pull_request, total_star, total_fork, (full_time_developer + part_time_developer) as total_developer"
             )->get()->toArray();
@@ -76,9 +78,19 @@ class SummaryRanking extends Command
             $sortByIssue = array_combine($chainKeys, array_column($info, "total_issue_solved"));
             $sortByPRSolved = array_combine($chainKeys, array_column($info, "total_pull_merged"));
             $sortByPR = array_combine($chainKeys, array_column($info, "total_pull_request"));
+            $sortByDeveloper = array_combine($chainKeys, array_column($info, "total_developer"));
             $sortByStar = array_combine($chainKeys, array_column($info, "total_star"));
             $sortByFork = array_combine($chainKeys, array_column($info, "total_fork"));
-            $sortByDeveloper = array_combine($chainKeys, array_column($info, "total_developer"));
+            if ($r["name"] == "all") {
+                $starAll = $sortByStar;
+                $forkAll = $sortByFork;
+            }
+            else{
+                foreach ($chainKeys as $i) {
+                    $sortByStar[$i] = $starAll[$i] - $sortByStar[$i];
+                    $sortByFork[$i] = $forkAll[$i] - $sortByFork[$i];
+                }
+            }
 
             arsort($sortByCommit);
             arsort($sortByIssue);
@@ -136,7 +148,7 @@ class SummaryRanking extends Command
             }
 
         }
-        echo "Done";
+        send_telegram_message("Summary ranking " . now("Asia/Bangkok")->toDateTimeString());
     }
 
 

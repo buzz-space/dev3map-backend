@@ -14,7 +14,7 @@ class GetDeveloperInfo extends Command
      *
      * @var string
      */
-    protected $signature = 'developer:info';
+    protected $signature = 'developer:info {repo?}';
 
     /**
      * The console command description.
@@ -40,8 +40,9 @@ class GetDeveloperInfo extends Command
      */
     public function handle()
     {
-        $repo = $this->ask("Begin repo");
-        foreach (Repository::where("chain", 4)->orderBy("id", "ASC")->get() as $item) {
+        \Log::info("Begin get developer info at " . now("Asia/Bangkok")->toDateTimeString());
+        $repo = $this->argument("repo") ?? 0;
+        foreach (Repository::where("id", ">=", $repo)->orderBy("id", "ASC")->get() as $item) {
             echo "Repository " . $item->id . "-" . $item->name . PHP_EOL;
             $contributors = array_filter(explode(",", $item->total_contributor));
             foreach ($contributors as $contributor) {
@@ -71,6 +72,9 @@ class GetDeveloperInfo extends Command
 
                 }
             }
+            setting()->set("process_repo", $item->id);
+            setting()->save();
         }
+        \Log::info("End get developer info at " . now("Asia/Bangkok")->toDateTimeString());
     }
 }

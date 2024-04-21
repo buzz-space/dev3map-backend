@@ -81,7 +81,7 @@ class GetInfoICI extends Command
             }
         }
 
-        echo "Done";
+        send_telegram_message("Get ici info " . now("Asia/Bangkok")->toDateTimeString());
     }
 
     private function updateInfo($ici, $chain_id)

@@ -19,7 +19,7 @@ class SummaryCommit extends Command
      *
      * @var string
      */
-    protected $signature = 'summary:commit {from_date)';
+    protected $signature = 'summary:commit';
 
     /**
      * The console command description.
@@ -46,71 +46,30 @@ class SummaryCommit extends Command
     public function handle()
     {
         ini_set("memory_limit", -1);
-        $from_date = $this->argument("from_date");
-        $key = 1;
-        $commits = Commit::where("exact_date", ">=", $from_date)->orderBy("id", "ASC")->get();
-        foreach ($commits as $commit) {
+        $sha = CommitSHA::orderBy("id", "ASC")->get();
+        foreach ($sha as $i => $item){
+            $useKey = ((floor($i / 100) % 2 != 0) ? 2 : 1);
+            $commit = Commit::whereId($item->commit_id)->first();
+            $prefix = $commit->target_repo->github_prefix;
+            $detailUrl = "https://api.github.com/repos/$prefix/commits/" . $item->sha;
+            $detail = (array) json_decode(get_github_data($detailUrl, 1, $useKey));
+            if (isset($detail["message"])){
+                Log::error($detail["message"]);
+                continue;
+            }
             try{
-                $repo = Repository::find($commit->repo);
-                $prefix = $repo->github_prefix;
-                $sha = CommitSHA::where("commit_id", $commit->id)->pluck("sha");
-                $total_addition = 0;
-                $total_deletion = 0;
-                foreach ($sha as $item) {
-                    $detailUrl = "https://api.github.com/repos/$prefix/commits/" . $item;
-                    $detail = (array) json_decode(get_github_data($detailUrl, "body"), $key);
-                    if (isset($detail->message)){
-                        Log::error($detail->message);
-                        if (strpos($detail->message, "API rate limit") !== false) {
-                            $key = ($key == 1) ? 2 : 1;
-                            continue;
-                        }
-                    }
-                    $total_addition += $detail["stats"]["additions"];
-                    $total_deletion += $detail["stats"]["deletions"];
-                }
-                $commit->additions = $total_addition;
-                $commit->deletions = $total_deletion;
+                $commit->additions += $detail["stats"]->additions;
+                $commit->deletions += $detail["stats"]->deletions;
                 $commit->save();
 
-                setting()->set("last_commit", $commit->id);
-                setting()->save();
-
-            } catch (\Exception $exception){
-                Log::error($exception->getMessage());
-                $key = ($key == 1) ? 2 : 1;
+                $item->delete();
             }
-
-
-//            $chart = CommitChart::where("chain", $repo->chain)
-//                ->where("from", "<=", $commit->exact_date)
-//                ->where("to", ">=", $commit->exact_date)
-//                ->first();
-//            if (!$chart){
-//                $date = Carbon::createFromTimestamp(strtotime($commit->exact_date));
-//                $chart = new CommitChart();
-//                $chart->from =  Carbon::create($date->year, $date->month, $date->day > 15 ? 16 : 1);
-//                $chart->to = Carbon::create($date->year, $date->month, $date->day > 15 ? 15 : $date->daysInMonth);
-//                $chart->week = $date->day > 15 ? 2 : 1;
-//                $chart->month = $date->month;
-//                $chart->year = $date->year;
-//                $chart->chain = $repo->chain;
-//                $chart->save();
-//            }
-//            $chart->total_additions += $total_addition;
-//            $chart->total_deletions += $total_deletion;
-//            $chart->save();
+            catch (\Exception $exception){
+                \Log::info(json_encode($detail));
+                return;
+            }
         }
 
-        return 1;
-    }
-
-    public function handles(){
-        foreach (Repository::all() as $item){
-            $item->total_commit = $item->commits()->sum("total_commit");
-            $item->save();
-
-            echo "Processed repo " . $item->name . PHP_EOL;
-        }
+        send_telegram_message("Summary commit " . now("Asia/Bangkok")->toDateTimeString());
     }
 }

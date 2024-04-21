@@ -46,6 +46,7 @@ class SummaryInfo extends Command
      */
     public function handle()
     {
+        \Log::info("Begin summary info at " . now("Asia/Bangkok")->toDateTimeString());
         $day = Carbon::createFromTimestamp(strtotime($this->argument("day") ?? now()->toDateString()));
         setting()->set("last_update", $day);
         setting()->save();
@@ -250,5 +251,6 @@ class SummaryInfo extends Command
         setting()->set("community_attribute", number_format($communityAttribute, 2));
         setting()->save();
 
+        send_telegram_message("Summary info " . now("Asia/Bangkok")->toDateTimeString());
     }
 }
